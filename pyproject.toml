@@ -1,0 +1,47 @@
+# Based on https://github.com/denkiwakame/py-tiny-pkg/blob/main/pyproject.toml
+
+[build-system]
+requires = [
+  "setuptools>=64",
+  "wheel",               # for bdist package distribution
+  "setuptools_scm>=6.4", # for automated versioning
+]
+
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = true
+
+[tool.setuptools_scm]
+write_to = "src/uas_standards/_version.py"
+
+[project]
+name = "uas_standards"
+dynamic = ["version"]
+authors = [
+  { name="InterUSS Platform", email="tsc@lists.interussplatform.org" },
+]
+description = "Data types and tools for working with standards related to uncrewed aircraft systems (UAS)"
+readme = "README.md"
+license = { file = "LICENSE.md" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = []
+[project.optional-dependencies]
+dev = ["pytest==5.0.0", "pytest-cov[all]", "black==21.10b0"]
+[project.urls]
+"Homepage" = "https://github.com/interuss/uas_standards"
+"Bug Tracker" = "https://github.com/interuss/uas_standards/issues"
+
+[tool.black]
+target-version = ['py39']
+line-length = 120
