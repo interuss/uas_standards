@@ -35,7 +35,7 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
-dependencies = []
+dependencies = ["implicitdict"]
 [project.optional-dependencies]
 dev = ["pytest==5.0.0", "pytest-cov[all]", "black==21.10b0"]
 [project.urls]
