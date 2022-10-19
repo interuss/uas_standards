@@ -1,5 +1,6 @@
 from __future__ import annotations
 import random
+from typing import Optional
 
 
 class SerialNumber(str):
@@ -35,18 +36,23 @@ class SerialNumber(str):
             return False
         return True
 
-    def make_invalid_by_changing_payload_length(self) -> SerialNumber:
+    def make_invalid_by_changing_payload_length(self, r: Optional[random.Random] = None) -> SerialNumber:
         """Generates an invalid serial number similar to this serial number."""
+        if r is None:
+            r = random
         my_length = self.length_code
         lengths_except_mine = [
             c for c in SerialNumber.length_code_points if c != my_length
         ]
-        new_length_code = random.choice(lengths_except_mine)
+        new_length_code = r.choice(lengths_except_mine)
         k = SerialNumber.length_code_points.index(new_length_code) + 1
-        random_serial_number = "".join(random.choices(SerialNumber.code_points, k=k))
-        return SerialNumber(
-            self.manufacturer_code + self.length_code + random_serial_number
-        )
+        while True:
+            random_serial_number = "".join(r.choices(SerialNumber.code_points, k=k))
+            result = SerialNumber(
+                self.manufacturer_code + self.length_code + random_serial_number
+            )
+            if not result.valid:
+                return result
 
     @staticmethod
     def from_components(
@@ -61,9 +67,11 @@ class SerialNumber(str):
         )
 
     @staticmethod
-    def generate_valid() -> SerialNumber:
+    def generate_valid(r: Optional[random.Random] = None) -> SerialNumber:
         """Generates a valid and random UAV serial number per ANSI/CTA-2063-A."""
-        manufacturer_code = "".join(random.choices(SerialNumber.code_points, k=4))
-        k = random.randrange(0, len(SerialNumber.length_code_points)) + 1
-        random_serial_number = "".join(random.choices(SerialNumber.code_points, k=k))
+        if r is None:
+            r = random
+        manufacturer_code = "".join(r.choices(SerialNumber.code_points, k=4))
+        k = r.randrange(0, len(SerialNumber.length_code_points)) + 1
+        random_serial_number = "".join(r.choices(SerialNumber.code_points, k=k))
         return SerialNumber.from_components(manufacturer_code, random_serial_number)

@@ -1,11 +1,14 @@
 import json
+import random
 import pytest
 
 from uas_standards.en4709_02 import OperatorRegistrationNumber
 
 
 def test_basic_usage():
-    rn = OperatorRegistrationNumber.generate_valid('EXM')
+    r = random.Random(12345)
+
+    rn = OperatorRegistrationNumber.generate_valid('EXM', r)
     assert rn.valid
     OperatorRegistrationNumber.validate_prefix(rn.prefix)
     OperatorRegistrationNumber.validate_base_id(rn.base_id)
@@ -20,7 +23,7 @@ def test_basic_usage():
     assert rn3.valid
     assert rn3 == rn
 
-    rn_invalid = rn.make_invalid_by_changing_final_control_string()
+    rn_invalid = rn.make_invalid_by_changing_final_control_string(r)
     assert rn.valid
     assert not rn_invalid.valid
     OperatorRegistrationNumber.validate_prefix(rn_invalid.prefix)
