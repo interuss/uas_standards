@@ -1,6 +1,7 @@
 from __future__ import annotations
 import random
 import string
+from typing import Optional
 
 
 class OperatorRegistrationNumber(str):
@@ -65,16 +66,21 @@ class OperatorRegistrationNumber(str):
         return self.checksum == checksum
 
     def make_invalid_by_changing_final_control_string(
-            self,
+            self, r: Optional[random.Random] = None
     ) -> OperatorRegistrationNumber:
         """A method to generate an invalid Operator Registration number by replacing the control string"""
-        new_random_string = "".join(
-            random.choice(string.ascii_lowercase)
-            for _ in range(OperatorRegistrationNumber.final_random_string_length)
-        )
-        return OperatorRegistrationNumber(
-            self.checksum_control + "-" + new_random_string
-        )
+        if r is None:
+            r = random
+        while True:
+            new_random_string = "".join(
+                r.choice(string.ascii_lowercase)
+                for _ in range(OperatorRegistrationNumber.final_random_string_length)
+            )
+            result = OperatorRegistrationNumber(
+                self.checksum_control + "-" + new_random_string
+            )
+            if not result.valid:
+                return result
 
     @staticmethod
     def validate_prefix(prefix: str) -> None:
@@ -142,14 +148,16 @@ class OperatorRegistrationNumber(str):
         ]
 
     @staticmethod
-    def generate_valid(prefix: str) -> OperatorRegistrationNumber:
+    def generate_valid(prefix: str, r: Optional[random.Random] = None) -> OperatorRegistrationNumber:
         """Generate a random operator registration number with the specified prefix"""
+        if r is None:
+            r = random
         final_random_string = "".join(
-            random.choice(string.ascii_lowercase)
+            r.choice(string.ascii_lowercase)
             for _ in range(OperatorRegistrationNumber.final_random_string_length)
         )
         base_id = "".join(
-            random.choice(string.ascii_lowercase + string.digits)
+            r.choice(string.ascii_lowercase + string.digits)
             for _ in range(OperatorRegistrationNumber.base_id_length)
         )
         return OperatorRegistrationNumber.from_components(
