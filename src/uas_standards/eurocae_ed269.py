@@ -59,9 +59,10 @@ class HorizontalProjectionType(str, Enum):
 
 class CircleOrPolygonType(ImplicitDict):
     type: HorizontalProjectionType
-    center: Optional[List[float]]  # 2 items
+    center: Optional[List[float]]  # 2 items. Coordinates: lat, lng
     radius: Optional[float]  # > 0
-    coordinates: Optional[List[List[float]]]  # min 4 items  # 2 items
+    coordinates: Optional[List[List[List[float]]]]  # List of polygons -> List of points: min 4 items -> Coordinates: lat, lng
+
 
 
 class UomDimensions(str, Enum):

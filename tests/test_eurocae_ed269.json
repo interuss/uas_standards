@@ -1,5 +1,5 @@
 {
-  "title": "UASZoneTestData 2022-10-16",
+  "title": "UASZoneTestData 2022-10-25",
   "description": "Sample data for Automated Testing development",
   "features": [
     {
@@ -70,7 +70,7 @@
         {
           "startDateTime": "2022-06-15T09:00:00.00Z",
           "endDateTime": "2023-06-15T09:00:00.00Z",
-          "permanent": "YES"
+          "permanent": "NO"
         }
       ],
       "zoneAuthority": [
