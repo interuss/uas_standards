@@ -39,7 +39,7 @@ def data_type(d_type: DataType) -> List[str]:
     lines = []
 
     if d_type.enum_values:
-        if any(str(v) in keyword.kwlist for v in d_type.enum_values):
+        if any(str(t) in keyword.kwlist for v, t in d_type.enum_values.items()):
             lines.append(f'{d_type.name} = {d_type.python_type}')
             docstring_lines = d_type.description.split(
                 '\n') if d_type.description else []
@@ -54,7 +54,7 @@ def data_type(d_type: DataType) -> List[str]:
                 lines.append('')
 
             lines.extend(
-                indent([f'{v} = "{v}"' for v in d_type.enum_values], 1))
+                indent([f'{t} = "{v}"' for v, t in d_type.enum_values.items()], 1))
     elif is_primitive_python_type(d_type.python_type):
         lines.append(f'{d_type.name} = {d_type.python_type}')
         lines.extend(docstring_lines)
@@ -109,7 +109,7 @@ def _object_field(field: ObjectField) -> List[str]:
     return lines
 
 
-def data_types(d_types: List[DataType]) -> List[str]:
+def data_types(d_types: List[DataType], default_package: str) -> List[str]:
     already_defined = [kw for kw in keyword.kwlist]
     already_defined += ['int', 'float', 'complex', 'str', 'list', 'tuple',
                         'range', 'bytes', 'bytearray', 'memoryview', 'dict',
@@ -142,6 +142,7 @@ def data_types(d_types: List[DataType]) -> List[str]:
     # Declare types in dependency order
     total_defined = 0
     n_defined = 1
+    not_defined = []
 
     def _core_type(type_name):
         core_type = type_name
@@ -167,10 +168,39 @@ def data_types(d_types: List[DataType]) -> List[str]:
             already_defined.append(d_type.name)
             n_defined += 1
             total_defined += 1
-    not_defined = [d_type for d_type in d_types if
-                   d_type.name not in already_defined]
+
+        not_defined = [d_type for d_type in d_types if
+                       d_type.name not in already_defined]
+        if not not_defined:
+            break
+
+        # Declare certain types external
+        if n_defined == 0:
+            remaining_names = {d_type.name for d_type in d_types
+                               if d_type.name not in already_defined}
+            for d_type in d_types:
+                only_external_undefined_fields = True
+                for f in d_type.fields:
+                    core_field_type = _core_type(f.python_type)
+                    if core_field_type not in already_defined and core_field_type in remaining_names:
+                        only_external_undefined_fields = False
+                        break
+                if only_external_undefined_fields:
+                    for f in d_type.fields:
+                        core_field_type = _core_type(f.python_type)
+                        if core_field_type not in already_defined:
+                            lines.extend(['', ''])
+                            lines.append(f'from {default_package} import {core_field_type}')
+                            already_defined.append(core_field_type)
+                            n_defined += 1
+                    break
+
     if not_defined:
-        not_defined_list = ', '.join(d_type.name for d_type in not_defined)
+        not_defined_list = '; '.join(
+            [t.name + ' (' + ', '.join(_core_type(f.python_type)
+                                       for f in t.fields
+                                       if _core_type(f.python_type) not in already_defined) + ')'
+             for t in not_defined])
         raise RuntimeError(f'Failed to define data types: {not_defined_list}')
 
     lines.append('')
