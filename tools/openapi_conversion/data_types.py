@@ -41,8 +41,8 @@ class DataType:
     fields: List[ObjectField] = dataclasses.field(default_factory=list)
     """If this is an Object data type, a list of fields contained in that Object"""
 
-    enum_values: List[str] = dataclasses.field(default_factory=list)
-    """If this is a enum data type, a list of values it may take on"""
+    enum_values: Dict[str, str] = dataclasses.field(default_factory=dict)
+    """If this is a enum data type, a map from values it may take on to Python names for those values"""
 
 
 
@@ -80,7 +80,11 @@ def get_data_type_name(component_name: str, data_type_name: str) -> str:
     elif component_name.startswith('#/components/schemas/'):
         return component_name[len('#/components/schemas/'):]
     else:
-        raise NotImplementedError('$ref expected to start with `#/components/schemas/`, but found `{}` instead for {}'.format(component_name, data_type_name))
+        if '#/components/schemas/' not in component_name:
+            raise ValueError('$ref expected to contain `#/components/schemas/`, but found `{}` instead for {}'.format(component_name, data_type_name))
+        name = get_data_type_name(component_name[component_name.index('#'):], data_type_name)
+        print(f'WARNING: Assuming the variable type of {component_name} should be "{name}" and that it will be manually declared')
+        return name
 
 
 def _parse_referenced_type_name(schema: Dict, data_type_name: str) -> str:
@@ -140,7 +144,7 @@ def make_object_field(python_object_name: str, api_field_name: str, schema: Dict
             additional_types.append(data_type)
             field_data_type = data_type.name
         if len(data_type.enum_values) == 1 and default_value is None:
-            default_value = data_type.name + '.' + data_type.enum_values[0]
+            default_value = data_type.name + '.' + next(iter(data_type.enum_values.values()))
             literal_default = True
         else:
             literal_default = False
@@ -161,6 +165,19 @@ def _make_object_fields(python_object_name: str, properties: Dict, required: Set
         additional_types.extend(further_types)
         fields.append(field)
     return fields, additional_types
+
+
+def _make_python_enums(values: List[str]) -> Dict[str, str]:
+    valid_characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
+    valid_start_characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_'
+    result = {}
+    for value in values:
+        name = str(value)
+        if name[0] not in valid_start_characters:
+            name = '_' + name
+        name = ''.join(c if c in valid_characters else '_' for c in name)
+        result[str(value)] = name
+    return result
 
 
 def make_data_types(api_name: str, schema: Dict) -> Tuple[DataType, List[DataType]]:
@@ -219,7 +236,10 @@ def make_data_types(api_name: str, schema: Dict) -> Tuple[DataType, List[DataTyp
         data_type.python_type = _parse_referenced_type_name(schema, api_name)
 
     if 'enum' in schema:
-        data_type.enum_values = schema['enum']
+        data_type.enum_values = _make_python_enums(schema['enum'])
+
+    if not data_type.python_type:
+        data_type.python_type = 'str'
 
     return data_type, additional_types
 
