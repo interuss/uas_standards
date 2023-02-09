@@ -1,10 +1,11 @@
-# This tool generates Python data types from an OpenAPI YAML file.
+# This tool generates Python data types and path constants from an OpenAPI YAML file.
 
 import argparse
 
 import yaml
 
 import data_types
+import operations
 import rendering
 
 
@@ -33,10 +34,18 @@ def main():
     # Parse data types
     types = data_types.parse(spec)
 
+    # Parse operations
+    ops = operations.get_operations(spec)
+
     # Render Python code
     with open(args.python_output, 'w') as f:
-        f.write(f'"""Data types from {spec["info"]["title"]} {spec["info"]["version"]} OpenAPI"""\n\n')
+        f.write(f'"""Data types and operations from {spec["info"]["title"]} {spec["info"]["version"]} OpenAPI"""\n\n')
+        f.write('\n'.join(rendering.header(types)))
+        f.write('\n')
         f.write('\n'.join(rendering.data_types(types, args.default_package)))
+        f.write('\n\n')
+        f.write('\n'.join(rendering.operations(ops)))
+        f.write('\n')
 
 
 if __name__ == '__main__':
