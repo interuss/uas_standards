@@ -45,8 +45,7 @@ docker container run -it \
   	-v "$(pwd)/../..:/resources" \
 	  openapi-python-converter \
 	      --api /resources/interfaces/interuss/automated_testing/rid/v1/injection.yaml \
-	      --python_output /resources/src/uas_standards/interuss/automated_testing/rid/v1/injection.py \
-	      --default_package uas_standards.astm.f3411.v19.api
+	      --python_output /resources/src/uas_standards/interuss/automated_testing/rid/v1/injection.py
 
 echo "RID observation automated testing"
 docker container run -it \
