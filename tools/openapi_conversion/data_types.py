@@ -99,6 +99,11 @@ def _parse_referenced_type_name(schema: Dict, data_type_name: str) -> str:
     return get_data_type_name(option['$ref'], data_type_name)
 
 
+def _snake_to_pascal(snake_case: str) -> str:
+    words = snake_case.split("_")
+    return "".join(w[0].upper() + w[1:] for w in words)
+
+
 def make_object_field(python_object_name: str, api_field_name: str, schema: Dict, required: Set[str]) -> Tuple[ObjectField, List[DataType]]:
     """Parse a single field in a data type or endpoint parameter schema.
 
@@ -127,7 +132,7 @@ def make_object_field(python_object_name: str, api_field_name: str, schema: Dict
             required=is_required,
             default=default_value), []
     else:
-        type_name = python_object_name + api_field_name[0].upper() + api_field_name[1:]
+        type_name = python_object_name + _snake_to_pascal(api_field_name)
         data_type, additional_types = make_data_types(type_name, schema)
         if is_primitive_python_type(data_type.python_type) and not data_type.enum_values:
             # No additional type declaration needed

@@ -12,6 +12,9 @@ from uas_standards import Operation
 from implicitdict import ImplicitDict, StringBasedDateTime
 
 
+API_VERSION = "0.1.0"
+"""Version of Geo-Awareness Automated Test Interfaces OpenAPI specification from which the objects in this package were generated."""
+
 UUIDv4Format = str
 """String whose format matches a version-4 UUID according to RFC 4122."""
 

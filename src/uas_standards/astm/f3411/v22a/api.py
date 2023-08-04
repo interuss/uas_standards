@@ -12,6 +12,9 @@ from uas_standards import Operation
 from implicitdict import ImplicitDict, StringBasedDateTime
 
 
+API_VERSION = "2.1.0"
+"""Version of Standard Remote ID API Interfaces OpenAPI specification from which the objects in this package were generated."""
+
 class TimeFormat(str, Enum):
     RFC3339 = "RFC3339"
 
@@ -312,7 +315,7 @@ class UASID(ImplicitDict):
     specific_session_id: Optional[SpecificSessionID]
 
 
-class OperatorLocationAltitude_type(str, Enum):
+class OperatorLocationAltitudeType(str, Enum):
     """Source of data for the altitude field."""
 
     Takeoff = "Takeoff"
@@ -329,7 +332,7 @@ class OperatorLocation(ImplicitDict):
     altitude: Optional[Altitude]
     """Provides the Operator Altitude based on WGS-84 height above ellipsoid (HAE) (See Geodetic Altitude).  This value is provided in meters and must have a minimum resolution of 1 m."""
 
-    altitude_type: Optional[OperatorLocationAltitude_type]
+    altitude_type: Optional[OperatorLocationAltitudeType]
     """Source of data for the altitude field."""
 
 

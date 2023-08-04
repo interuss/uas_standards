@@ -12,6 +12,9 @@ from uas_standards import Operation
 from implicitdict import ImplicitDict
 
 
+API_VERSION = "0.0.1"
+"""Version of Remote ID Display Data Observation OpenAPI specification from which the objects in this package were generated."""
+
 class GetDetailsResponse(ImplicitDict):
     """Response to a request to get details about a flight."""
 
