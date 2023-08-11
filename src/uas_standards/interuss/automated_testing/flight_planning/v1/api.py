@@ -502,7 +502,7 @@ class UpsertFlightPlanRequest(ImplicitDict):
 
 
 class OperationID(str, Enum):
-    GetStatus = "getStatus"
+    GetStatus = "GetStatus"
     ClearArea = "ClearArea"
     UpsertFlightPlan = "UpsertFlightPlan"
     DeleteFlightPlan = "DeleteFlightPlan"
@@ -510,7 +510,7 @@ class OperationID(str, Enum):
 
 OPERATIONS: Dict[OperationID, Operation] = {
     OperationID.GetStatus: Operation(
-        id="getStatus",
+        id="GetStatus",
         path="/status",
         verb="GET",
         request_body_type=None,
