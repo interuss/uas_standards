@@ -240,3 +240,14 @@ def operations(ops: List[Operation]) -> List[str]:
     lines.append('}')
 
     return lines
+
+
+def api_version(spec: dict) -> List[str]:
+    version = spec.get("info", {}).get("version", None)
+    if version:
+        result = [f'API_VERSION = "{version}"']
+    else:
+        result = ["API_VERSION = None"]
+    name = spec.get("info", {}).get("title", "unknown")
+    result.append(f'"""Version of {name} OpenAPI specification from which the objects in this package were generated."""')
+    return result

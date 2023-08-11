@@ -12,6 +12,9 @@ from uas_standards import Operation
 from implicitdict import ImplicitDict, StringBasedDateTime
 
 
+API_VERSION = "1.0.0"
+"""Version of UTM API (USS->DSS and USS->USS) OpenAPI specification from which the objects in this package were generated."""
+
 UUIDv4Format = str
 """String whose format matches a version-4 UUID according to RFC 4122."""
 
@@ -193,7 +196,7 @@ class Position(ImplicitDict):
     altitude: Optional[Altitude]
 
 
-class VelocityUnits_speed(str, Enum):
+class VelocityUnitsSpeed(str, Enum):
     MetersPerSecond = "MetersPerSecond"
 
 
@@ -201,7 +204,7 @@ class Velocity(ImplicitDict):
     speed: float
     """Ground speed in meters/second."""
 
-    units_speed: VelocityUnits_speed = VelocityUnits_speed.MetersPerSecond
+    units_speed: VelocityUnitsSpeed = VelocityUnitsSpeed.MetersPerSecond
 
     track: Optional[float] = 0
     """Direction of flight expressed as a "True North-based" ground track angle. This value is provided in degrees East of North with a minimum resolution of 1 degree. A value of 360 indicates invalid, no value, or unknown."""
@@ -227,7 +230,7 @@ class SetUssAvailabilityStatusParameters(ImplicitDict):
     availability: UssAvailabilityState
 
 
-class ExchangeRecordRecorder_role(str, Enum):
+class ExchangeRecordRecorderRole(str, Enum):
     """A coded value that indicates the role of the logging USS: 'Client' (initiating a request to a remote USS) or 'Server' (handling a request from a remote USS)"""
 
     Client = "Client"
@@ -246,7 +249,7 @@ class ExchangeRecord(ImplicitDict):
     headers: Optional[List[str]] = []
     """Set of headers associated with request or response. Requires 'Authorization:' field (at a minimum)"""
 
-    recorder_role: ExchangeRecordRecorder_role
+    recorder_role: ExchangeRecordRecorderRole
     """A coded value that indicates the role of the logging USS: 'Client' (initiating a request to a remote USS) or 'Server' (handling a request from a remote USS)"""
 
     request_time: Time
@@ -300,7 +303,7 @@ class PlanningRecord(ImplicitDict):
     """A free text description of the problem(s) encountered during this planning attempt."""
 
 
-class UserNotificationRecordNotification_triggering_event(str, Enum):
+class UserNotificationRecordNotificationTriggeringEvent(str, Enum):
     """Requirement ID that pertains to the given notification"""
 
     GEN0400 = "GEN0400"
@@ -330,11 +333,11 @@ class UserNotificationRecord(ImplicitDict):
     notification_details: Optional[str]
     """Description of information that was provided to the user, as per the referenced notification_triggering_event requirement"""
 
-    notification_triggering_event: UserNotificationRecordNotification_triggering_event
+    notification_triggering_event: UserNotificationRecordNotificationTriggeringEvent
     """Requirement ID that pertains to the given notification"""
 
 
-class UserInputRecordInput_triggering_event(str, Enum):
+class UserInputRecordInputTriggeringEvent(str, Enum):
     """Requirement ID that pertains to the given notification"""
 
     OPIN0040 = "OPIN0040"
@@ -358,7 +361,7 @@ class UserInputRecord(ImplicitDict):
     operational_intent_id: EntityID
     """ID of the operational_intent ID pertaining to the user input"""
 
-    input_triggering_event: UserInputRecordInput_triggering_event
+    input_triggering_event: UserInputRecordInputTriggeringEvent
     """Requirement ID that pertains to the given notification"""
 
     input_details: Optional[str]
@@ -385,7 +388,7 @@ class ConstraintProviderAssociation(ImplicitDict):
     """Unique identifier of the constraint provider responsible for the constraint"""
 
 
-class GeoZoneAdditional_properties(ImplicitDict):
+class GeoZoneAdditionalProperties(ImplicitDict):
     """Indicates that exemptions from the national or European regulations are allowed in the UAS Zone, that will be detailed via the "message" property."""
 
 
@@ -1019,7 +1022,7 @@ class GeoZone(ImplicitDict):
     message: Optional[TextShortType]
     """A message to be displayed to the user of the zone, typically on the RPS for the Remote Pilot, to make him/her aware about specific information associated with the zone (typically when it is not only a restriction to fly in the zone, thus not only an alert or an automatic limitation, for example : “image capture prohibited in this zone”, “frequent strong winds in this zone”, “no landing or take-off in this zone”). This message is also used to indicate exemptions from regulation in a zone (see below). Several information can be grouped in a message, separated by a “/”."""
 
-    additional_properties: Optional[GeoZoneAdditional_properties]
+    additional_properties: Optional[GeoZoneAdditionalProperties]
     """Indicates that exemptions from the national or European regulations are allowed in the UAS Zone, that will be detailed via the "message" property."""
 
 

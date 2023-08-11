@@ -60,3 +60,11 @@ docker container run -it \
 	  openapi-python-converter \
 	      --api /resources/interfaces/interuss/automated_testing/scd/v1/scd.yaml \
 	      --python_output /resources/src/uas_standards/interuss/automated_testing/flight_planning/v1/api.py
+
+echo "Geospatial map automated testing"
+mkdir -p $(pwd)/../../src/uas_standards/interuss/automated_testing/geospatial_map/v1
+docker container run -it \
+  	-v "$(pwd)/../..:/resources" \
+	  openapi-python-converter \
+	      --api /resources/interfaces/interuss/automated_testing/geospatial_map/v1/geospatial_map.yaml \
+	      --python_output /resources/src/uas_standards/interuss/automated_testing/geospatial_map/v1/api.py

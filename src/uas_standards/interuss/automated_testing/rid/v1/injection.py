@@ -12,6 +12,9 @@ from uas_standards import Operation
 from implicitdict import ImplicitDict, StringBasedDateTime
 
 
+API_VERSION = "0.1.0"
+"""Version of Remote ID Test Data Injection OpenAPI specification from which the objects in this package were generated."""
+
 RIDFlightID = str
 """ID, unique to a remote ID service provider, which identifies a particular flight for which the remote ID service provider is providing remote ID services.
 
@@ -239,7 +242,7 @@ UAClassificationEU = dict
 
 
 
-class OperatorAltitudeAltitude_type(str, Enum):
+class OperatorAltitudeAltitudeType(str, Enum):
     """Source of data for the altitude field."""
 
     Takeoff = "Takeoff"
@@ -253,7 +256,7 @@ class OperatorAltitude(ImplicitDict):
     altitude: Optional[float]
     """Provides the Operator Altitude based on WGS-84 height above ellipsoid (HAE) (See Geodetic Altitude).  This value is provided in meters and must have a minimum resolution of 1 m."""
 
-    altitude_type: Optional[OperatorAltitudeAltitude_type]
+    altitude_type: Optional[OperatorAltitudeAltitudeType]
     """Source of data for the altitude field."""
 
 

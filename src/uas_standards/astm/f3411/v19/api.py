@@ -12,6 +12,9 @@ from uas_standards import Operation
 from implicitdict import ImplicitDict, StringBasedDateTime
 
 
+API_VERSION = "1.0.0"
+"""Version of Discovery and Synchronization Service OpenAPI specification from which the objects in this package were generated."""
+
 URL = str
 """Valid http or https URL."""
 
