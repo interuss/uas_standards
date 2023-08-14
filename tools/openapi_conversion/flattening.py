@@ -32,7 +32,7 @@ class _AdditionalComponent(object):
 
 
 def _flatten_part(spec: dict, path_of_spec: str, part: dict, additional_components: Dict[str, _AdditionalComponent]) -> None:
-    """Fatten `spec` by adding externally-$ref'd components to `additional_components` and changing external $refs to internal.
+    """Flatten `spec` by adding externally-$ref'd components to `additional_components` and changing external $refs to internal.
 
     Args:
         spec: Full OpenAPI specification being flattened.  External $refs will be mutated to internal $refs.
@@ -46,23 +46,7 @@ def _flatten_part(spec: dict, path_of_spec: str, part: dict, additional_componen
         if k == "$ref":
             if not v.startswith("#"):
                 # This is an external $ref
-                filename, anchor = v.split("#")
-                if not anchor.startswith("/components/schemas"):
-                    raise NotImplementedError(f"Flattening does not currently support reference to objects not defined at /components/schemas")
-                if filename.startswith("http://") or filename.startswith("https://"):
-                    raise NotImplementedError(f"Cannot flatten schema with $ref to {filename}")
-                if filename.startswith("file://"):
-                    filename = filename[len("file://")]
-                elif filename.startswith("/"):
-                    pass  # No change needed for absolute paths
-                else:
-                    # This is apparently a relative path
-                    filename = os.path.join(path_of_spec, filename)
-
-                with open(filename, "r") as f:
-                    foreign_schema = yaml.full_load(f)
-
-                _add_object_from_path_and_schema(foreign_schema, filename, "#" + anchor, additional_components)
+                anchor = _add_external_ref(v, path_of_spec, additional_components)
                 mutations[k] = "#" + anchor
         elif isinstance(v, dict):
             _flatten_part(spec, path_of_spec, v, additional_components)
@@ -73,6 +57,27 @@ def _flatten_part(spec: dict, path_of_spec: str, part: dict, additional_componen
 
     for k, v in mutations.items():
         part[k] = v
+
+
+def _add_external_ref(ref_path: str, path_of_spec: str, additional_components: Dict[str, _AdditionalComponent]) -> str:
+    filename, anchor = ref_path.split("#")
+    if not anchor.startswith("/components/schemas"):
+        raise NotImplementedError(f"Flattening does not currently support reference to objects not defined at /components/schemas")
+    if filename.startswith("http://") or filename.startswith("https://"):
+        raise NotImplementedError(f"Cannot flatten schema with $ref to {filename}")
+    if filename.startswith("file://"):
+        filename = filename[len("file://")]
+    elif filename.startswith("/"):
+        pass  # No change needed for absolute paths
+    else:
+        # This is apparently a relative path
+        filename = os.path.join(path_of_spec, filename)
+
+    with open(filename, "r") as f:
+        foreign_schema = yaml.full_load(f)
+
+    _add_object_from_path_and_schema(foreign_schema, filename, "#" + anchor, additional_components)
+    return anchor
 
 
 def _add_object_from_path_and_schema(schema: dict, filename: str, path: str, additional_components: Dict[str, _AdditionalComponent]) -> None:
@@ -108,11 +113,15 @@ def _include_subref_objects(schema: dict, parent_filename: str, obj: Union[dict,
     if isinstance(obj, dict):
         if "$ref" in obj:
             filename, anchor = obj["$ref"].split("#")
-            if filename != "":
-                raise NotImplementedError(f"Only one level of $ref file nesting is currently supported; found reference to {obj['$ref']} in referenced file")
-            if not anchor.startswith("/components/schemas"):
-                raise NotImplementedError(f"Flattening does not currently support reference to objects not defined at /components/schemas")
-            _add_object_from_path_and_schema(schema, parent_filename, anchor, additional_components)
+            if filename == "":
+                # Local $ref (within file)
+                if not anchor.startswith("/components/schemas"):
+                    raise NotImplementedError(f"Flattening does not currently support reference to objects not defined at /components/schemas")
+                _add_object_from_path_and_schema(schema, parent_filename, anchor, additional_components)
+            else:
+                path_of_spec = os.path.dirname(os.path.abspath(parent_filename))
+                anchor = _add_external_ref(obj["$ref"], path_of_spec, additional_components)
+                obj["$ref"] = f"#{anchor}"
         for k, v in obj.items():
             _include_subref_objects(schema, parent_filename, v, additional_components)
     elif isinstance(obj, list) or isinstance(obj, tuple):
