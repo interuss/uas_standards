@@ -25,3 +25,16 @@ NetMinClusterSizePercent = 15
 NetMinObfuscationDistanceM = 300
 NetDSSMaxSubscriptionPerArea = 10
 NetDSSMaxSubscriptionDurationHours = 24
+
+MinPositionResolution = 0.0000001
+MaxSpeed = 254.25
+SpecialSpeed = 255  # Invalid, No Value or Unknown
+MinSpeedResolution = 0.25
+MaxAbsVerticalSpeed = 62
+SpecialVerticalSpeed = 63  # Invalid, No Value or Unknown
+MinHeightResolution = 1
+SpecialHeight = -1000
+MinTrackDirection = -359
+MaxTrackDirection = 359
+SpecialTrackDirection = 361
+MinTrackDirectionResolution = 1
