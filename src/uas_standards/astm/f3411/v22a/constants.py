@@ -36,5 +36,5 @@ MinHeightResolution = 1
 SpecialHeight = -1000
 MinTrackDirection = -359
 MaxTrackDirection = 359
-SpecialTrackDirection = 361
+SpecialTrackDirection = 361 # Invalid, No Value or Unknown
 MinTrackDirectionResolution = 1
