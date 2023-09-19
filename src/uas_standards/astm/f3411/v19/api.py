@@ -356,7 +356,7 @@ class SearchSubscriptionsResponse(ImplicitDict):
 class SubscriptionState(ImplicitDict):
     """State of AreaSubscription which is causing a notification to be sent."""
 
-    subscription_id: Optional[SubscriptionUUID]
+    subscription_id: SubscriptionUUID
 
     notification_index: Optional[SubscriptionNotificationIndex]
 
