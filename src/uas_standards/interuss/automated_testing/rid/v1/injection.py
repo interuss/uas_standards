@@ -144,6 +144,53 @@ class SpeedAccuracy(str, Enum):
     SA03mps = "SA03mps"
 
 
+class RIDHeightReference(str, Enum):
+    """The reference datum above which the height is reported."""
+
+    TakeoffLocation = "TakeoffLocation"
+    GroundLevel = "GroundLevel"
+
+
+class RIDHeight(ImplicitDict):
+    """A relative altitude for the purposes of remote ID."""
+
+    distance: float
+    """Distance above reference datum.  This value is provided in meters and must have a minimum resolution of 1 meter."""
+
+    reference: RIDHeightReference
+    """The reference datum above which the height is reported."""
+
+
+Latitude = float
+"""Degrees of latitude north of the equator, with reference to the WGS84 ellipsoid."""
+
+
+Longitude = float
+"""Degrees of longitude east of the Prime Meridian, with reference to the WGS84 ellipsoid."""
+
+
+class LatLngPoint(ImplicitDict):
+    """Point on the earth's surface."""
+
+    lng: Longitude
+
+    lat: Latitude
+
+
+Altitude = float
+"""An altitude, in meters, above the WGS84 ellipsoid."""
+
+
+class RIDOperationalStatus(str, Enum):
+    """Indicates operational status of associated aircraft."""
+
+    Undeclared = "Undeclared"
+    Ground = "Ground"
+    Airborne = "Airborne"
+    Emergency = "Emergency"
+    RemoteIDSystemFailure = "RemoteIDSystemFailure"
+
+
 class RIDAircraftType(str, Enum):
     """Type of aircraft for the purposes of remote ID.
 
@@ -195,6 +242,24 @@ UAClassificationEU = dict
 
 
 
+class OperatorAltitudeAltitudeType(str, Enum):
+    """Source of data for the altitude field."""
+
+    Takeoff = "Takeoff"
+    Dynamic = "Dynamic"
+    Fixed = "Fixed"
+
+
+class OperatorAltitude(ImplicitDict):
+    """Altitude associated with the Remote Pilot"""
+
+    altitude: Optional[float]
+    """Provides the Operator Altitude based on WGS-84 height above ellipsoid (HAE) (See Geodetic Altitude).  This value is provided in meters and must have a minimum resolution of 1 m."""
+
+    altitude_type: Optional[OperatorAltitudeAltitudeType]
+    """Source of data for the altitude field."""
+
+
 SpecificSessionID = str
 """A unique 20 byte ID intended to identify a specific flight (session) while providing a
 greater level of privacy to the operator. The first byte is the registered unique Specific Session ID
@@ -226,82 +291,6 @@ class UASID(ImplicitDict):
     specific_session_id: Optional[SpecificSessionID]
 
 
-Latitude = float
-"""Degrees of latitude north of the equator, with reference to the WGS84 ellipsoid."""
-
-
-Longitude = float
-"""Degrees of longitude east of the Prime Meridian, with reference to the WGS84 ellipsoid."""
-
-
-Altitude = float
-"""An altitude, in meters, above the WGS84 ellipsoid."""
-
-
-OperatorId = str
-"""CAA-issued registration/license ID for the remote pilot or operator. """
-
-
-class LatLngPoint(ImplicitDict):
-    """Point on the earth's surface."""
-
-    lng: Longitude
-
-    lat: Latitude
-
-
-class OperatorAltitudeAltitudeType(str, Enum):
-    """Source of data for the altitude field."""
-
-    Takeoff = "Takeoff"
-    Dynamic = "Dynamic"
-    Fixed = "Fixed"
-
-
-class OperatorAltitude(ImplicitDict):
-    """Altitude associated with the Remote Pilot"""
-
-    altitude: Optional[Altitude]
-
-    altitude_type: Optional[OperatorAltitudeAltitudeType]
-    """Source of data for the altitude field."""
-
-
-class RIDOperationalStatus(str, Enum):
-    """Indicates operational status of associated aircraft."""
-
-    Undeclared = "Undeclared"
-    Ground = "Ground"
-    Airborne = "Airborne"
-    Emergency = "Emergency"
-    RemoteIDSystemFailure = "RemoteIDSystemFailure"
-
-
-RIDTrack = float
-"""Direction of flight expressed as a "True North-based" ground track angle.  This value is provided in degrees East of North with a minimum resolution of 1 degree."""
-
-
-RIDSpeed = float
-"""Ground speed of flight in meters per second."""
-
-
-class RIDHeightReference(str, Enum):
-    """The reference datum above which the height is reported."""
-
-    TakeoffLocation = "TakeoffLocation"
-    GroundLevel = "GroundLevel"
-
-
-class RIDHeight(ImplicitDict):
-    """A relative altitude for the purposes of remote ID."""
-
-    distance: float
-    """Distance above reference datum.  This value is provided in meters and must have a minimum resolution of 1 meter."""
-
-    reference: RIDHeightReference
-    """The reference datum above which the height is reported."""
-
-
 class RIDAircraftPosition(ImplicitDict):
     """Position of an aircraft as reported for remote ID purposes."""
 
@@ -309,7 +298,8 @@ class RIDAircraftPosition(ImplicitDict):
 
     lng: Longitude
 
-    alt: Altitude
+    alt: float
+    """Geodetic altitude (NOT altitude above launch, altitude above ground, or EGM96): aircraft distance above the WGS84 ellipsoid as measured along a line that passes through the aircraft and is normal to the surface of the WGS84 ellipsoid.  This value is provided in meters and must have a minimum resolution of 1 meter."""
 
     accuracy_h: Optional[HorizontalAccuracy]
     """Horizontal error that is likely to be present in this reported position.  Required when `extrapolated` field is true and always in the entry for the current state."""
@@ -330,7 +320,8 @@ class RIDFlightDetails(ImplicitDict):
     id: str
     """ID for this flight, matching argument in request."""
 
-    operator_id: Optional[OperatorId]
+    operator_id: Optional[str]
+    """CAA-issued registration/license ID for the remote pilot or operator. """
 
     operator_location: Optional[LatLngPoint]
     """Location of party controlling the aircraft."""
@@ -374,9 +365,11 @@ class RIDAircraftState(ImplicitDict):
 
     position: RIDAircraftPosition
 
-    track: RIDTrack
+    track: float
+    """Direction of flight expressed as a "True North-based" ground track angle.  This value is provided in degrees East of North with a minimum resolution of 1 degree."""
 
-    speed: RIDSpeed
+    speed: float
+    """Ground speed of flight in meters per second."""
 
     speed_accuracy: SpeedAccuracy
     """Accuracy of horizontal ground speed."""
