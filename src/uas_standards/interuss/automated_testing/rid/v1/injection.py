@@ -238,6 +238,23 @@ Altitude = float
 """An altitude, in meters, above the WGS84 ellipsoid."""
 
 
+class RIDHeightReference(str, Enum):
+    """The reference datum above which the height is reported."""
+
+    TakeoffLocation = "TakeoffLocation"
+    GroundLevel = "GroundLevel"
+
+
+class RIDHeight(ImplicitDict):
+    """A relative altitude for the purposes of remote ID."""
+
+    distance: float
+    """Distance above reference datum.  This value is provided in meters and must have a minimum resolution of 1 meter."""
+
+    reference: RIDHeightReference
+    """The reference datum above which the height is reported."""
+
+
 OperatorId = str
 """CAA-issued registration/license ID for the remote pilot or operator. """
 
@@ -285,23 +302,6 @@ RIDSpeed = float
 """Ground speed of flight in meters per second."""
 
 
-class RIDHeightReference(str, Enum):
-    """The reference datum above which the height is reported."""
-
-    TakeoffLocation = "TakeoffLocation"
-    GroundLevel = "GroundLevel"
-
-
-class RIDHeight(ImplicitDict):
-    """A relative altitude for the purposes of remote ID."""
-
-    distance: float
-    """Distance above reference datum.  This value is provided in meters and must have a minimum resolution of 1 meter."""
-
-    reference: RIDHeightReference
-    """The reference datum above which the height is reported."""
-
-
 class RIDAircraftPosition(ImplicitDict):
     """Position of an aircraft as reported for remote ID purposes."""
 
@@ -310,6 +310,8 @@ class RIDAircraftPosition(ImplicitDict):
     lng: Longitude
 
     alt: Altitude
+
+    height: Optional[RIDHeight]
 
     accuracy_h: Optional[HorizontalAccuracy]
     """Horizontal error that is likely to be present in this reported position.  Required when `extrapolated` field is true and always in the entry for the current state."""
