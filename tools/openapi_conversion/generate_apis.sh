@@ -77,3 +77,11 @@ docker container run -it \
 	  openapi-python-converter \
 	      --api /resources/interfaces/interuss/automated_testing/flight_planning/v1/flight_planning.yaml \
 	      --python_output /resources/src/uas_standards/interuss/automated_testing/flight_planning/v1/api.py
+
+echo "Versioning for automated testing"
+mkdir -p $(pwd)/../../src/uas_standards/interuss/automated_testing/versioning
+docker container run -it \
+  	-v "$(pwd)/../..:/resources" \
+	  openapi-python-converter \
+	      --api /resources/interfaces/interuss/automated_testing/versioning/versioning.yaml \
+	      --python_output /resources/src/uas_standards/interuss/automated_testing/versioning/api.py
