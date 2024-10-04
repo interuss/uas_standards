@@ -6,7 +6,7 @@
 	url = https://github.com/uastech/standards
 [submodule "interfaces/astm/f3548/v21"]
 	path = interfaces/astm/f3548/v21
-	url = https://github.com/astm-utm/Protocol
+	url = https://github.com/interuss/astm-utm-protocol
 [submodule "interfaces/interuss/automated_testing"]
 	path = interfaces/interuss/automated_testing
 	url = https://github.com/interuss/automated_testing_interfaces
