@@ -61,3 +61,6 @@ SpecialTrackDirection = 361
 
 MinTrackDirectionResolution = 1
 """Minimum resolution of track direction value, in degrees, according to definitions in Table 1."""
+
+MinTimestampResolution = 0.1
+"""Minimum resolution of timestamp value, in seconds, according to definitions in Table 1."""
