@@ -50,11 +50,11 @@ MinHeightResolution = 1
 SpecialHeight = -1000
 """Special value for height indicating Invalid, No Value or Unknown, according to definitions in Table 1."""
 
-MinTrackDirection = -359
-"""Minimum value for track direction, in degrees, according to definitions in Table 1."""
+MinTrackDirection = 0
+"""Minimum value (inclusive) for track direction, in degrees, according to OpenAPI specification."""
 
-MaxTrackDirection = 359
-"""Maximum value for track direction, in degrees, according to definitions in Table 1."""
+MaxTrackDirection = 360
+"""Maximum value (exclusive) for track direction, in degrees, according to range described in Table 6.  The SpecialTrackDirection value is also allowed."""
 
 SpecialTrackDirection = 361
 """Special value for track direction indicating Invalid, No Value or Unknown, according to definitions in Table 1."""
