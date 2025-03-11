@@ -47,6 +47,9 @@ SpecialVerticalSpeed = 63
 MinHeightResolution = 1
 """Minimum resolution of height value, in meters, according to definitions in Table 1."""
 
+MinOperatorAltitudeResolution = 1
+"""Minimum resolution of operator altitude value, in meters, according to definitions in Table 1."""
+
 SpecialHeight = -1000
 """Special value for height indicating Invalid, No Value or Unknown, according to definitions in Table 1."""
 
@@ -64,3 +67,6 @@ MinTrackDirectionResolution = 1
 
 MinTimestampResolution = 0.1
 """Minimum resolution of timestamp value, in seconds, according to definitions in Table 1."""
+
+MinTimestampAccuracyResolution = 0.1
+"""Minimum resolution of timestamp accuracy value, in seconds, according to definitions in Table 1."""
