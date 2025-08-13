@@ -356,7 +356,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             404: None,
-        }
+        },
     ),
     OperationID.ListGeospatialDataSources: Operation(
         id="ListGeospatialDataSources",
@@ -367,7 +367,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: ListGeospatialDataSourcesResponse,
             401: None,
             403: None,
-        }
+        },
     ),
     OperationID.PutGeospatialDataSource: Operation(
         id="PutGeospatialDataSource",
@@ -379,7 +379,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             409: None,
-        }
+        },
     ),
     OperationID.GetGeospatialDataSourceStatus: Operation(
         id="GetGeospatialDataSourceStatus",
@@ -391,7 +391,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             404: None,
-        }
+        },
     ),
     OperationID.DeleteGeospatialDataSource: Operation(
         id="DeleteGeospatialDataSource",
@@ -402,7 +402,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: GeospatialDataSourceResponse,
             401: None,
             403: None,
-        }
+        },
     ),
     OperationID.QueryGeospatialMap: Operation(
         id="QueryGeospatialMap",
@@ -413,6 +413,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: GeospatialMapQueryReply,
             401: None,
             403: None,
-        }
+        },
     ),
 }

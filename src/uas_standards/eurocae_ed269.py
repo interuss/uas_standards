@@ -61,8 +61,9 @@ class CircleOrPolygonType(ImplicitDict):
     type: HorizontalProjectionType
     center: Optional[List[float]]  # 2 items. Coordinates: lat, lng
     radius: Optional[float]  # > 0
-    coordinates: Optional[List[List[List[float]]]]  # List of polygons -> List of points: min 4 items -> Coordinates: lat, lng
-
+    coordinates: Optional[
+        List[List[List[float]]]
+    ]  # List of polygons -> List of points: min 4 items -> Coordinates: lat, lng
 
 
 class UomDimensions(str, Enum):
@@ -106,9 +107,7 @@ class ED269TimeType(str):
             t = arrow.get(value, ["HH:mm:ss.SZ", "HH:mmZ"]).timetz()
         else:
             t = value
-        str_value = str.__new__(
-            cls, t.strftime("%H:%M:%S.%f")[:11] + t.strftime("%z").replace("+0000", "Z")
-        )
+        str_value = str.__new__(cls, t.strftime("%H:%M:%S.%f")[:11] + t.strftime("%z").replace("+0000", "Z"))
         str_value.time = t
         return str_value
 
