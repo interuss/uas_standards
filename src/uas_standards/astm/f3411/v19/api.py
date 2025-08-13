@@ -661,7 +661,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetIdentificationServiceArea: Operation(
         id="getIdentificationServiceArea",
@@ -674,7 +674,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             404: ErrorResponse,
-        }
+        },
     ),
     OperationID.CreateIdentificationServiceArea: Operation(
         id="createIdentificationServiceArea",
@@ -688,7 +688,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.UpdateIdentificationServiceArea: Operation(
         id="updateIdentificationServiceArea",
@@ -702,7 +702,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.DeleteIdentificationServiceArea: Operation(
         id="deleteIdentificationServiceArea",
@@ -716,7 +716,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             409: ErrorResponse,
-        }
+        },
     ),
     OperationID.SearchFlights: Operation(
         id="searchFlights",
@@ -730,7 +730,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetFlightDetails: Operation(
         id="getFlightDetails",
@@ -743,7 +743,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             404: ErrorResponse,
-        }
+        },
     ),
     OperationID.SearchSubscriptions: Operation(
         id="searchSubscriptions",
@@ -756,7 +756,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetSubscription: Operation(
         id="getSubscription",
@@ -769,7 +769,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             404: ErrorResponse,
-        }
+        },
     ),
     OperationID.CreateSubscription: Operation(
         id="createSubscription",
@@ -783,7 +783,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.UpdateSubscription: Operation(
         id="updateSubscription",
@@ -797,7 +797,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.DeleteSubscription: Operation(
         id="deleteSubscription",
@@ -811,7 +811,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             409: ErrorResponse,
-        }
+        },
     ),
     OperationID.PostIdentificationServiceArea: Operation(
         id="postIdentificationServiceArea",
@@ -824,6 +824,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             409: ErrorResponse,
-        }
+        },
     ),
 }

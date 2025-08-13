@@ -400,7 +400,6 @@ class GeoZoneAdditionalProperties(ImplicitDict):
     """Indicates that exemptions from the national or European regulations are allowed in the UAS Zone, that will be detailed via the "message" property."""
 
 
-
 CodeZoneIdentifierType = str
 """a string of maximum 7 characters that uniquely identifies the area within a geographical scope.
 NOTE (1): This shall not include the country identifier, which is a separate attribute of the UAS Zone.
@@ -1120,7 +1119,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             413: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetOperationalIntentReference: Operation(
         id="getOperationalIntentReference",
@@ -1134,7 +1133,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.CreateOperationalIntentReference: Operation(
         id="createOperationalIntentReference",
@@ -1150,7 +1149,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             412: ErrorResponse,
             413: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.UpdateOperationalIntentReference: Operation(
         id="updateOperationalIntentReference",
@@ -1166,7 +1165,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             412: ErrorResponse,
             413: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.DeleteOperationalIntentReference: Operation(
         id="deleteOperationalIntentReference",
@@ -1182,7 +1181,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             409: ErrorResponse,
             412: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.QueryConstraintReferences: Operation(
         id="queryConstraintReferences",
@@ -1196,7 +1195,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             413: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetConstraintReference: Operation(
         id="getConstraintReference",
@@ -1210,7 +1209,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.CreateConstraintReference: Operation(
         id="createConstraintReference",
@@ -1225,7 +1224,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             409: ErrorResponse,
             413: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.UpdateConstraintReference: Operation(
         id="updateConstraintReference",
@@ -1240,7 +1239,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             409: ErrorResponse,
             413: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.DeleteConstraintReference: Operation(
         id="deleteConstraintReference",
@@ -1255,7 +1254,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             404: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.QuerySubscriptions: Operation(
         id="querySubscriptions",
@@ -1269,7 +1268,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             413: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetSubscription: Operation(
         id="getSubscription",
@@ -1283,7 +1282,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.CreateSubscription: Operation(
         id="createSubscription",
@@ -1297,7 +1296,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.UpdateSubscription: Operation(
         id="updateSubscription",
@@ -1311,7 +1310,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.DeleteSubscription: Operation(
         id="deleteSubscription",
@@ -1326,7 +1325,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             404: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.MakeDssReport: Operation(
         id="makeDssReport",
@@ -1339,7 +1338,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.SetUssAvailability: Operation(
         id="setUssAvailability",
@@ -1352,7 +1351,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetUssAvailability: Operation(
         id="getUssAvailability",
@@ -1365,7 +1364,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetOperationalIntentDetails: Operation(
         id="getOperationalIntentDetails",
@@ -1379,7 +1378,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetOperationalIntentTelemetry: Operation(
         id="getOperationalIntentTelemetry",
@@ -1395,7 +1394,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             409: ErrorResponse,
             412: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.NotifyOperationalIntentDetailsChanged: Operation(
         id="notifyOperationalIntentDetailsChanged",
@@ -1409,7 +1408,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetConstraintDetails: Operation(
         id="getConstraintDetails",
@@ -1423,7 +1422,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.NotifyConstraintDetailsChanged: Operation(
         id="notifyConstraintDetailsChanged",
@@ -1437,7 +1436,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.MakeUssReport: Operation(
         id="makeUssReport",
@@ -1450,7 +1449,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetLogSet: Operation(
         id="getLogSet",
@@ -1459,6 +1458,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
         request_body_type=None,
         response_body_type={
             200: USSLogSet,
-        }
+        },
     ),
 }

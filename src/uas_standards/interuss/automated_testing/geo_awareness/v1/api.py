@@ -202,7 +202,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             404: None,
-        }
+        },
     ),
     OperationID.PutGeozoneSource: Operation(
         id="PutGeozoneSource",
@@ -213,7 +213,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: GeozoneSourceResponse,
             401: None,
             403: None,
-        }
+        },
     ),
     OperationID.GetGeozoneSourceStatus: Operation(
         id="GetGeozoneSourceStatus",
@@ -225,7 +225,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             404: None,
-        }
+        },
     ),
     OperationID.DeleteGeozoneSource: Operation(
         id="DeleteGeozoneSource",
@@ -236,7 +236,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: GeozoneSourceResponse,
             401: None,
             403: None,
-        }
+        },
     ),
     OperationID.CheckGeozones: Operation(
         id="CheckGeozones",
@@ -247,6 +247,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: GeozonesCheckReply,
             401: None,
             403: None,
-        }
+        },
     ),
 }
