@@ -3,20 +3,28 @@
 import argparse
 import os
 
-import yaml
-
 import data_types
 import flattening
 import operations
 import rendering
+import yaml
 
 
 def _parse_args():
-    parser = argparse.ArgumentParser(description="Autogenerate Python data types from an OpenAPI YAML")
+    parser = argparse.ArgumentParser(
+        description="Autogenerate Python data types from an OpenAPI YAML"
+    )
 
     # Input/output specifications
-    parser.add_argument("--api", dest="api", type=str, help="Source YAML to preprocess.")
-    parser.add_argument("--python_output", dest="python_output", type=str, help="Output file for generated Python code")
+    parser.add_argument(
+        "--api", dest="api", type=str, help="Source YAML to preprocess."
+    )
+    parser.add_argument(
+        "--python_output",
+        dest="python_output",
+        type=str,
+        help="Output file for generated Python code",
+    )
     parser.add_argument(
         "--default_package",
         dest="default_package",
@@ -46,7 +54,9 @@ def main():
 
     # Render Python code
     with open(args.python_output, "w") as f:
-        f.write(f'"""Data types and operations from {spec["info"]["title"]} {spec["info"]["version"]} OpenAPI"""\n\n')
+        f.write(
+            f'"""Data types and operations from {spec["info"]["title"]} {spec["info"]["version"]} OpenAPI"""\n\n'
+        )
         f.write("\n".join(rendering.header(types)))
         f.write("\n\n\n")
         f.write("\n".join(rendering.api_version(spec)))

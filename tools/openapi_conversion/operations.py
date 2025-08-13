@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
 
 @dataclass
@@ -31,12 +31,21 @@ def get_operations(spec: dict) -> List[Operation]:
                 .get("schema", {})
                 .get("$ref", "")
             )
-            request_body_type = ref[len(ref_prefix) :] if ref.startswith(ref_prefix) else None
+            request_body_type = (
+                ref[len(ref_prefix) :] if ref.startswith(ref_prefix) else None
+            )
 
             response_body_type = {}
             for code, response_content in v["responses"].items():
-                ref = response_content.get("content", {}).get("application/json", {}).get("schema", {}).get("$ref", "")
-                response_body_type[int(code)] = ref[len(ref_prefix) :] if ref.startswith(ref_prefix) else None
+                ref = (
+                    response_content.get("content", {})
+                    .get("application/json", {})
+                    .get("schema", {})
+                    .get("$ref", "")
+                )
+                response_body_type[int(code)] = (
+                    ref[len(ref_prefix) :] if ref.startswith(ref_prefix) else None
+                )
 
             op_id = v.get("operationId", None)
             if not op_id:
