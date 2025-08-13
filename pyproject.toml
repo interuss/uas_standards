@@ -29,7 +29,7 @@ authors = [
 description = "Data types and tools for working with standards related to uncrewed aircraft systems (UAS)"
 readme = "README.md"
 license = { file = "LICENSE.md" }
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
@@ -53,5 +53,5 @@ dev = [
 "Bug Tracker" = "https://github.com/interuss/uas_standards/issues"
 
 [tool.black]
-target-version = ['py38']
+target-version = ['py310']
 line-length = 120
