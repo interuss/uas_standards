@@ -46,6 +46,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             404: None,
-        }
+        },
     ),
 }

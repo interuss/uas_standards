@@ -35,13 +35,23 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
-dependencies = ["implicitdict"]
-[project.optional-dependencies]
-dev = ["pytest==5.0.0", "pytest-cov[all]", "black==21.10b0"]
+
+dependencies = [
+  "implicitdict"
+]
+
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "black"
+]
+
 [project.urls]
 "Homepage" = "https://github.com/interuss/uas_standards"
 "Bug Tracker" = "https://github.com/interuss/uas_standards/issues"
 
 [tool.black]
-target-version = ['py39']
+target-version = ['py38']
 line-length = 120

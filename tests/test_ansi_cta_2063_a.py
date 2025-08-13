@@ -14,7 +14,7 @@ def test_basic_usage():
     assert sn2.valid
     assert sn2 == sn
 
-    plain_str = json.loads(json.dumps({'sn': sn}))['sn']
+    plain_str = json.loads(json.dumps({"sn": sn}))["sn"]
     sn3 = SerialNumber(plain_str)
     assert sn3.valid
     assert sn3 == sn

@@ -29,9 +29,7 @@ class SerialNumber(str):
             return False
         if self.length_code not in SerialNumber.length_code_points:
             return False
-        manufacturer_serial_number_length = (
-            SerialNumber.length_code_points.index(self.length_code) + 1
-        )
+        manufacturer_serial_number_length = SerialNumber.length_code_points.index(self.length_code) + 1
         if manufacturer_serial_number_length != len(self.manufacturer_serial_number):
             return False
         return True
@@ -41,30 +39,20 @@ class SerialNumber(str):
         if r is None:
             r = random
         my_length = self.length_code
-        lengths_except_mine = [
-            c for c in SerialNumber.length_code_points if c != my_length
-        ]
+        lengths_except_mine = [c for c in SerialNumber.length_code_points if c != my_length]
         new_length_code = r.choice(lengths_except_mine)
         k = SerialNumber.length_code_points.index(new_length_code) + 1
         while True:
             random_serial_number = "".join(r.choices(SerialNumber.code_points, k=k))
-            result = SerialNumber(
-                self.manufacturer_code + self.length_code + random_serial_number
-            )
+            result = SerialNumber(self.manufacturer_code + self.length_code + random_serial_number)
             if not result.valid:
                 return result
 
     @staticmethod
-    def from_components(
-        manufacturer_code: str, manufacturer_serial_number: str
-    ) -> SerialNumber:
+    def from_components(manufacturer_code: str, manufacturer_serial_number: str) -> SerialNumber:
         """Constructs a standard serial number from the provided components"""
-        length_code = SerialNumber.length_code_points[
-            len(manufacturer_serial_number) - 1
-        ]
-        return SerialNumber(
-            manufacturer_code + length_code + manufacturer_serial_number
-        )
+        length_code = SerialNumber.length_code_points[len(manufacturer_serial_number) - 1]
+        return SerialNumber(manufacturer_code + length_code + manufacturer_serial_number)
 
     @staticmethod
     def generate_valid(r: Optional[random.Random] = None) -> SerialNumber:

@@ -262,7 +262,6 @@ UAClassificationEU = dict
 """
 
 
-
 TimestampAccuracy = float
 """Declaration of timestamp accuracy, which is the largest difference between Timestamp and true time of applicability for any of the following fields: Latitude, Longitude, Geodetic Altitude, Pressure Altitude of Position, Height. to determine time of applicability of the location data provided.  Expressed in seconds, precise to 1/10ths of seconds. The accuracy reflects the 95% uncertainty bound value for the timestamp."""
 
@@ -347,9 +346,9 @@ class UAType(str, Enum):
 
 
 class RIDAircraftPosition(ImplicitDict):
-    """ Position of an aircraft as reported for remote ID purposes.
+    """Position of an aircraft as reported for remote ID purposes.
     The following fields are required for a successful injection, but are not included in the 'required' field to allow the uss_qualifier to check SP behavior in situations where a networked UAS would not provide the necessary data to participate in Network Remote ID:
-    - lat - lng - alt 
+    - lat - lng - alt
     """
 
     lat: Optional[Latitude]
@@ -411,9 +410,9 @@ class RIDRecentAircraftPosition(ImplicitDict):
 
 
 class RIDAircraftState(ImplicitDict):
-    """ State of an aircraft for the purposes of remote ID.
+    """State of an aircraft for the purposes of remote ID.
     The following fields are required for a successful injection, but are not included in the 'required' field to allow the uss_qualifier to check SP behavior in situations where a networked UAS would not provide the necessary data to participate in Network Remote ID:
-    - timestamp - timestamp_accuracy - accuracy_h - accuracy_v - speed - vertical_speed - track - speed_accuracy - position 
+    - timestamp - timestamp_accuracy - accuracy_h - accuracy_v - speed - vertical_speed - track - speed_accuracy - position
     """
 
     timestamp: Optional[StringBasedDateTime]
@@ -516,7 +515,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
         response_body_type={
             200: ChangeTestResponse,
             409: None,
-        }
+        },
     ),
     OperationID.DeleteTest: Operation(
         id="deleteTest",
@@ -525,7 +524,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
         request_body_type=None,
         response_body_type={
             200: DeleteTestResponse,
-        }
+        },
     ),
     OperationID.QueryUserNotifications: Operation(
         id="QueryUserNotifications",
@@ -537,6 +536,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
             400: None,
             401: None,
             403: None,
-        }
+        },
     ),
 }

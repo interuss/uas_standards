@@ -8,7 +8,7 @@ from uas_standards.en4709_02 import OperatorRegistrationNumber
 def test_basic_usage():
     r = random.Random(12345)
 
-    rn = OperatorRegistrationNumber.generate_valid('EXM', r)
+    rn = OperatorRegistrationNumber.generate_valid("EXM", r)
     assert rn.valid
     OperatorRegistrationNumber.validate_prefix(rn.prefix)
     OperatorRegistrationNumber.validate_base_id(rn.base_id)
@@ -18,7 +18,7 @@ def test_basic_usage():
     assert rn2.valid
     assert rn2 == rn
 
-    plain_str = json.loads(json.dumps({'rn': rn}))['rn']
+    plain_str = json.loads(json.dumps({"rn": rn}))["rn"]
     rn3 = OperatorRegistrationNumber(plain_str)
     assert rn3.valid
     assert rn3 == rn
@@ -31,16 +31,16 @@ def test_basic_usage():
     OperatorRegistrationNumber.validate_final_random_string(rn_invalid.final_random_string)
 
     with pytest.raises(ValueError):
-        OperatorRegistrationNumber.validate_prefix('US')
+        OperatorRegistrationNumber.validate_prefix("US")
 
-    OperatorRegistrationNumber.validate_base_id('aaaaaaaaaaaa')
+    OperatorRegistrationNumber.validate_base_id("aaaaaaaaaaaa")
     with pytest.raises(ValueError):
-        OperatorRegistrationNumber.validate_base_id('aaaaaaaaaaa')
+        OperatorRegistrationNumber.validate_base_id("aaaaaaaaaaa")
     with pytest.raises(ValueError):
-        OperatorRegistrationNumber.validate_base_id('aaaaaaaaaaaA')
+        OperatorRegistrationNumber.validate_base_id("aaaaaaaaaaaA")
 
-    OperatorRegistrationNumber.validate_final_random_string('aaa')
+    OperatorRegistrationNumber.validate_final_random_string("aaa")
     with pytest.raises(ValueError):
-        OperatorRegistrationNumber.validate_final_random_string('aa')
+        OperatorRegistrationNumber.validate_final_random_string("aa")
     with pytest.raises(ValueError):
-        OperatorRegistrationNumber.validate_final_random_string('aaA')
+        OperatorRegistrationNumber.validate_final_random_string("aaA")

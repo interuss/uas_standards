@@ -47,7 +47,6 @@ class FlightPlanAdditionalInformation(ImplicitDict):
     """Any information relevant to a particular jurisdiction or use case not described in the standard schema. The keys and values must be agreed upon between the test designers and test participants."""
 
 
-
 class BasicFlightPlanInformationUsageState(str, Enum):
     """User's current usage of the flight plan.
     `Planned`: The user intends to fly according to this flight plan, but is not currently using the defined
@@ -65,17 +64,17 @@ class BasicFlightPlanInformationUsageState(str, Enum):
 class BasicFlightPlanInformationUasState(str, Enum):
     """State of the user's UAS associated with this flight plan.
 
-      - `Nominal`: The user or UAS reports or implies that it is performing nominally, or has not indicated
-        `OffNominal` or `Contingent`.
+    - `Nominal`: The user or UAS reports or implies that it is performing nominally, or has not indicated
+      `OffNominal` or `Contingent`.
 
-      - `OffNominal`: The user or UAS reports or implies that it is temporarily not conforming to its intent,
-        but may expect to be able to recover to normal operation.
+    - `OffNominal`: The user or UAS reports or implies that it is temporarily not conforming to its intent,
+      but may expect to be able to recover to normal operation.
 
-      - `Contingent`: The user or UAS reports or implies that it is not conforming to its intent and may be
-        unable to recover to normal operation.
+    - `Contingent`: The user or UAS reports or implies that it is not conforming to its intent and may be
+      unable to recover to normal operation.
 
-      - `NotSpecified`: The UAS status is not currently available or known (for instance, if the flight is
-        planned in the future and the UAS that will be flying has not yet connected to the system).
+    - `NotSpecified`: The UAS status is not currently available or known (for instance, if the flight is
+      planned in the future and the UAS that will be flying has not yet connected to the system).
     """
 
     Nominal = "Nominal"
@@ -87,11 +86,11 @@ class BasicFlightPlanInformationUasState(str, Enum):
 class ExecutionStyle(str, Enum):
     """The style of execution of a specified flight planning action that the operator would like the USS to perform.
 
-      - `Hypothetical`: The user does not want the USS to actually perform any action regarding the actual flight plan.  Instead, the user would like to know the likely outcome if the action were hypothetically attempted.  The response to this request will not refer to an actual flight plan, or an actual state change in an existing flight plan, but rather a hypothetical flight plan or a hypothetical change to an existing flight plan.
+    - `Hypothetical`: The user does not want the USS to actually perform any action regarding the actual flight plan.  Instead, the user would like to know the likely outcome if the action were hypothetically attempted.  The response to this request will not refer to an actual flight plan, or an actual state change in an existing flight plan, but rather a hypothetical flight plan or a hypothetical change to an existing flight plan.
 
-      - `IfAllowed`: The user would like to perform the requested action if it is allowed.  If the requested action is allowed, the USS should actually perform the action (e.g., actually create a new ASTM F3548-21 operational intent).  If the requested action is not allowed, the USS should indicate that the action is Rejected and not perform the action.  The response to this request will refer to an actual flight plan when appropriate, and never refer to a hypothetical flight plan or status.
+    - `IfAllowed`: The user would like to perform the requested action if it is allowed.  If the requested action is allowed, the USS should actually perform the action (e.g., actually create a new ASTM F3548-21 operational intent).  If the requested action is not allowed, the USS should indicate that the action is Rejected and not perform the action.  The response to this request will refer to an actual flight plan when appropriate, and never refer to a hypothetical flight plan or status.
 
-      - `InReality`: The user is communicating an actual state of reality.  The USS should consider the user to be actually performing (or attempting to perform) this action, regardless of whether or not the action is allowed under relevant UTM rules.
+    - `InReality`: The user is communicating an actual state of reality.  The USS should consider the user to be actually performing (or attempting to perform) this action, regardless of whether or not the action is allowed under relevant UTM rules.
     """
 
     Hypothetical = "Hypothetical"
@@ -102,13 +101,13 @@ class ExecutionStyle(str, Enum):
 class PlanningActivityResult(str, Enum):
     """The result of a flight planning activity.
 
-      - `Completed`: The user's flight plan has been updated according to the situation specified by the user. 
+    - `Completed`: The user's flight plan has been updated according to the situation specified by the user.
 
-      - `Rejected`: The updates the user requested to their flight plan are not allowed according to the rules under which the flight plan is being managed.  The reasons for rejection may include a disallowed conflict with another flight during preflight.
+    - `Rejected`: The updates the user requested to their flight plan are not allowed according to the rules under which the flight plan is being managed.  The reasons for rejection may include a disallowed conflict with another flight during preflight.
 
-      - `Failed`: The USS was not able to successfully authorize or update the flight plan due to a problem with the USS or a downstream system.
+    - `Failed`: The USS was not able to successfully authorize or update the flight plan due to a problem with the USS or a downstream system.
 
-      - `NotSupported`: The USS's implementation does not support the attempted interaction.  For instance, if the request specified a high-priority flight and the USS does not support management of high-priority flights.
+    - `NotSupported`: The USS's implementation does not support the attempted interaction.  For instance, if the request specified a high-priority flight and the USS does not support management of high-priority flights.
     """
 
     Completed = "Completed"
@@ -120,15 +119,15 @@ class PlanningActivityResult(str, Enum):
 class FlightPlanStatus(str, Enum):
     """The status of the user's flight plan.
 
-      - `NotPlanned`: The USS has not created an authorized flight plan for the user.
+    - `NotPlanned`: The USS has not created an authorized flight plan for the user.
 
-      - `Planned`: The USS has created an authorized flight plan for the user, but the user may not yet start flying (even if within the time bounds of the flight plan).
+    - `Planned`: The USS has created an authorized flight plan for the user, but the user may not yet start flying (even if within the time bounds of the flight plan).
 
-      - `OkToFly`: The flight plan is in a state such that it is ok for the user to nominally fly within the bounds (including time) of the flight plan.
+    - `OkToFly`: The flight plan is in a state such that it is ok for the user to nominally fly within the bounds (including time) of the flight plan.
 
-      - `OffNominal`: The flight plan now reflects the user's actions, but the flight plan is not in a nominal state (e.g., the USS has placed the ASTM F3548-21 operational intent into one of the Nonconforming or Contingent states).
+    - `OffNominal`: The flight plan now reflects the user's actions, but the flight plan is not in a nominal state (e.g., the USS has placed the ASTM F3548-21 operational intent into one of the Nonconforming or Contingent states).
 
-      - `Closed`: The flight plan was closed successfully by the USS and is now out of the UTM system.
+    - `Closed`: The flight plan was closed successfully by the USS and is now out of the UTM system.
     """
 
     NotPlanned = "NotPlanned"
@@ -141,11 +140,11 @@ class FlightPlanStatus(str, Enum):
 class AdvisoryInclusion(str, Enum):
     """Indication of whether any advisories or conditions were provided to the user along with the result of an associated flight planning attempt.
 
-      - `Unknown`: It is unknown or irrelevant whether advisories or conditions were provided to the user
+    - `Unknown`: It is unknown or irrelevant whether advisories or conditions were provided to the user
 
-      - `AtLeastOneAdvisoryOrCondition`: At least one advisory or condition was provided to the user.
+    - `AtLeastOneAdvisoryOrCondition`: At least one advisory or condition was provided to the user.
 
-      - `NoAdvisoriesOrConditions`: No advisories or conditions were provided to the user.
+    - `NoAdvisoriesOrConditions`: No advisories or conditions were provided to the user.
     """
 
     Unknown = "Unknown"
@@ -183,7 +182,6 @@ class DeleteFlightPlanResponse(ImplicitDict):
 
 class ClearAreaOutcomeDetails(ImplicitDict):
     """Optional free-form structured data to augment `message`."""
-
 
 
 class ClearAreaOutcome(ImplicitDict):
@@ -585,7 +583,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             404: None,
-        }
+        },
     ),
     OperationID.ClearArea: Operation(
         id="ClearArea",
@@ -596,7 +594,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: ClearAreaResponse,
             401: None,
             403: None,
-        }
+        },
     ),
     OperationID.UpsertFlightPlan: Operation(
         id="UpsertFlightPlan",
@@ -608,7 +606,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             409: None,
-        }
+        },
     ),
     OperationID.DeleteFlightPlan: Operation(
         id="DeleteFlightPlan",
@@ -620,7 +618,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             404: None,
-        }
+        },
     ),
     OperationID.QueryUserNotifications: Operation(
         id="QueryUserNotifications",
@@ -632,6 +630,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
             400: None,
             401: None,
             403: None,
-        }
+        },
     ),
 }
