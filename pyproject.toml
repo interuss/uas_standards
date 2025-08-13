@@ -2,7 +2,7 @@
 
 [build-system]
 requires = [
-  "setuptools>=64",
+  "setuptools>=77",
   "wheel",               # for bdist package distribution
   "setuptools_scm>=6.4", # for automated versioning
 ]
@@ -28,11 +28,10 @@ authors = [
 ]
 description = "Data types and tools for working with standards related to uncrewed aircraft systems (UAS)"
 readme = "README.md"
-license = { file = "LICENSE.md" }
+license = "Apache-2.0"
 requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
 
