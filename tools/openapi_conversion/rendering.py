@@ -30,7 +30,7 @@ def indent(lines: List[str], level: int) -> List[str]:
     if level == 0:
         return lines
     else:
-        return ['    ' * level + line if line else '' for line in lines]
+        return ["    " * level + line if line else "" for line in lines]
 
 
 def data_type(d_type: DataType) -> List[str]:
@@ -39,55 +39,50 @@ def data_type(d_type: DataType) -> List[str]:
     :param d_type: Parsed API data type to render into Python code
     :return: Lines of Python code defining the provided data type
     """
-    docstring_lines = docstring_comment(
-        d_type.description.split('\n')) if d_type.description else []
+    docstring_lines = docstring_comment(d_type.description.split("\n")) if d_type.description else []
     lines = []
 
     if d_type.enum_values:
         if any(str(t) in keyword.kwlist for v, t in d_type.enum_values.items()):
-            lines.append(f'{d_type.name} = {d_type.python_type}')
-            docstring_lines = d_type.description.split(
-                '\n') if d_type.description else []
-            docstring_lines += ['', 'Acceptable values:'] + ['* ' + str(v) for v
-                                                             in
-                                                             d_type.enum_values]
+            lines.append(f"{d_type.name} = {d_type.python_type}")
+            docstring_lines = d_type.description.split("\n") if d_type.description else []
+            docstring_lines += ["", "Acceptable values:"] + ["* " + str(v) for v in d_type.enum_values]
             lines.extend(docstring_comment(docstring_lines))
         else:
-            lines.append(f'class {d_type.name}({d_type.python_type}, Enum):')
+            lines.append(f"class {d_type.name}({d_type.python_type}, Enum):")
             lines.extend(indent(docstring_lines, 1))
             if docstring_lines:
-                lines.append('')
+                lines.append("")
 
-            lines.extend(
-                indent([f'{t} = "{v}"' for v, t in d_type.enum_values.items()], 1))
+            lines.extend(indent([f'{t} = "{v}"' for v, t in d_type.enum_values.items()], 1))
     elif is_primitive_python_type(d_type.python_type):
-        lines.append(f'{d_type.name} = {d_type.python_type}')
+        lines.append(f"{d_type.name} = {d_type.python_type}")
         lines.extend(docstring_lines)
-    elif d_type.python_type == 'ImplicitDict':
+    elif d_type.python_type == "ImplicitDict":
         if any(f.api_name in keyword.kwlist for f in d_type.fields):
-            lines.append(f'{d_type.name} = dict')
+            lines.append(f"{d_type.name} = dict")
             if d_type.description:
-                docstring_lines = d_type.description.split('\n')
-                docstring_lines.append('')
+                docstring_lines = d_type.description.split("\n")
+                docstring_lines.append("")
             else:
                 docstring_lines = []
-            docstring_lines.append('Expected keys:')
-            docstring_lines.extend('* ' + f.api_name for f in d_type.fields)
+            docstring_lines.append("Expected keys:")
+            docstring_lines.extend("* " + f.api_name for f in d_type.fields)
             lines.extend(docstring_comment(docstring_lines))
-            lines.append('')
+            lines.append("")
         else:
-            lines.append(f'class {d_type.name}(ImplicitDict):')
+            lines.append(f"class {d_type.name}(ImplicitDict):")
             lines.extend(indent(docstring_lines, 1))
             if docstring_lines:
-                lines.append('')
+                lines.append("")
 
             for field in d_type.fields:
                 lines.extend(indent(_object_field(field), 1))
-                lines.append('')
+                lines.append("")
             if d_type.fields:
                 lines.pop()
     else:
-        lines.append(f'{d_type.name} = {d_type.python_type}')
+        lines.append(f"{d_type.name} = {d_type.python_type}")
 
     return lines
 
@@ -98,55 +93,70 @@ def _object_field(field: ObjectField) -> List[str]:
     :param field: Data type field to render into Python code
     :return: Lines of Python code defining the provided field
     """
-    d_type = field.python_type if field.required else f'Optional[{field.python_type}]'
+    d_type = field.python_type if field.required else f"Optional[{field.python_type}]"
     if field.default is not None:
         if field.literal_default:
-            default_suffix = f' = {field.default}'
+            default_suffix = f" = {field.default}"
         elif isinstance(field.default, str):
             default_suffix = f' = "{field.default}"'
         else:
-            default_suffix = f' = {str(field.default)}'
+            default_suffix = f" = {str(field.default)}"
     else:
-        default_suffix = ''
-    lines = [f'{field.api_name}: {d_type}{default_suffix}']
+        default_suffix = ""
+    lines = [f"{field.api_name}: {d_type}{default_suffix}"]
     if field.description:
-        lines.extend(docstring_comment(field.description.split('\n')))
+        lines.extend(docstring_comment(field.description.split("\n")))
     return lines
 
 
 def header(d_types: List[DataType]) -> List[str]:
-    lines = ['# This file is autogenerated; do not modify manually!', '']
-    lines.extend(['from __future__ import annotations', ''])
+    lines = ["# This file is autogenerated; do not modify manually!", ""]
+    lines.extend(["from __future__ import annotations", ""])
 
-    lines.append('from enum import Enum')
+    lines.append("from enum import Enum")
 
-    basic_types = ['Dict']
-    if any(d.python_type.startswith('List[') for d in d_types) or any(
-            any(f.python_type.startswith('List[') for f in d.fields) for d in
-            d_types):
-        basic_types.append('List')
+    basic_types = ["Dict"]
+    if any(d.python_type.startswith("List[") for d in d_types) or any(
+        any(f.python_type.startswith("List[") for f in d.fields) for d in d_types
+    ):
+        basic_types.append("List")
     if any(any(not f.required for f in d.fields) for d in d_types):
-        basic_types.append('Optional')
-    lines.append('from typing import ' + ', '.join(basic_types))
-    lines.append('')
+        basic_types.append("Optional")
+    lines.append("from typing import " + ", ".join(basic_types))
+    lines.append("")
 
-    lines.append('from uas_standards import Operation')
-    lines.append('')
+    lines.append("from uas_standards import Operation")
+    lines.append("")
 
-    lines.append('from implicitdict import ImplicitDict')
-    if any(('StringBasedDateTime' in d.python_type) for d in d_types) or any(
-            any(('StringBasedDateTime' in f.python_type) for f in d.fields) for
-            d in d_types):
-        lines[-1] = lines[-1] + ', StringBasedDateTime'
+    lines.append("from implicitdict import ImplicitDict")
+    if any(("StringBasedDateTime" in d.python_type) for d in d_types) or any(
+        any(("StringBasedDateTime" in f.python_type) for f in d.fields) for d in d_types
+    ):
+        lines[-1] = lines[-1] + ", StringBasedDateTime"
 
     return lines
 
 
 def data_types(d_types: List[DataType], default_package: str) -> List[str]:
     already_defined = [kw for kw in keyword.kwlist]
-    already_defined += ['int', 'float', 'complex', 'str', 'list', 'tuple',
-                        'range', 'bytes', 'bytearray', 'memoryview', 'dict',
-                        'bool', 'set', 'frozenset', 'StringBasedDateTime', 'ImplicitDict']
+    already_defined += [
+        "int",
+        "float",
+        "complex",
+        "str",
+        "list",
+        "tuple",
+        "range",
+        "bytes",
+        "bytearray",
+        "memoryview",
+        "dict",
+        "bool",
+        "set",
+        "frozenset",
+        "StringBasedDateTime",
+        "ImplicitDict",
+    ]
 
     lines = []
 
@@ -157,10 +167,10 @@ def data_types(d_types: List[DataType], default_package: str) -> List[str]:
 
     def _core_type(type_name):
         core_type = type_name
-        while '[' in core_type:
-            core_type = core_type[core_type.index('[') + 1:]
-        while ']' in core_type:
-            core_type = core_type[0:core_type.index(']')]
+        while "[" in core_type:
+            core_type = core_type[core_type.index("[") + 1 :]
+        while "]" in core_type:
+            core_type = core_type[0 : core_type.index("]")]
         return core_type
 
     while n_defined > 0:
@@ -170,25 +180,22 @@ def data_types(d_types: List[DataType], default_package: str) -> List[str]:
                 continue
             if _core_type(d_type.python_type) not in already_defined:
                 continue
-            if any((_core_type(f.python_type) not in already_defined) for f in
-                   d_type.fields):
+            if any((_core_type(f.python_type) not in already_defined) for f in d_type.fields):
                 continue
 
-            lines.extend(['', ''])
+            lines.extend(["", ""])
             lines.extend(data_type(d_type))
             already_defined.append(d_type.name)
             n_defined += 1
             total_defined += 1
 
-        not_defined = [d_type for d_type in d_types if
-                       d_type.name not in already_defined]
+        not_defined = [d_type for d_type in d_types if d_type.name not in already_defined]
         if not not_defined:
             break
 
         # Declare certain types external
         if n_defined == 0:
-            remaining_names = {d_type.name for d_type in d_types
-                               if d_type.name not in already_defined}
+            remaining_names = {d_type.name for d_type in d_types if d_type.name not in already_defined}
             for d_type in d_types:
                 only_external_undefined_fields = True
                 for f in d_type.fields:
@@ -200,44 +207,50 @@ def data_types(d_types: List[DataType], default_package: str) -> List[str]:
                     for f in d_type.fields:
                         core_field_type = _core_type(f.python_type)
                         if core_field_type not in already_defined:
-                            lines.extend(['', ''])
-                            lines.append(f'from {default_package} import {core_field_type}')
+                            lines.extend(["", ""])
+                            lines.append(f"from {default_package} import {core_field_type}")
                             already_defined.append(core_field_type)
                             n_defined += 1
                     break
 
     if not_defined:
-        not_defined_list = '; '.join(
-            [t.name + ' (' + ', '.join(_core_type(f.python_type)
-                                       for f in t.fields
-                                       if _core_type(f.python_type) not in already_defined) + ')'
-             for t in not_defined])
-        raise RuntimeError(f'Failed to define data types: {not_defined_list}')
+        not_defined_list = "; ".join(
+            [
+                t.name
+                + " ("
+                + ", ".join(
+                    _core_type(f.python_type) for f in t.fields if _core_type(f.python_type) not in already_defined
+                )
+                + ")"
+                for t in not_defined
+            ]
+        )
+        raise RuntimeError(f"Failed to define data types: {not_defined_list}")
 
-    lines.append('')
+    lines.append("")
     return lines
 
 
 def operations(ops: List[Operation]) -> List[str]:
-    lines = ['class OperationID(str, Enum):']
+    lines = ["class OperationID(str, Enum):"]
     for op in ops:
         lines.append(f'    {op.name} = "{op.id}"')
-    lines.append('')
-    lines.append('')
+    lines.append("")
+    lines.append("")
 
-    lines.append('OPERATIONS: Dict[OperationID, Operation] = {')
+    lines.append("OPERATIONS: Dict[OperationID, Operation] = {")
     for op in ops:
-        lines.append(f'    OperationID.{op.name}: Operation(')
+        lines.append(f"    OperationID.{op.name}: Operation(")
         lines.append(f'        id="{op.id}",')
         lines.append(f'        path="{op.path}",')
         lines.append(f'        verb="{op.verb}",')
-        lines.append(f'        request_body_type={op.request_body_type},')
-        lines.append('        response_body_type={')
+        lines.append(f"        request_body_type={op.request_body_type},")
+        lines.append("        response_body_type={")
         for code, resp_body in op.response_body_type.items():
-            lines.append(f'            {code}: {resp_body},')
-        lines.append('        }')
-        lines.append('    ),')
-    lines.append('}')
+            lines.append(f"            {code}: {resp_body},")
+        lines.append("        }")
+        lines.append("    ),")
+    lines.append("}")
 
     return lines
 
@@ -249,5 +262,7 @@ def api_version(spec: dict) -> List[str]:
     else:
         result = ["API_VERSION = None"]
     name = spec.get("info", {}).get("title", "unknown")
-    result.append(f'"""Version of {name} OpenAPI specification from which the objects in this package were generated."""')
+    result.append(
+        f'"""Version of {name} OpenAPI specification from which the objects in this package were generated."""'
+    )
     return result

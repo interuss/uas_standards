@@ -15,6 +15,7 @@ from implicitdict import ImplicitDict, StringBasedDateTime
 API_VERSION = "0.2.2"
 """Version of Strategic Coordination Test Data Injection OpenAPI specification from which the objects in this package were generated."""
 
+
 class StatusResponseStatus(str, Enum):
     """The status of the USS automated testing interface.
     - `Starting`: the USS is starting and the automated test driver should wait before sending requests.
@@ -158,17 +159,17 @@ class UASClass(str, Enum):
 class InjectFlightResponseResult(str, Enum):
     """The result of the flight submission. If any option other than `Planned` or `ReadyToFly` is specified, the `notes` field should be populated with the reason for the unsuccessful outcome.
 
-      - `Planned`: The flight submission data was valid and the flight was successfully processed by the USS and is now authorized.
+    - `Planned`: The flight submission data was valid and the flight was successfully processed by the USS and is now authorized.
 
-      - `ReadyToFly`: The flight is ready for the operator to begin flying.
+    - `ReadyToFly`: The flight is ready for the operator to begin flying.
 
-      - `Rejected`: The flight submission data provided was invalid and/or could not be used to attempt to authorize the flight.  The reason for rejection may include a disallowed conflict with another flight.
+    - `Rejected`: The flight submission data provided was invalid and/or could not be used to attempt to authorize the flight.  The reason for rejection may include a disallowed conflict with another flight.
 
-      - `ConflictWithFlight`: (deprecated; use Rejected instead) The flight submission data was valid, but the flight could not be authorized because of a disallowed conflict with another flight.
+    - `ConflictWithFlight`: (deprecated; use Rejected instead) The flight submission data was valid, but the flight could not be authorized because of a disallowed conflict with another flight.
 
-      - `Failed`: The USS was not able to successfully authorize the flight due to a problem with the USS or a downstream system
+    - `Failed`: The USS was not able to successfully authorize the flight due to a problem with the USS or a downstream system
 
-      - `NotSupported`: The USS does not support the attempted interaction.  For instance, if the request specified a high-priority flight and the USS does not support management of high-priority flights.
+    - `NotSupported`: The USS does not support the attempted interaction.  For instance, if the request specified a high-priority flight and the USS does not support management of high-priority flights.
     """
 
     Planned = "Planned"
@@ -206,9 +207,9 @@ class InjectFlightResponse(ImplicitDict):
 class DeleteFlightResponseResult(str, Enum):
     """The result of attempted flight cancellation/closure
 
-      - `Closed`: The flight was closed successfully by the USS and is now out of the UTM system.
+    - `Closed`: The flight was closed successfully by the USS and is now out of the UTM system.
 
-      - `Failed`: The flight could not be closed successfully by the USS.
+    - `Failed`: The flight could not be closed successfully by the USS.
     """
 
     Closed = "Closed"
@@ -246,16 +247,16 @@ class ClearAreaResponse(ImplicitDict):
 class Capability(str, Enum):
     """Capability of a USS.
 
-      `FlightAuthorisationValidation`: USS supports EU flight authorisation
-        parameter validation.
+    `FlightAuthorisationValidation`: USS supports EU flight authorisation
+      parameter validation.
 
-      `BasicStrategicConflictDetection`: USS supports strategic conflict
-        detection for typical flights, including future planning (Accepted
-        operational intents), activation (Accepted operational intents), and
-        closing (deleting the operational intent reference).
+    `BasicStrategicConflictDetection`: USS supports strategic conflict
+      detection for typical flights, including future planning (Accepted
+      operational intents), activation (Accepted operational intents), and
+      closing (deleting the operational intent reference).
 
-      `HighPriorityFlights`: USS supports flights at priority levels higher
-        than typical flights.
+    `HighPriorityFlights`: USS supports flights at priority levels higher
+      than typical flights.
     """
 
     FlightAuthorisationValidation = "FlightAuthorisationValidation"
@@ -392,7 +393,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             404: None,
-        }
+        },
     ),
     OperationID.GetCapabilities: Operation(
         id="getCapabilities",
@@ -403,7 +404,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: CapabilitiesResponse,
             401: None,
             403: None,
-        }
+        },
     ),
     OperationID.InjectFlight: Operation(
         id="injectFlight",
@@ -414,7 +415,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: InjectFlightResponse,
             401: None,
             403: None,
-        }
+        },
     ),
     OperationID.DeleteFlight: Operation(
         id="deleteFlight",
@@ -425,7 +426,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: DeleteFlightResponse,
             401: None,
             403: None,
-        }
+        },
     ),
     OperationID.ClearArea: Operation(
         id="clearArea",
@@ -436,6 +437,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
             200: ClearAreaResponse,
             401: None,
             403: None,
-        }
+        },
     ),
 }

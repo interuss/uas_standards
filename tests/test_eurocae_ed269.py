@@ -6,9 +6,7 @@ from uas_standards.eurocae_ed269 import ED269Schema, ED269TimeType
 
 
 def test_sample():
-    with open(
-        os.path.join(os.path.dirname(__file__), "test_eurocae_ed269.json")
-    ) as f:
+    with open(os.path.join(os.path.dirname(__file__), "test_eurocae_ed269.json")) as f:
         data = json.load(f)
 
     ED269Schema.from_dict(data)
