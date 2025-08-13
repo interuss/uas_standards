@@ -1,8 +1,8 @@
 from datetime import time
 from enum import Enum
-from typing import List, Any, Optional, Dict, Union
-import arrow
+from typing import Any, Dict, List, Optional, Union
 
+import arrow
 from implicitdict import ImplicitDict, StringBasedDateTime
 
 
@@ -107,7 +107,9 @@ class ED269TimeType(str):
             t = arrow.get(value, ["HH:mm:ss.SZ", "HH:mmZ"]).timetz()
         else:
             t = value
-        str_value = str.__new__(cls, t.strftime("%H:%M:%S.%f")[:11] + t.strftime("%z").replace("+0000", "Z"))
+        str_value = str.__new__(
+            cls, t.strftime("%H:%M:%S.%f")[:11] + t.strftime("%z").replace("+0000", "Z")
+        )
         str_value.time = t
         return str_value
 

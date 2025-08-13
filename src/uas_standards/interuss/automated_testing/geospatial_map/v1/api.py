@@ -7,10 +7,9 @@ from __future__ import annotations
 from enum import Enum
 from typing import Dict, List, Optional
 
-from uas_standards import Operation
-
 from implicitdict import ImplicitDict, StringBasedDateTime
 
+from uas_standards import Operation
 
 API_VERSION = "0.2.3"
 """Version of Geospatial Map Provider Automated Testing Interface OpenAPI specification from which the objects in this package were generated."""
@@ -135,7 +134,9 @@ class GeospatialMapCheckResultFeaturesSelectionOutcome(str, Enum):
 
 
 class GeospatialMapCheckResult(ImplicitDict):
-    features_selection_outcome: Optional[GeospatialMapCheckResultFeaturesSelectionOutcome]
+    features_selection_outcome: Optional[
+        GeospatialMapCheckResultFeaturesSelectionOutcome
+    ]
     """Indication of whether one or more applicable geospatial features were selected according to the selection criteria of the corresponding check.
     - `Present`: One or more applicable geospatial features were selected.
     - `Absent`: No applicable geospatial features were selected.
@@ -313,7 +314,9 @@ class GeospatialFeatureFilterSet(ImplicitDict):
     operation_rule_set: Optional[str]
     """If specified, only select geospatial features that would be relevant when planning an operation under the specified rule set.  The acceptable values for this field will be established by the test designers and will generally correspond to sets of rules under which the system under test plans operations."""
 
-    resulting_operational_impact: Optional[GeospatialFeatureFilterSetResultingOperationalImpact]
+    resulting_operational_impact: Optional[
+        GeospatialFeatureFilterSetResultingOperationalImpact
+    ]
     """If specified, only select geospatial features that would cause the specified outcome if a user attempted to plan a flight applicable to all the other criteria in this filter set.
     'Block': The geospatial feature would cause rejection of that flight (the USS would decline to plan the
       flight).
