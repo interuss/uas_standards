@@ -1,8 +1,8 @@
 from datetime import time
 from enum import Enum
-from typing import List, Any, Optional, Dict, Union
-import arrow
+from typing import Any, Dict, List, Optional, Union
 
+import arrow
 from implicitdict import ImplicitDict, StringBasedDateTime
 
 
@@ -61,8 +61,9 @@ class CircleOrPolygonType(ImplicitDict):
     type: HorizontalProjectionType
     center: Optional[List[float]]  # 2 items. Coordinates: lat, lng
     radius: Optional[float]  # > 0
-    coordinates: Optional[List[List[List[float]]]]  # List of polygons -> List of points: min 4 items -> Coordinates: lat, lng
-
+    coordinates: Optional[
+        List[List[List[float]]]
+    ]  # List of polygons -> List of points: min 4 items -> Coordinates: lat, lng
 
 
 class UomDimensions(str, Enum):

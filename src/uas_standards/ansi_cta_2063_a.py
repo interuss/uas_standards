@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import random
 from typing import Optional
 
@@ -36,7 +37,9 @@ class SerialNumber(str):
             return False
         return True
 
-    def make_invalid_by_changing_payload_length(self, r: Optional[random.Random] = None) -> SerialNumber:
+    def make_invalid_by_changing_payload_length(
+        self, r: Optional[random.Random] = None
+    ) -> SerialNumber:
         """Generates an invalid serial number similar to this serial number."""
         if r is None:
             r = random

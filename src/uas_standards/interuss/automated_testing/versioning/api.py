@@ -7,10 +7,9 @@ from __future__ import annotations
 from enum import Enum
 from typing import Dict, Optional
 
-from uas_standards import Operation
-
 from implicitdict import ImplicitDict
 
+from uas_standards import Operation
 
 API_VERSION = "0.1.2"
 """Version of Versioning Automated Testing Interface OpenAPI specification from which the objects in this package were generated."""
@@ -46,6 +45,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: None,
             403: None,
             404: None,
-        }
+        },
     ),
 }

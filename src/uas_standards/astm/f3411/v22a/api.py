@@ -7,13 +7,13 @@ from __future__ import annotations
 from enum import Enum
 from typing import Dict, List, Optional
 
-from uas_standards import Operation
-
 from implicitdict import ImplicitDict, StringBasedDateTime
 
+from uas_standards import Operation
 
 API_VERSION = "2.1.0"
 """Version of Standard Remote ID API Interfaces OpenAPI specification from which the objects in this package were generated."""
+
 
 class TimeFormat(str, Enum):
     RFC3339 = "RFC3339"
@@ -359,7 +359,6 @@ UAClassificationEU = dict
 * category
 * class
 """
-
 
 
 class RIDFlightDetails(ImplicitDict):
@@ -826,7 +825,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetIdentificationServiceArea: Operation(
         id="getIdentificationServiceArea",
@@ -839,7 +838,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             404: ErrorResponse,
-        }
+        },
     ),
     OperationID.CreateIdentificationServiceArea: Operation(
         id="createIdentificationServiceArea",
@@ -853,7 +852,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.UpdateIdentificationServiceArea: Operation(
         id="updateIdentificationServiceArea",
@@ -867,7 +866,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.DeleteIdentificationServiceArea: Operation(
         id="deleteIdentificationServiceArea",
@@ -881,7 +880,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             409: ErrorResponse,
-        }
+        },
     ),
     OperationID.SearchFlights: Operation(
         id="searchFlights",
@@ -894,7 +893,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetFlightDetails: Operation(
         id="getFlightDetails",
@@ -907,7 +906,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             404: ErrorResponse,
-        }
+        },
     ),
     OperationID.SearchSubscriptions: Operation(
         id="searchSubscriptions",
@@ -920,7 +919,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             413: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetSubscription: Operation(
         id="getSubscription",
@@ -933,7 +932,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             404: ErrorResponse,
-        }
+        },
     ),
     OperationID.CreateSubscription: Operation(
         id="createSubscription",
@@ -947,7 +946,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.UpdateSubscription: Operation(
         id="updateSubscription",
@@ -961,7 +960,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             409: ErrorResponse,
             429: ErrorResponse,
-        }
+        },
     ),
     OperationID.DeleteSubscription: Operation(
         id="deleteSubscription",
@@ -975,7 +974,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             403: ErrorResponse,
             404: ErrorResponse,
             409: ErrorResponse,
-        }
+        },
     ),
     OperationID.GetIdentificationServiceAreaDetails: Operation(
         id="getIdentificationServiceAreaDetails",
@@ -988,7 +987,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             404: ErrorResponse,
-        }
+        },
     ),
     OperationID.PostIdentificationServiceArea: Operation(
         id="postIdentificationServiceArea",
@@ -1001,6 +1000,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
             401: ErrorResponse,
             403: ErrorResponse,
             409: ErrorResponse,
-        }
+        },
     ),
 }

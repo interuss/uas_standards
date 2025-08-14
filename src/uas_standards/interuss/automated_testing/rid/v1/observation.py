@@ -7,13 +7,13 @@ from __future__ import annotations
 from enum import Enum
 from typing import Dict, List, Optional
 
-from uas_standards import Operation
-
 from implicitdict import ImplicitDict
 
+from uas_standards import Operation
 
 API_VERSION = "0.3.0"
 """Version of Remote ID Display Data Observation OpenAPI specification from which the objects in this package were generated."""
+
 
 class UAType(str, Enum):
     """The UA Type can help infer performance, speed, and duration of flights, for example, a
@@ -141,7 +141,6 @@ UAClassificationEU = dict
 * category
 * class
 """
-
 
 
 class HorizontalAccuracy(str, Enum):
@@ -398,7 +397,7 @@ OPERATIONS: Dict[OperationID, Operation] = {
         request_body_type=None,
         response_body_type={
             200: GetDisplayDataResponse,
-        }
+        },
     ),
     OperationID.GetDetails: Operation(
         id="getDetails",
@@ -408,6 +407,6 @@ OPERATIONS: Dict[OperationID, Operation] = {
         response_body_type={
             200: GetDetailsResponse,
             404: None,
-        }
+        },
     ),
 }

@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import random
 import string
 from typing import Optional
@@ -27,16 +28,16 @@ class OperatorRegistrationNumber(str):
     @property
     def base_id(self) -> str:
         return self[
-               OperatorRegistrationNumber.prefix_length : OperatorRegistrationNumber.prefix_length
-                                                          + OperatorRegistrationNumber.base_id_length
-               ]
+            OperatorRegistrationNumber.prefix_length : OperatorRegistrationNumber.prefix_length
+            + OperatorRegistrationNumber.base_id_length
+        ]
 
     @property
     def checksum(self) -> str:
         return self[
-               OperatorRegistrationNumber.prefix_length
-               + OperatorRegistrationNumber.base_id_length :
-               ][0]
+            OperatorRegistrationNumber.prefix_length
+            + OperatorRegistrationNumber.base_id_length :
+        ][0]
 
     @property
     def final_random_string(self):
@@ -51,13 +52,13 @@ class OperatorRegistrationNumber(str):
         if self[OperatorRegistrationNumber.public_number_length] != "-":
             return False
         if not all(
-                c in OperatorRegistrationNumber.registration_number_code_points
-                for c in self.base_id
+            c in OperatorRegistrationNumber.registration_number_code_points
+            for c in self.base_id
         ):
             return False
         if not all(
-                c in OperatorRegistrationNumber.registration_number_code_points
-                for c in self.final_random_string
+            c in OperatorRegistrationNumber.registration_number_code_points
+            for c in self.final_random_string
         ):
             return False
         checksum = OperatorRegistrationNumber.generate_checksum(
@@ -66,7 +67,7 @@ class OperatorRegistrationNumber(str):
         return self.checksum == checksum
 
     def make_invalid_by_changing_final_control_string(
-            self, r: Optional[random.Random] = None
+        self, r: Optional[random.Random] = None
     ) -> OperatorRegistrationNumber:
         """A method to generate an invalid Operator Registration number by replacing the control string"""
         if r is None:
@@ -100,8 +101,8 @@ class OperatorRegistrationNumber(str):
                 )
             )
         if not all(
-                c in OperatorRegistrationNumber.registration_number_code_points
-                for c in base_id
+            c in OperatorRegistrationNumber.registration_number_code_points
+            for c in base_id
         ):
             raise ValueError(
                 "Base ID of an operator registration number must be alphanumeric"
@@ -110,8 +111,8 @@ class OperatorRegistrationNumber(str):
     @staticmethod
     def validate_final_random_string(final_random_string: str) -> None:
         if (
-                len(final_random_string)
-                != OperatorRegistrationNumber.final_random_string_length
+            len(final_random_string)
+            != OperatorRegistrationNumber.final_random_string_length
         ):
             raise ValueError(
                 "Final random string of an operator registration number must be {} characters long rather than {}".format(
@@ -120,8 +121,8 @@ class OperatorRegistrationNumber(str):
                 )
             )
         if not all(
-                c in OperatorRegistrationNumber.registration_number_code_points
-                for c in final_random_string
+            c in OperatorRegistrationNumber.registration_number_code_points
+            for c in final_random_string
         ):
             raise ValueError(
                 "Final random string of an operator registration number must be alphanumeric"
@@ -148,7 +149,9 @@ class OperatorRegistrationNumber(str):
         ]
 
     @staticmethod
-    def generate_valid(prefix: str, r: Optional[random.Random] = None) -> OperatorRegistrationNumber:
+    def generate_valid(
+        prefix: str, r: Optional[random.Random] = None
+    ) -> OperatorRegistrationNumber:
         """Generate a random operator registration number with the specified prefix"""
         if r is None:
             r = random
@@ -166,14 +169,14 @@ class OperatorRegistrationNumber(str):
 
     @staticmethod
     def from_components(
-            prefix: str, base_id: str, final_random_string: str
+        prefix: str, base_id: str, final_random_string: str
     ) -> OperatorRegistrationNumber:
         """Constructs a standard operator registration number from the provided components"""
         OperatorRegistrationNumber.validate_prefix(prefix)
         OperatorRegistrationNumber.validate_base_id(base_id)
         if (
-                len(final_random_string)
-                != OperatorRegistrationNumber.final_random_string_length
+            len(final_random_string)
+            != OperatorRegistrationNumber.final_random_string_length
         ):
             raise ValueError(
                 "Prefix of an operator registration number must be {} characters long rather than {}".format(

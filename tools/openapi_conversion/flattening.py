@@ -1,6 +1,6 @@
-from dataclasses import dataclass
 import os
-from typing import Union, Dict
+from dataclasses import dataclass
+from typing import Dict, Union
 
 import yaml
 
@@ -31,7 +31,12 @@ class _AdditionalComponent(object):
     """Object definition schema for this component to add to the flattened schema's components."""
 
 
-def _flatten_part(spec: dict, path_of_spec: str, part: dict, additional_components: Dict[str, _AdditionalComponent]) -> None:
+def _flatten_part(
+    spec: dict,
+    path_of_spec: str,
+    part: dict,
+    additional_components: Dict[str, _AdditionalComponent],
+) -> None:
     """Flatten `spec` by adding externally-$ref'd components to `additional_components` and changing external $refs to internal.
 
     Args:
@@ -59,10 +64,16 @@ def _flatten_part(spec: dict, path_of_spec: str, part: dict, additional_componen
         part[k] = v
 
 
-def _add_external_ref(ref_path: str, path_of_spec: str, additional_components: Dict[str, _AdditionalComponent]) -> str:
+def _add_external_ref(
+    ref_path: str,
+    path_of_spec: str,
+    additional_components: Dict[str, _AdditionalComponent],
+) -> str:
     filename, anchor = ref_path.split("#")
     if not anchor.startswith("/components/schemas"):
-        raise NotImplementedError(f"Flattening does not currently support reference to objects not defined at /components/schemas")
+        raise NotImplementedError(
+            "Flattening does not currently support reference to objects not defined at /components/schemas"
+        )
     if filename.startswith("http://") or filename.startswith("https://"):
         raise NotImplementedError(f"Cannot flatten schema with $ref to {filename}")
     if filename.startswith("file://"):
@@ -76,11 +87,18 @@ def _add_external_ref(ref_path: str, path_of_spec: str, additional_components: D
     with open(filename, "r") as f:
         foreign_schema = yaml.full_load(f)
 
-    _add_object_from_path_and_schema(foreign_schema, filename, "#" + anchor, additional_components)
+    _add_object_from_path_and_schema(
+        foreign_schema, filename, "#" + anchor, additional_components
+    )
     return anchor
 
 
-def _add_object_from_path_and_schema(schema: dict, filename: str, path: str, additional_components: Dict[str, _AdditionalComponent]) -> None:
+def _add_object_from_path_and_schema(
+    schema: dict,
+    filename: str,
+    path: str,
+    additional_components: Dict[str, _AdditionalComponent],
+) -> None:
     """Add the schema for the object at `path` within `schema` to `additional_components` given that `schema` came from `filename`.
 
     Args:
@@ -97,18 +115,27 @@ def _add_object_from_path_and_schema(schema: dict, filename: str, path: str, add
     if varname in additional_components:
         # A component by this name has already been added to the flattened schema
         if additional_components[varname].included_by != filename:
-            raise ValueError(f"Flattening error: component named {varname} was already flattened into the schema from $ref'd {additional_components[varname].included_by} when attempting to flatten {varname} into the schema from $ref'd {filename}")
+            raise ValueError(
+                f"Flattening error: component named {varname} was already flattened into the schema from $ref'd {additional_components[varname].included_by} when attempting to flatten {varname} into the schema from $ref'd {filename}"
+            )
         return
     object_schema = schema
     while varpath:
         object_schema = object_schema[varpath[0]]
         varpath = varpath[1:]
-    additional_components[varname] = _AdditionalComponent(schema=object_schema, included_by=filename)
+    additional_components[varname] = _AdditionalComponent(
+        schema=object_schema, included_by=filename
+    )
 
     _include_subref_objects(schema, filename, object_schema, additional_components)
 
 
-def _include_subref_objects(schema: dict, parent_filename: str, obj: Union[dict, list, tuple], additional_components: Dict[str, _AdditionalComponent]) -> None:
+def _include_subref_objects(
+    schema: dict,
+    parent_filename: str,
+    obj: Union[dict, list, tuple],
+    additional_components: Dict[str, _AdditionalComponent],
+) -> None:
     """Include all `schema` objects $ref'd by `obj` or its descendants in `additional_components` given that `schema` came from `parent_filename`."""
     if isinstance(obj, dict):
         if "$ref" in obj:
@@ -116,11 +143,17 @@ def _include_subref_objects(schema: dict, parent_filename: str, obj: Union[dict,
             if filename == "":
                 # Local $ref (within file)
                 if not anchor.startswith("/components/schemas"):
-                    raise NotImplementedError(f"Flattening does not currently support reference to objects not defined at /components/schemas")
-                _add_object_from_path_and_schema(schema, parent_filename, anchor, additional_components)
+                    raise NotImplementedError(
+                        "Flattening does not currently support reference to objects not defined at /components/schemas"
+                    )
+                _add_object_from_path_and_schema(
+                    schema, parent_filename, anchor, additional_components
+                )
             else:
                 path_of_spec = os.path.dirname(os.path.abspath(parent_filename))
-                anchor = _add_external_ref(obj["$ref"], path_of_spec, additional_components)
+                anchor = _add_external_ref(
+                    obj["$ref"], path_of_spec, additional_components
+                )
                 obj["$ref"] = f"#{anchor}"
         for k, v in obj.items():
             _include_subref_objects(schema, parent_filename, v, additional_components)
