@@ -7,10 +7,9 @@ from __future__ import annotations
 from enum import Enum
 from typing import Dict, List, Optional
 
-from uas_standards import Operation
-
 from implicitdict import ImplicitDict, StringBasedDateTime
 
+from uas_standards import Operation
 
 API_VERSION = "0.2.2"
 """Version of Strategic Coordination Test Data Injection OpenAPI specification from which the objects in this package were generated."""

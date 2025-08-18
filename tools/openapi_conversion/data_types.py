@@ -64,7 +64,10 @@ python_numbers: Dict[str, str] = {
 
 def is_primitive_python_type(python_type_name: str) -> bool:
     """True iff python_type_name describes a built-in Python type"""
-    return python_type_name in python_primitives.values() or python_type_name in python_numbers.values()
+    return (
+        python_type_name in python_primitives.values()
+        or python_type_name in python_numbers.values()
+    )
 
 
 def get_data_type_name(component_name: str, data_type_name: str) -> str:
@@ -85,7 +88,9 @@ def get_data_type_name(component_name: str, data_type_name: str) -> str:
                     component_name, data_type_name
                 )
             )
-        name = get_data_type_name(component_name[component_name.index("#") :], data_type_name)
+        name = get_data_type_name(
+            component_name[component_name.index("#") :], data_type_name
+        )
         print(
             f'WARNING: Assuming the variable type of {component_name} should be "{name}" and that it will be manually declared'
         )
@@ -96,14 +101,22 @@ def _parse_referenced_type_name(schema: Dict, data_type_name: str) -> str:
     options = schema["anyOf"] if "anyOf" in schema else schema["allOf"]
     if len(options) != 1:
         raise NotImplementedError(
-            "Only one $ref is supported for anyOf and allOf; found {} elements instead".format(len(options))
+            "Only one $ref is supported for anyOf and allOf; found {} elements instead".format(
+                len(options)
+            )
         )
     option = options[0]
     if not isinstance(option, dict):
-        raise ValueError("Expected dict entries in anyOf/allOf block; found {} instead".format(option))
+        raise ValueError(
+            "Expected dict entries in anyOf/allOf block; found {} instead".format(
+                option
+            )
+        )
     if len(option) != 1 or "$ref" not in option:
         raise NotImplementedError(
-            "The only element in anyOf/allOf must be a $ref dictionary; found {} instead".format(option)
+            "The only element in anyOf/allOf must be a $ref dictionary; found {} instead".format(
+                option
+            )
         )
     return get_data_type_name(option["$ref"], data_type_name)
 
@@ -143,7 +156,9 @@ def make_object_field(
         return (
             ObjectField(
                 api_name=api_field_name,
-                python_type=_parse_referenced_type_name(schema, python_object_name + "." + api_field_name),
+                python_type=_parse_referenced_type_name(
+                    schema, python_object_name + "." + api_field_name
+                ),
                 description=schema.get("description", ""),
                 required=is_required,
                 default=default_value,
@@ -153,12 +168,18 @@ def make_object_field(
     else:
         type_name = python_object_name + _snake_to_pascal(api_field_name)
         data_type, additional_types = make_data_types(type_name, schema)
-        if is_primitive_python_type(data_type.python_type) and not data_type.enum_values:
+        if (
+            is_primitive_python_type(data_type.python_type)
+            and not data_type.enum_values
+        ):
             # No additional type declaration needed
             if additional_types:
                 raise RuntimeError(
                     "{} field type `{}` was parsed as primitive {} but also generated {} additional types".format(
-                        python_object_name, api_field_name, data_type.python_type, len(additional_types)
+                        python_object_name,
+                        api_field_name,
+                        data_type.python_type,
+                        len(additional_types),
                     )
                 )
             field_data_type = data_type.python_type
@@ -172,7 +193,9 @@ def make_object_field(
             additional_types.append(data_type)
             field_data_type = data_type.name
         if len(data_type.enum_values) == 1 and default_value is None:
-            default_value = data_type.name + "." + next(iter(data_type.enum_values.values()))
+            default_value = (
+                data_type.name + "." + next(iter(data_type.enum_values.values()))
+            )
             literal_default = True
         else:
             literal_default = False
@@ -195,7 +218,9 @@ def _make_object_fields(
     fields: List[ObjectField] = []
     additional_types: List[DataType] = []
     for field_name, schema in properties.items():
-        field, further_types = make_object_field(python_object_name, field_name, schema, required)
+        field, further_types = make_object_field(
+            python_object_name, field_name, schema, required
+        )
         additional_types.extend(further_types)
         fields.append(field)
     return fields, additional_types
@@ -235,13 +260,21 @@ def make_data_types(api_name: str, schema: Dict) -> Tuple[DataType, List[DataTyp
     if "type" in schema:
         if schema["type"] in python_primitives:
             data_type.python_type = python_primitives[schema["type"]]
-            if data_type.python_type == "str" and "format" in schema and schema["format"] == "date-time":
+            if (
+                data_type.python_type == "str"
+                and "format" in schema
+                and schema["format"] == "date-time"
+            ):
                 data_type.python_type = "StringBasedDateTime"
         elif schema["type"] in {"number", "integer"}:
-            data_type.python_type = python_numbers.get(schema.get("format", schema["type"]), "")
+            data_type.python_type = python_numbers.get(
+                schema.get("format", schema["type"]), ""
+            )
             if not data_type.python_type:
                 raise ValueError(
-                    "Unrecognized numeric format `{}` for {}".format(schema.get("format", "<missing>"), api_name)
+                    "Unrecognized numeric format `{}` for {}".format(
+                        schema.get("format", "<missing>"), api_name
+                    )
                 )
         elif schema["type"] == "array":
             if "items" in schema:
@@ -251,14 +284,18 @@ def make_data_types(api_name: str, schema: Dict) -> Tuple[DataType, List[DataTyp
                 else:
                     item_type, further_types = make_data_types(api_name + "Item", items)
                     additional_types.extend(further_types)
-                    if item_type.description != "" or not is_primitive_python_type(item_type.python_type):
+                    if item_type.description != "" or not is_primitive_python_type(
+                        item_type.python_type
+                    ):
                         additional_types.append(item_type)
                         item_type_name = item_type.name
                     else:
                         item_type_name = item_type.python_type
                 data_type.python_type = f"List[{item_type_name}]"
             else:
-                raise ValueError("Missing `items` declaration for {} array type".format(api_name))
+                raise ValueError(
+                    "Missing `items` declaration for {} array type".format(api_name)
+                )
         elif schema["type"] == "object":
             data_type.python_type = "ImplicitDict"
             data_type.fields, further_types = _make_object_fields(
@@ -266,7 +303,9 @@ def make_data_types(api_name: str, schema: Dict) -> Tuple[DataType, List[DataTyp
             )
             additional_types.extend(further_types)
         else:
-            raise ValueError("Unrecognized type `{}` in {} type".format(schema["type"], api_name))
+            raise ValueError(
+                "Unrecognized type `{}` in {} type".format(schema["type"], api_name)
+            )
     elif "anyOf" in schema or "allOf" in schema:
         data_type.python_type = _parse_referenced_type_name(schema, api_name)
 

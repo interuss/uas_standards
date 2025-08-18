@@ -39,14 +39,20 @@ def data_type(d_type: DataType) -> List[str]:
     :param d_type: Parsed API data type to render into Python code
     :return: Lines of Python code defining the provided data type
     """
-    docstring_lines = docstring_comment(d_type.description.split("\n")) if d_type.description else []
+    docstring_lines = (
+        docstring_comment(d_type.description.split("\n")) if d_type.description else []
+    )
     lines = []
 
     if d_type.enum_values:
         if any(str(t) in keyword.kwlist for v, t in d_type.enum_values.items()):
             lines.append(f"{d_type.name} = {d_type.python_type}")
-            docstring_lines = d_type.description.split("\n") if d_type.description else []
-            docstring_lines += ["", "Acceptable values:"] + ["* " + str(v) for v in d_type.enum_values]
+            docstring_lines = (
+                d_type.description.split("\n") if d_type.description else []
+            )
+            docstring_lines += ["", "Acceptable values:"] + [
+                "* " + str(v) for v in d_type.enum_values
+            ]
             lines.extend(docstring_comment(docstring_lines))
         else:
             lines.append(f"class {d_type.name}({d_type.python_type}, Enum):")
@@ -54,7 +60,9 @@ def data_type(d_type: DataType) -> List[str]:
             if docstring_lines:
                 lines.append("")
 
-            lines.extend(indent([f'{t} = "{v}"' for v, t in d_type.enum_values.items()], 1))
+            lines.extend(
+                indent([f'{t} = "{v}"' for v, t in d_type.enum_values.items()], 1)
+            )
     elif is_primitive_python_type(d_type.python_type):
         lines.append(f"{d_type.name} = {d_type.python_type}")
         lines.extend(docstring_lines)
@@ -180,7 +188,10 @@ def data_types(d_types: List[DataType], default_package: str) -> List[str]:
                 continue
             if _core_type(d_type.python_type) not in already_defined:
                 continue
-            if any((_core_type(f.python_type) not in already_defined) for f in d_type.fields):
+            if any(
+                (_core_type(f.python_type) not in already_defined)
+                for f in d_type.fields
+            ):
                 continue
 
             lines.extend(["", ""])
@@ -189,18 +200,25 @@ def data_types(d_types: List[DataType], default_package: str) -> List[str]:
             n_defined += 1
             total_defined += 1
 
-        not_defined = [d_type for d_type in d_types if d_type.name not in already_defined]
+        not_defined = [
+            d_type for d_type in d_types if d_type.name not in already_defined
+        ]
         if not not_defined:
             break
 
         # Declare certain types external
         if n_defined == 0:
-            remaining_names = {d_type.name for d_type in d_types if d_type.name not in already_defined}
+            remaining_names = {
+                d_type.name for d_type in d_types if d_type.name not in already_defined
+            }
             for d_type in d_types:
                 only_external_undefined_fields = True
                 for f in d_type.fields:
                     core_field_type = _core_type(f.python_type)
-                    if core_field_type not in already_defined and core_field_type in remaining_names:
+                    if (
+                        core_field_type not in already_defined
+                        and core_field_type in remaining_names
+                    ):
                         only_external_undefined_fields = False
                         break
                 if only_external_undefined_fields:
@@ -208,7 +226,9 @@ def data_types(d_types: List[DataType], default_package: str) -> List[str]:
                         core_field_type = _core_type(f.python_type)
                         if core_field_type not in already_defined:
                             lines.extend(["", ""])
-                            lines.append(f"from {default_package} import {core_field_type}")
+                            lines.append(
+                                f"from {default_package} import {core_field_type}"
+                            )
                             already_defined.append(core_field_type)
                             n_defined += 1
                     break
@@ -219,7 +239,9 @@ def data_types(d_types: List[DataType], default_package: str) -> List[str]:
                 t.name
                 + " ("
                 + ", ".join(
-                    _core_type(f.python_type) for f in t.fields if _core_type(f.python_type) not in already_defined
+                    _core_type(f.python_type)
+                    for f in t.fields
+                    if _core_type(f.python_type) not in already_defined
                 )
                 + ")"
                 for t in not_defined

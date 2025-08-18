@@ -85,3 +85,8 @@ docker container run -it \
 	  openapi-python-converter \
 	      --api /resources/interfaces/interuss/automated_testing/versioning/versioning.yaml \
 	      --python_output /resources/src/uas_standards/interuss/automated_testing/versioning/api.py
+
+echo "Running formatter"
+cd ../../
+uv run ruff format
+uv run ruff check --fix

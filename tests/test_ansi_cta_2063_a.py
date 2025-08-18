@@ -10,7 +10,9 @@ def test_basic_usage():
     sn = SerialNumber.generate_valid(r)
     assert sn.valid
 
-    sn2 = SerialNumber.from_components(sn.manufacturer_code, sn.manufacturer_serial_number)
+    sn2 = SerialNumber.from_components(
+        sn.manufacturer_code, sn.manufacturer_serial_number
+    )
     assert sn2.valid
     assert sn2 == sn
 
