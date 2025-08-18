@@ -37,15 +37,15 @@ classifiers = [
 ]
 
 dependencies = [
-  "implicitdict==2.1.0"
+  "implicitdict"
 ]
 
 
 [dependency-groups]
 dev = [
-  "pytest==8.3.4",
-  "pytest-cov[all]",
-  "black==21.10b0"
+  "pytest",
+  "pytest-cov",
+  "black"
 ]
 
 [project.urls]
@@ -53,5 +53,5 @@ dev = [
 "Bug Tracker" = "https://github.com/interuss/uas_standards/issues"
 
 [tool.black]
-target-version = ['py39']
+target-version = ['py38']
 line-length = 120
