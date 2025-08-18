@@ -8,7 +8,7 @@ from enum import Enum
 
 from implicitdict import ImplicitDict, StringBasedDateTime
 
-from uas_standards import Operation
+from uas_standards.utils import Operation
 
 API_VERSION = "2.1.0"
 """Version of Standard Remote ID API Interfaces OpenAPI specification from which the objects in this package were generated."""

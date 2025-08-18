@@ -132,7 +132,7 @@ def header(d_types: list[DataType]) -> list[str]:
     lines.append("from typing import " + ", ".join(basic_types))
     lines.append("")
 
-    lines.append("from uas_standards import Operation")
+    lines.append("from uas_standards.utils import Operation")
     lines.append("")
 
     lines.append("from implicitdict import ImplicitDict")
