@@ -8,7 +8,7 @@ from enum import Enum
 
 from implicitdict import ImplicitDict, StringBasedDateTime
 
-from uas_standards import Operation
+from uas_standards.utils import Operation
 
 API_VERSION = "1.0.0"
 """Version of Discovery and Synchronization Service OpenAPI specification from which the objects in this package were generated."""
