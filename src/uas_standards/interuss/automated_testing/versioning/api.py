@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, Optional
 
 from implicitdict import ImplicitDict
 
@@ -23,10 +22,10 @@ VersionIdentifier = str
 
 
 class GetVersionResponse(ImplicitDict):
-    system_identity: Optional[SystemBoundaryIdentifier]
+    system_identity: SystemBoundaryIdentifier | None
     """The requested system identity/boundary."""
 
-    system_version: Optional[VersionIdentifier]
+    system_version: VersionIdentifier | None
     """The version of the system with the specified system identity/boundary."""
 
 
@@ -34,7 +33,7 @@ class OperationID(str, Enum):
     GetVersion = "GetVersion"
 
 
-OPERATIONS: Dict[OperationID, Operation] = {
+OPERATIONS: dict[OperationID, Operation] = {
     OperationID.GetVersion: Operation(
         id="GetVersion",
         path="/versions/{system_identity}",

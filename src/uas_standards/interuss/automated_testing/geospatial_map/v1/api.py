@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, List, Optional
 
 from implicitdict import ImplicitDict, StringBasedDateTime
 
@@ -35,10 +34,10 @@ class StatusResponse(ImplicitDict):
     - `Ready`: the interface is ready to receive test requests.
     """
 
-    api_name: Optional[str]
+    api_name: str | None
     """Indication of the API implemented at this URL.  Must be "Geospatial Map Provider Automated Testing Interface"."""
 
-    api_version: Optional[str]
+    api_version: str | None
     """Indication of the API version implemented at this URL.  Must be "v0.2.2" when implementing this version of the API."""
 
 
@@ -52,7 +51,7 @@ class GeospatialHttpsSource(ImplicitDict):
     url: str
     """The URL at which the Geospatial data shall be downloaded from."""
 
-    format: Optional[GeospatialHttpsSourceFormat] = GeospatialHttpsSourceFormat.ED_269
+    format: GeospatialHttpsSourceFormat | None = GeospatialHttpsSourceFormat.ED_269
     """The format of the response expected from the source."""
 
 
@@ -91,7 +90,7 @@ class GeospatialDataSourceStatus(ImplicitDict):
     - `Error`: the geospatial data activation or deactivation failed for a reason not covered by one of the previous options. The message field is required in this case.
     """
 
-    message: Optional[str]
+    message: str | None
     """Human-readable explanation of the result for debugging purpose only. This field is required when the result value is `Error`."""
 
 
@@ -100,7 +99,7 @@ class GeospatialDataSourceResponse(ImplicitDict):
 
 
 class ListGeospatialDataSourcesResponse(ImplicitDict):
-    data_sources: Optional[List[GeospatialDataSourceStatus]]
+    data_sources: list[GeospatialDataSourceStatus] | None
 
 
 class GeospatialFeatureFilterSetResultingOperationalImpact(str, Enum):
@@ -134,9 +133,7 @@ class GeospatialMapCheckResultFeaturesSelectionOutcome(str, Enum):
 
 
 class GeospatialMapCheckResult(ImplicitDict):
-    features_selection_outcome: Optional[
-        GeospatialMapCheckResultFeaturesSelectionOutcome
-    ]
+    features_selection_outcome: GeospatialMapCheckResultFeaturesSelectionOutcome | None
     """Indication of whether one or more applicable geospatial features were selected according to the selection criteria of the corresponding check.
     - `Present`: One or more applicable geospatial features were selected.
     - `Absent`: No applicable geospatial features were selected.
@@ -144,7 +141,7 @@ class GeospatialMapCheckResult(ImplicitDict):
     - `Error`: An error or condition not enumerated above occurred.  If this value is specified, `message` must be populated.
     """
 
-    message: Optional[str]
+    message: str | None
     """A human-readable description of why the unsuccessful `featuresSelectionOutcome` was reported.  Should only be populated when appropriate according to the value of the `featuresSelectionOutcome` field."""
 
 
@@ -217,21 +214,21 @@ class Restriction(str, Enum):
 
 
 class CreateGeospatialDataSourceRequest(ImplicitDict):
-    https_source: Optional[GeospatialHttpsSource]
+    https_source: GeospatialHttpsSource | None
 
 
 class ED269Filters(ImplicitDict):
     """Filter criteria for the selection of Geozones according to ED-269 characteristics."""
 
-    u_space_class: Optional[USpaceClass]
+    u_space_class: USpaceClass | None
     """If specified, only select Geozones which are of the specified `u_space_class`."""
 
-    acceptable_restrictions: Optional[List[Restriction]]
+    acceptable_restrictions: list[Restriction] | None
     """If specified and non-empty, only select Geozones which are one of the specified restriction types."""
 
 
 class GeospatialMapQueryReply(ImplicitDict):
-    results: Optional[List[GeospatialMapCheckResult]] = []
+    results: list[GeospatialMapCheckResult] | None = []
     """Responses to each of the `checks` in the request.  The number of entries in this array should match the number of entries in the `checks` field of the request."""
 
 
@@ -246,19 +243,19 @@ class LatLngPoint(ImplicitDict):
 class Circle(ImplicitDict):
     """A circular area on the surface of the earth."""
 
-    center: Optional[LatLngPoint]
+    center: LatLngPoint | None
 
-    radius: Optional[Radius]
+    radius: Radius | None
 
 
 class Polygon(ImplicitDict):
     """An enclosed area on the earth. The bounding edges of this polygon are defined to be the shortest paths between connected vertices.  This means, for instance, that the edge between two points both defined at a particular latitude is not generally contained at that latitude. The winding order must be interpreted as the order which produces the smaller area. The path between two vertices is defined to be the shortest possible path between those vertices. Edges may not cross. Vertices may not be duplicated.  In particular, the final polygon vertex must not be identical to the first vertex."""
 
-    vertices: List[LatLngPoint]
+    vertices: list[LatLngPoint]
 
 
 class Position(ImplicitDict):
-    altitude: Optional[Altitude]
+    altitude: Altitude | None
     """Position's height above a vertical reference datum."""
 
     location: LatLngPoint
@@ -268,16 +265,16 @@ class Position(ImplicitDict):
 class Volume3D(ImplicitDict):
     """A three-dimensional geographic volume consisting of a vertically-extruded shape. Exactly one outline must be specified."""
 
-    outline_circle: Optional[Circle]
+    outline_circle: Circle | None
     """A circular geographic shape on the surface of the earth."""
 
-    outline_polygon: Optional[Polygon]
+    outline_polygon: Polygon | None
     """A polygonal geographic shape on the surface of the earth."""
 
-    altitude_lower: Optional[Altitude]
+    altitude_lower: Altitude | None
     """Minimum bounding altitude of this volume. Must be less than altitude_upper, if specified."""
 
-    altitude_upper: Optional[Altitude]
+    altitude_upper: Altitude | None
     """Maximum bounding altitude of this volume. Must be greater than altitude_lower, if specified."""
 
 
@@ -286,37 +283,37 @@ class Volume4D(ImplicitDict):
 
     volume: Volume3D
 
-    time_start: Optional[Time]
+    time_start: Time | None
     """Beginning time of this volume. Must be before time_end."""
 
-    time_end: Optional[Time]
+    time_end: Time | None
     """End time of this volume. Must be after time_start."""
 
 
 class GeospatialFeatureFilterSet(ImplicitDict):
     """Set of filters to select only a subset of geospatial features.  Only geospatial features which are applicable to all specified filters within this filter set should be selected."""
 
-    position: Optional[Position]
+    position: Position | None
     """If specified, only select geospatial features encompassing this position."""
 
-    volumes4d: Optional[List[Volume4D]]
+    volumes4d: list[Volume4D] | None
     """If specified, only select geospatial features at least partially intersecting one or more of these volumes."""
 
-    after: Optional[StringBasedDateTime]
+    after: StringBasedDateTime | None
     """If specified, only select geospatial features which encompass at least some times at or after this time."""
 
-    before: Optional[StringBasedDateTime]
+    before: StringBasedDateTime | None
     """If specified, only select geospatial features which encompass at least some times at or before this time."""
 
-    restriction_source: Optional[str]
+    restriction_source: str | None
     """If specified, only select geospatial features originating from the named source.  The acceptable values for this field will be established by the test designers and will generally be used to limit responses to only the intended datasets under test even when the USS may have more additional geospatial features from other sources that may otherwise be relevant."""
 
-    operation_rule_set: Optional[str]
+    operation_rule_set: str | None
     """If specified, only select geospatial features that would be relevant when planning an operation under the specified rule set.  The acceptable values for this field will be established by the test designers and will generally correspond to sets of rules under which the system under test plans operations."""
 
-    resulting_operational_impact: Optional[
-        GeospatialFeatureFilterSetResultingOperationalImpact
-    ]
+    resulting_operational_impact: (
+        GeospatialFeatureFilterSetResultingOperationalImpact | None
+    )
     """If specified, only select geospatial features that would cause the specified outcome if a user attempted to plan a flight applicable to all the other criteria in this filter set.
     'Block': The geospatial feature would cause rejection of that flight (the USS would decline to plan the
       flight).
@@ -327,16 +324,16 @@ class GeospatialFeatureFilterSet(ImplicitDict):
     'BlockOrAdvise': The geospatial feature would cause one of 'Block' or 'Advise' to be be true.
     """
 
-    ed269: Optional[ED269Filters]
+    ed269: ED269Filters | None
 
 
 class GeospatialMapCheck(ImplicitDict):
-    filter_sets: Optional[List[GeospatialFeatureFilterSet]]
+    filter_sets: list[GeospatialFeatureFilterSet] | None
     """Select geospatial features which match any of the specified filter sets."""
 
 
 class GeospatialMapQueryRequest(ImplicitDict):
-    checks: List[GeospatialMapCheck]
+    checks: list[GeospatialMapCheck]
 
 
 class OperationID(str, Enum):
@@ -348,7 +345,7 @@ class OperationID(str, Enum):
     QueryGeospatialMap = "QueryGeospatialMap"
 
 
-OPERATIONS: Dict[OperationID, Operation] = {
+OPERATIONS: dict[OperationID, Operation] = {
     OperationID.GetStatus: Operation(
         id="GetStatus",
         path="/status",

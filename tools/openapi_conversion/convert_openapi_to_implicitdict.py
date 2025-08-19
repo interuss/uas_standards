@@ -40,7 +40,7 @@ def main():
     args = _parse_args()
 
     # Parse OpenAPI
-    with open(args.api, mode="r") as f:
+    with open(args.api) as f:
         spec = yaml.full_load(f)
 
     # Flatten external $refs

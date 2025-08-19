@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, List, Optional
 
 from implicitdict import ImplicitDict, StringBasedDateTime
 
@@ -72,7 +71,7 @@ The following characters are not allowed: \\0 \\t \\r \\n # % / : ? @ [ \\ ]
 class RIDAuthData(ImplicitDict):
     """Additional authentication data."""
 
-    format: Optional[int] = 0
+    format: int | None = 0
     """Format of additional authentication data.
 
     0: None
@@ -85,7 +84,7 @@ class RIDAuthData(ImplicitDict):
     10-15: Available for Private Use
     """
 
-    data: Optional[str] = ""
+    data: str | None = ""
     """Authentication data in form specified by `format`."""
 
 
@@ -170,7 +169,7 @@ class VerticalAccuracy(str, Enum):
 class ErrorResponse(ImplicitDict):
     """Data provided when an off-nominal condition was encountered."""
 
-    message: Optional[str] = ""
+    message: str | None = ""
     """Human-readable message indicating what error occurred and/or why."""
 
 
@@ -219,7 +218,7 @@ class RIDHeightReference(str, Enum):
 class RIDHeight(ImplicitDict):
     """A relative altitude for the purposes of remote ID."""
 
-    distance: Optional[float] = 0
+    distance: float | None = 0
     """Distance above reference datum.  This value is provided in meters and must have a minimum resolution of 1 meter.  Invalid, No Value or Unknown is -1000 m."""
 
     reference: RIDHeightReference
@@ -268,7 +267,7 @@ class Altitude(ImplicitDict):
 class Polygon(ImplicitDict):
     """An enclosed area on the earth. The bounding edges of this polygon are defined to be the shortest paths between connected vertices.  This means, for instance, that the edge between two points both defined at a particular latitude is not generally contained at that latitude. The winding order must be interpreted as the order which produces the smaller area. The path between two vertices is defined to be the shortest possible path between those vertices. Edges may not cross. Vertices may not be duplicated.  In particular, the final polygon vertex must not be identical to the first vertex."""
 
-    vertices: List[LatLngPoint]
+    vertices: list[LatLngPoint]
 
 
 class RIDOperationalStatus(str, Enum):
@@ -303,16 +302,16 @@ Expressed as a hexadecimal string of the underlying data bytes.  A recipient sho
 class UASID(ImplicitDict):
     """Identification of the UAS performing this flight.  At least one field of this object must be specified."""
 
-    serial_number: Optional[str] = ""
+    serial_number: str | None = ""
     """This is expressed in the CTA-2063-A Serial Number format."""
 
-    registration_id: Optional[str] = ""
+    registration_id: str | None = ""
     """If a CAA provides a method of registering UAS, this number is provided by the CAA or its authorized representative.  Format is <ICAO Nationality MarkA>.<CAA Assigned ID>, ASCII encoded, only uppercase letters (A-Z), dot (.), and digits (0-9) are allowed. Example is valid for the US."""
 
-    utm_id: Optional[str] = ""
+    utm_id: str | None = ""
     """A UTM-provided universally unique ID traceable to a non-obfuscated ID that acts as a "session id" to protect exposure of operationally sensitive information."""
 
-    specific_session_id: Optional[SpecificSessionID]
+    specific_session_id: SpecificSessionID | None
 
 
 class OperatorLocationAltitudeType(str, Enum):
@@ -329,10 +328,10 @@ class OperatorLocation(ImplicitDict):
     position: LatLngPoint
     """Position of the Remote Pilot."""
 
-    altitude: Optional[Altitude]
+    altitude: Altitude | None
     """Provides the Operator Altitude based on WGS-84 height above ellipsoid (HAE) (See Geodetic Altitude).  This value is provided in meters and must have a minimum resolution of 1 m."""
 
-    altitude_type: Optional[OperatorLocationAltitudeType]
+    altitude_type: OperatorLocationAltitudeType | None
     """Source of data for the altitude field."""
 
 
@@ -367,20 +366,20 @@ class RIDFlightDetails(ImplicitDict):
     id: str
     """ID for this flight, matching argument in request."""
 
-    eu_classification: Optional[UAClassificationEU]
+    eu_classification: UAClassificationEU | None
     """When this field is specified, the Classification Type is "European Union".  If no other classification field is specified, the Classification Type is "Undeclared"."""
 
-    uas_id: Optional[UASID]
+    uas_id: UASID | None
 
-    operator_id: Optional[str] = ""
+    operator_id: str | None = ""
     """This optional field provides a CAA-issued registration/license ID for the remote pilot or operator. Format is <ICAO Nationality MarkA>.<CAA Assigned ID>, ASCII encoded, only uppercase letters (A-Z), dot (.), and digits (0-9) are allowed. Example is valid for the US."""
 
-    operator_location: Optional[OperatorLocation]
+    operator_location: OperatorLocation | None
 
-    operation_description: Optional[str] = ""
+    operation_description: str | None = ""
     """Free-text field that enables the operator to describe the purpose of a flight, if so desired."""
 
-    auth_data: Optional[RIDAuthData]
+    auth_data: RIDAuthData | None
 
 
 class UAType(str, Enum):
@@ -429,24 +428,24 @@ FlightsUSSBaseURL = USSBaseURL
 class Circle(ImplicitDict):
     """A circular area on the surface of the earth."""
 
-    center: Optional[LatLngPoint]
+    center: LatLngPoint | None
 
-    radius: Optional[Radius]
+    radius: Radius | None
 
 
 class Volume3D(ImplicitDict):
     """A three-dimensional geographic volume consisting of a vertically-extruded shape. Exactly one outline must be specified."""
 
-    outline_circle: Optional[Circle]
+    outline_circle: Circle | None
     """A circular geographic shape on the surface of the earth."""
 
-    outline_polygon: Optional[Polygon]
+    outline_polygon: Polygon | None
     """A polygonal geographic shape on the surface of the earth."""
 
-    altitude_lower: Optional[Altitude]
+    altitude_lower: Altitude | None
     """Minimum bounding altitude of this volume. Must be less than altitude_upper, if specified."""
 
-    altitude_upper: Optional[Altitude]
+    altitude_upper: Altitude | None
     """Maximum bounding altitude of this volume. Must be greater than altitude_lower, if specified."""
 
 
@@ -455,10 +454,10 @@ class Volume4D(ImplicitDict):
 
     volume: Volume3D
 
-    time_start: Optional[Time]
+    time_start: Time | None
     """Beginning time of this volume. Must be before time_end."""
 
-    time_end: Optional[Time]
+    time_end: Time | None
     """End time of this volume. Must be after time_start."""
 
 
@@ -467,7 +466,7 @@ class SubscriptionState(ImplicitDict):
 
     subscription_id: SubscriptionUUID
 
-    notification_index: Optional[SubscriptionNotificationIndex] = 0
+    notification_index: SubscriptionNotificationIndex | None = 0
 
 
 class GetFlightDetailsResponse(ImplicitDict):
@@ -479,42 +478,42 @@ class GetFlightDetailsResponse(ImplicitDict):
 class RIDAircraftPosition(ImplicitDict):
     """Position of an aircraft as reported for remote ID purposes."""
 
-    lat: Optional[Latitude]
+    lat: Latitude | None
 
-    lng: Optional[Longitude]
+    lng: Longitude | None
 
-    alt: Optional[float] = -1000
+    alt: float | None = -1000
     """Geodetic altitude (NOT altitude above launch, altitude above ground, or EGM96): aircraft distance above the WGS84 ellipsoid as measured along a line that passes through the aircraft and is normal to the surface of the WGS84 ellipsoid.  This value is provided in meters and must have a minimum resolution of 1 meter.  Invalid, No Value or Unknown is -1000 m."""
 
-    accuracy_h: Optional[HorizontalAccuracy]
+    accuracy_h: HorizontalAccuracy | None
     """Horizontal error that is likely to be present in this reported position.  Required when `extrapolated` field is true and always in the entry for the current state."""
 
-    accuracy_v: Optional[VerticalAccuracy]
+    accuracy_v: VerticalAccuracy | None
     """Vertical error that is likely to be present in this reported position.  Required when `extrapolated` field is true and always in the entry for the current state."""
 
-    extrapolated: Optional[bool] = False
+    extrapolated: bool | None = False
     """True if this position was generated primarily by computation rather than primarily from a direct instrument measurement.  Assumed false if not specified."""
 
-    pressure_altitude: Optional[float] = -1000
+    pressure_altitude: float | None = -1000
     """The uncorrected altitude (based on reference standard 29.92 inHg, 1013.25 mb) provides a reference for algorithms that utilize "altitude deltas" between aircraft.  This value is provided in meters and must have a minimum resolution of 1 meter.  Invalid, No Value or Unknown is -1000 m."""
 
-    height: Optional[RIDHeight]
+    height: RIDHeight | None
 
 
 class OperatingArea(ImplicitDict):
     """Area of operation containing one or more aircraft participating in remote identification."""
 
-    aircraft_count: Optional[int]
+    aircraft_count: int | None
     """Allows for operating a single UA, group, formation, or swarm. Quantity in Group."""
 
-    volumes: Optional[List[Volume4D]] = []
+    volumes: list[Volume4D] | None = []
     """The area where a group or Intent-Based Network Participant operation is planned or taking place."""
 
 
 class SubscriberToNotify(ImplicitDict):
     """Subscriber to notify of a creation/change/deletion of a change in the airspace.  This is provided by the DSS to a client changing the airspace, and it is the responsibility of the client changing the airspace (they will receive a set of these notification requests) to send a notification to each specified `url`."""
 
-    subscriptions: List[SubscriptionState]
+    subscriptions: list[SubscriptionState]
     """Subscription(s) prompting this notification."""
 
     url: URL
@@ -598,12 +597,12 @@ class Subscription(ImplicitDict):
     owner: str
     """Assigned by the DSS based on creating client’s ID (via access token).  Used for restricting mutation and deletion operations to owner."""
 
-    notification_index: Optional[SubscriptionNotificationIndex] = 0
+    notification_index: SubscriptionNotificationIndex | None = 0
 
-    time_end: Optional[Time]
+    time_end: Time | None
     """If set, this subscription will be automatically removed after this time."""
 
-    time_start: Optional[Time]
+    time_start: Time | None
     """If set, this Subscription will not generate any notifications before this time."""
 
     version: Version
@@ -638,20 +637,20 @@ class RIDAircraftState(ImplicitDict):
     timestamp_accuracy: float = 0
     """Declaration of timestamp accuracy, which is the largest difference between Timestamp and true time of applicability for any of the following fields: Latitude, Longitude, Geodetic Altitude, Pressure Altitude of Position, Height. to determine time of applicability of the location data provided.  Expressed in seconds, precise to 1/10ths of seconds. The accuracy reflects the 95% uncertainty bound value for the timestamp."""
 
-    operational_status: Optional[RIDOperationalStatus]
+    operational_status: RIDOperationalStatus | None
 
     position: RIDAircraftPosition
 
-    track: Optional[float] = 361
+    track: float | None = 361
     """Direction of flight expressed as a "True North-based" ground track angle.  This value is provided in clockwise degrees with a minimum resolution of 1 degree.  If aircraft is not moving horizontally, use the "Unknown" value.  A value of 361 indicates invalid, no value, or unknown."""
 
-    speed: Optional[float] = 255
+    speed: float | None = 255
     """Ground speed of flight in meters per second.  Invalid, No Value, or Unknown is 255 m/s, if speed is >254.25 m/s then report 254.25 m/s."""
 
     speed_accuracy: SpeedAccuracy
     """Provides quality/containment on horizontal ground speed."""
 
-    vertical_speed: Optional[float] = 63
+    vertical_speed: float | None = 63
     """Speed up (vertically) WGS84-HAE, m/s.  Invalid, No Value, or Unknown is 63 m/s, if speed is >62 m/s then report 62 m/s."""
 
 
@@ -664,7 +663,7 @@ class GetSubscriptionResponse(ImplicitDict):
 class SearchSubscriptionsResponse(ImplicitDict):
     """Response to DSS query for subscriptions in a particular area."""
 
-    subscriptions: Optional[List[Subscription]] = []
+    subscriptions: list[Subscription] | None = []
     """Subscriptions that overlap the specified area."""
 
 
@@ -683,7 +682,7 @@ class RIDFlight(ImplicitDict):
     aircraft_type: UAType
     """Generic type of aircraft."""
 
-    current_state: Optional[RIDAircraftState]
+    current_state: RIDAircraftState | None
     """The most up-to-date state of the aircraft.  Required when the aircraft is
     currently in the requested area unless no telemetry is expected during during
     the flight and `volumes` is specified.
@@ -698,7 +697,7 @@ class RIDFlight(ImplicitDict):
     of the flight with appropriate accuracy indications.
     """
 
-    operating_area: Optional[OperatingArea]
+    operating_area: OperatingArea | None
     """The area the aircraft is/are within.  Required, with 1 or more elements, if
     `current_state` is not specified.  The fields `time_start` and `time_end` are
     required.
@@ -709,10 +708,10 @@ class RIDFlight(ImplicitDict):
     not be specified.
     """
 
-    simulated: Optional[bool] = False
+    simulated: bool | None = False
     """If specified as true, this flight is not a physical aircraft; it is just a simulation to test the system."""
 
-    recent_positions: Optional[List[RIDRecentAircraftPosition]] = []
+    recent_positions: list[RIDRecentAircraftPosition] | None = []
     """A short collection of recent aircraft movement, specified only when `recent_positions_duration` is greater than zero.  If `volumes` is not specified and `recent_positions_duration` is greater than zero, then this field is required.
 
     Recent positions provided in this field must conform to requirements in the standard which generally prohibit including positions outside the requested area except transitionally when the aircraft enters or exits the requested area, and which prohibit including positions that not sufficiently recent.
@@ -724,7 +723,7 @@ class RIDFlight(ImplicitDict):
 class PutIdentificationServiceAreaResponse(ImplicitDict):
     """Response to a request to create or update a reference to an Identification Service Area in the DSS."""
 
-    subscribers: Optional[List[SubscriberToNotify]] = []
+    subscribers: list[SubscriberToNotify] | None = []
     """DSS subscribers that this client now has the obligation to notify of the Identification Service Area changes just made.  This client must call POST for each provided URL according to the `/uss/identification_service_areas/{id}` path API."""
 
     service_area: IdentificationServiceArea
@@ -734,23 +733,23 @@ class PutIdentificationServiceAreaResponse(ImplicitDict):
 class SearchIdentificationServiceAreasResponse(ImplicitDict):
     """Response to DSS query for Identification Service Areas in an area of interest."""
 
-    service_areas: Optional[List[IdentificationServiceArea]] = []
+    service_areas: list[IdentificationServiceArea] | None = []
     """Identification Service Areas in the area of interest."""
 
 
 class PutIdentificationServiceAreaNotificationParameters(ImplicitDict):
     """Parameters of a message informing of new full information for an Identification Service Area.  Pushed (by a client, not the DSS) directly to clients with subscriptions when another client makes a change to airspace within a cell with a subscription."""
 
-    service_area: Optional[IdentificationServiceArea]
+    service_area: IdentificationServiceArea | None
     """Identification Service Area that the notifying client changed or created.
 
     If this field is populated, the Identification Service Area was created or updated.  If this field is not populated, the Identification Service Area was deleted.
     """
 
-    subscriptions: List[SubscriptionState]
+    subscriptions: list[SubscriptionState]
     """Subscription(s) prompting this notification."""
 
-    extents: Optional[Volume4D]
+    extents: Volume4D | None
     """The new or updated extents of the Identification Service Area.
 
     Omitted if Identification Service Area was deleted.
@@ -763,14 +762,14 @@ class DeleteIdentificationServiceAreaResponse(ImplicitDict):
     service_area: IdentificationServiceArea
     """Identification Service Area that was just deleted."""
 
-    subscribers: Optional[List[SubscriberToNotify]] = []
+    subscribers: list[SubscriberToNotify] | None = []
     """DSS subscribers that this client now has the obligation to notify of the Identification Service Area just deleted.  This client must call POST for each provided URL according to the `/uss/identification_service_areas` path API."""
 
 
 class PutSubscriptionResponse(ImplicitDict):
     """Response for a request to create or update a subscription."""
 
-    service_areas: Optional[List[IdentificationServiceArea]] = []
+    service_areas: list[IdentificationServiceArea] | None = []
     """Identification Service Areas in or near the subscription area at the time of creation/update, if `identification_service_area_url` callback was specified."""
 
     subscription: Subscription
@@ -789,10 +788,10 @@ class GetFlightsResponse(ImplicitDict):
     timestamp: Time
     """The remote ID service provider's timestamp for when this information was current."""
 
-    flights: Optional[List[RIDFlight]] = []
+    flights: list[RIDFlight] | None = []
     """A list of all flights that have been within the requested area within the remote ID retention period.  This includes flights that are not currently within the requested area, but were within the requested area within the remote ID retention period.  Aircraft that are not in flight, and have not been in flight within the retention period, should not be included in this list."""
 
-    no_isas_present: Optional[bool] = False
+    no_isas_present: bool | None = False
     """The requested view is entirely outside any remote ID service provision areas (Identification Service Area volumes) this provider has.  A display provider receiving this response should discontinue polling for this endpoint for the view port requested until otherwise directed by DSS interactions."""
 
 
@@ -813,7 +812,7 @@ class OperationID(str, Enum):
     PostIdentificationServiceArea = "postIdentificationServiceArea"
 
 
-OPERATIONS: Dict[OperationID, Operation] = {
+OPERATIONS: dict[OperationID, Operation] = {
     OperationID.SearchIdentificationServiceAreas: Operation(
         id="searchIdentificationServiceAreas",
         path="/dss/identification_service_areas",

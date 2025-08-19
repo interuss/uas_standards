@@ -1,6 +1,5 @@
 import os
 from dataclasses import dataclass
-from typing import Dict, Union
 
 import yaml
 
@@ -16,14 +15,14 @@ def flatten(spec: dict, path_of_spec: str) -> None:
         path_of_spec: Path to directory containing the specification being flattened.  Relative $ref paths (e.g.,
             "./other_spec.yaml#/components/objects/Foo") will be resolved relative to this path.
     """
-    additional_components: Dict[str, _AdditionalComponent] = {}
+    additional_components: dict[str, _AdditionalComponent] = {}
     _flatten_part(spec, path_of_spec, spec, additional_components)
     for k, v in additional_components.items():
         spec["components"]["schemas"][k] = v.schema
 
 
 @dataclass
-class _AdditionalComponent(object):
+class _AdditionalComponent:
     included_by: str
     """This additional component was added to the flattened schema by this (included/$ref'd) filename."""
 
@@ -35,7 +34,7 @@ def _flatten_part(
     spec: dict,
     path_of_spec: str,
     part: dict,
-    additional_components: Dict[str, _AdditionalComponent],
+    additional_components: dict[str, _AdditionalComponent],
 ) -> None:
     """Flatten `spec` by adding externally-$ref'd components to `additional_components` and changing external $refs to internal.
 
@@ -67,7 +66,7 @@ def _flatten_part(
 def _add_external_ref(
     ref_path: str,
     path_of_spec: str,
-    additional_components: Dict[str, _AdditionalComponent],
+    additional_components: dict[str, _AdditionalComponent],
 ) -> str:
     filename, anchor = ref_path.split("#")
     if not anchor.startswith("/components/schemas"):
@@ -84,7 +83,7 @@ def _add_external_ref(
         # This is apparently a relative path
         filename = os.path.join(path_of_spec, filename)
 
-    with open(filename, "r") as f:
+    with open(filename) as f:
         foreign_schema = yaml.full_load(f)
 
     _add_object_from_path_and_schema(
@@ -97,7 +96,7 @@ def _add_object_from_path_and_schema(
     schema: dict,
     filename: str,
     path: str,
-    additional_components: Dict[str, _AdditionalComponent],
+    additional_components: dict[str, _AdditionalComponent],
 ) -> None:
     """Add the schema for the object at `path` within `schema` to `additional_components` given that `schema` came from `filename`.
 
@@ -133,8 +132,8 @@ def _add_object_from_path_and_schema(
 def _include_subref_objects(
     schema: dict,
     parent_filename: str,
-    obj: Union[dict, list, tuple],
-    additional_components: Dict[str, _AdditionalComponent],
+    obj: dict | list | tuple,
+    additional_components: dict[str, _AdditionalComponent],
 ) -> None:
     """Include all `schema` objects $ref'd by `obj` or its descendants in `additional_components` given that `schema` came from `parent_filename`."""
     if isinstance(obj, dict):

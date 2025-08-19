@@ -1,6 +1,6 @@
 from datetime import time
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import arrow
 from implicitdict import ImplicitDict, StringBasedDateTime
@@ -37,14 +37,14 @@ class Purpose(str, Enum):
 
 
 class UASZoneAuthority(ImplicitDict):
-    name: Optional[str]  # max length: 200
-    service: Optional[str]  # max length: 200
-    email: Optional[str]
-    contactName: Optional[str]  # max length: 200
-    siteURL: Optional[str]
-    phone: Optional[str]  # max length: 200
-    purpose: Optional[Purpose]
-    intervalBefore: Optional[str]
+    name: str | None  # max length: 200
+    service: str | None  # max length: 200
+    email: str | None
+    contactName: str | None  # max length: 200
+    siteURL: str | None
+    phone: str | None  # max length: 200
+    purpose: Purpose | None
+    intervalBefore: str | None
 
 
 class VerticalReferenceType(str, Enum):
@@ -59,11 +59,11 @@ class HorizontalProjectionType(str, Enum):
 
 class CircleOrPolygonType(ImplicitDict):
     type: HorizontalProjectionType
-    center: Optional[List[float]]  # 2 items. Coordinates: lat, lng
-    radius: Optional[float]  # > 0
-    coordinates: Optional[
-        List[List[List[float]]]
-    ]  # List of polygons -> List of points: min 4 items -> Coordinates: lat, lng
+    center: list[float] | None  # 2 items. Coordinates: lat, lng
+    radius: float | None  # > 0
+    coordinates: (
+        list[list[list[float]]] | None
+    )  # List of polygons -> List of points: min 4 items -> Coordinates: lat, lng
 
 
 class UomDimensions(str, Enum):
@@ -73,9 +73,9 @@ class UomDimensions(str, Enum):
 
 class UASZoneAirspaceVolume(ImplicitDict):
     uomDimensions: UomDimensions
-    lowerLimit: Optional[int]
+    lowerLimit: int | None
     lowerVerticalReference: VerticalReferenceType
-    upperLimit: Optional[int]
+    upperLimit: int | None
     upperVerticalReference: VerticalReferenceType
     horizontalProjection: CircleOrPolygonType
 
@@ -102,7 +102,7 @@ class ED269TimeType(str):
     time: time
     """`time` representation of the str value with timezone"""
 
-    def __new__(cls, value: Union[str, time]):
+    def __new__(cls, value: str | time):
         if isinstance(value, str):
             t = arrow.get(value, ["HH:mm:ss.SZ", "HH:mmZ"]).timetz()
         else:
@@ -115,43 +115,43 @@ class ED269TimeType(str):
 
 
 class DailyPeriod(ImplicitDict):
-    day: List[WeekDateType]  # min items: 1, max items: 7
+    day: list[WeekDateType]  # min items: 1, max items: 7
     startTime: ED269TimeType
     endTime: ED269TimeType
 
 
 class ApplicableTimePeriod(ImplicitDict):
     permanent: YESNO
-    startDateTime: Optional[StringBasedDateTime]
-    endDateTime: Optional[StringBasedDateTime]
-    schedule: Optional[List[DailyPeriod]]  # min items: 1
+    startDateTime: StringBasedDateTime | None
+    endDateTime: StringBasedDateTime | None
+    schedule: list[DailyPeriod] | None  # min items: 1
 
 
 class UASZoneVersion(ImplicitDict):
-    title: Optional[str]
+    title: str | None
     identifier: str  # max length: 7
     country: str  # length: 3
-    name: Optional[str]  # max length: 200
+    name: str | None  # max length: 200
     type: str
     restriction: Restriction
-    restrictionConditions: Optional[List[str]]
-    region: Optional[int]
-    reason: Optional[List[Reason]]  # max length: 9
-    otherReasonInfo: Optional[str]  # max length: 30
-    regulationExemption: Optional[YESNO]
-    uSpaceClass: Optional[str]  # max length: 100
-    message: Optional[str]  # max length: 200
-    applicability: List[ApplicableTimePeriod]
-    zoneAuthority: List[UASZoneAuthority]
-    geometry: List[UASZoneAirspaceVolume]  # min items: 1
-    extendedProperties: Optional[Any]
+    restrictionConditions: list[str] | None
+    region: int | None
+    reason: list[Reason] | None  # max length: 9
+    otherReasonInfo: str | None  # max length: 30
+    regulationExemption: YESNO | None
+    uSpaceClass: str | None  # max length: 100
+    message: str | None  # max length: 200
+    applicability: list[ApplicableTimePeriod]
+    zoneAuthority: list[UASZoneAuthority]
+    geometry: list[UASZoneAirspaceVolume]  # min items: 1
+    extendedProperties: Any | None
 
 
 class ED269Schema(ImplicitDict):
-    title: Optional[str]
-    description: Optional[str]
-    features: List[UASZoneVersion]
+    title: str | None
+    description: str | None
+    features: list[UASZoneVersion]
 
     @staticmethod
-    def from_dict(raw_data: Dict) -> "ED269Schema":
+    def from_dict(raw_data: dict) -> "ED269Schema":
         return ImplicitDict.parse(raw_data, ED269Schema)

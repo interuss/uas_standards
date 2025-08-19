@@ -88,5 +88,5 @@ docker container run -it \
 
 echo "Running formatter"
 cd ../../
-uv run ruff format
 uv run ruff check --fix
+uv run ruff format

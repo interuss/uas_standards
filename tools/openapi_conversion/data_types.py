@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any
 
 
 @dataclasses.dataclass
@@ -18,7 +18,7 @@ class ObjectField:
     required: bool
     """True if an instance of the parent object must specify a value for this field"""
 
-    default: Optional[Any]
+    default: Any | None
     """Default value for field, if specified"""
 
     literal_default: bool = False
@@ -38,20 +38,20 @@ class DataType:
     description: str = ""
     """Documentation of this data type"""
 
-    fields: List[ObjectField] = dataclasses.field(default_factory=list)
+    fields: list[ObjectField] = dataclasses.field(default_factory=list)
     """If this is an Object data type, a list of fields contained in that Object"""
 
-    enum_values: Dict[str, str] = dataclasses.field(default_factory=dict)
+    enum_values: dict[str, str] = dataclasses.field(default_factory=dict)
     """If this is a enum data type, a map from values it may take on to Python names for those values"""
 
 
-python_primitives: Dict[str, str] = {
+python_primitives: dict[str, str] = {
     "string": "str",
     "boolean": "bool",
 }
 """Maps OpenAPI `type` to Python primitive type"""
 
-python_numbers: Dict[str, str] = {
+python_numbers: dict[str, str] = {
     "float": "float",
     "double": "float",
     "int32": "int",
@@ -84,9 +84,7 @@ def get_data_type_name(component_name: str, data_type_name: str) -> str:
     else:
         if "#/components/schemas/" not in component_name:
             raise ValueError(
-                "$ref expected to contain `#/components/schemas/`, but found `{}` instead for {}".format(
-                    component_name, data_type_name
-                )
+                f"$ref expected to contain `#/components/schemas/`, but found `{component_name}` instead for {data_type_name}"
             )
         name = get_data_type_name(
             component_name[component_name.index("#") :], data_type_name
@@ -97,26 +95,20 @@ def get_data_type_name(component_name: str, data_type_name: str) -> str:
         return name
 
 
-def _parse_referenced_type_name(schema: Dict, data_type_name: str) -> str:
+def _parse_referenced_type_name(schema: dict, data_type_name: str) -> str:
     options = schema["anyOf"] if "anyOf" in schema else schema["allOf"]
     if len(options) != 1:
         raise NotImplementedError(
-            "Only one $ref is supported for anyOf and allOf; found {} elements instead".format(
-                len(options)
-            )
+            f"Only one $ref is supported for anyOf and allOf; found {len(options)} elements instead"
         )
     option = options[0]
     if not isinstance(option, dict):
         raise ValueError(
-            "Expected dict entries in anyOf/allOf block; found {} instead".format(
-                option
-            )
+            f"Expected dict entries in anyOf/allOf block; found {option} instead"
         )
     if len(option) != 1 or "$ref" not in option:
         raise NotImplementedError(
-            "The only element in anyOf/allOf must be a $ref dictionary; found {} instead".format(
-                option
-            )
+            f"The only element in anyOf/allOf must be a $ref dictionary; found {option} instead"
         )
     return get_data_type_name(option["$ref"], data_type_name)
 
@@ -127,8 +119,8 @@ def _snake_to_pascal(snake_case: str) -> str:
 
 
 def make_object_field(
-    python_object_name: str, api_field_name: str, schema: Dict, required: Set[str]
-) -> Tuple[ObjectField, List[DataType]]:
+    python_object_name: str, api_field_name: str, schema: dict, required: set[str]
+) -> tuple[ObjectField, list[DataType]]:
     """Parse a single field in a data type or endpoint parameter schema.
 
     :param python_object_name: Name of the Python object containing this field, for error messages and inline type names
@@ -175,12 +167,7 @@ def make_object_field(
             # No additional type declaration needed
             if additional_types:
                 raise RuntimeError(
-                    "{} field type `{}` was parsed as primitive {} but also generated {} additional types".format(
-                        python_object_name,
-                        api_field_name,
-                        data_type.python_type,
-                        len(additional_types),
-                    )
+                    f"{python_object_name} field type `{api_field_name}` was parsed as primitive {data_type.python_type} but also generated {len(additional_types)} additional types"
                 )
             field_data_type = data_type.python_type
         elif data_type.python_type == "StringBasedDateTime":
@@ -213,10 +200,10 @@ def make_object_field(
 
 
 def _make_object_fields(
-    python_object_name: str, properties: Dict, required: Set[str]
-) -> Tuple[List[ObjectField], List[DataType]]:
-    fields: List[ObjectField] = []
-    additional_types: List[DataType] = []
+    python_object_name: str, properties: dict, required: set[str]
+) -> tuple[list[ObjectField], list[DataType]]:
+    fields: list[ObjectField] = []
+    additional_types: list[DataType] = []
     for field_name, schema in properties.items():
         field, further_types = make_object_field(
             python_object_name, field_name, schema, required
@@ -226,7 +213,7 @@ def _make_object_fields(
     return fields, additional_types
 
 
-def _make_python_enums(values: List[str]) -> Dict[str, str]:
+def _make_python_enums(values: list[str]) -> dict[str, str]:
     valid_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
     valid_start_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
     result = {}
@@ -239,7 +226,7 @@ def _make_python_enums(values: List[str]) -> Dict[str, str]:
     return result
 
 
-def make_data_types(api_name: str, schema: Dict) -> Tuple[DataType, List[DataType]]:
+def make_data_types(api_name: str, schema: dict) -> tuple[DataType, list[DataType]]:
     """Parse all data types necessary to express the provided data type schema.
 
     In addition to the primary data type described by `name`, this routine also
@@ -294,7 +281,7 @@ def make_data_types(api_name: str, schema: Dict) -> Tuple[DataType, List[DataTyp
                 data_type.python_type = f"List[{item_type_name}]"
             else:
                 raise ValueError(
-                    "Missing `items` declaration for {} array type".format(api_name)
+                    f"Missing `items` declaration for {api_name} array type"
                 )
         elif schema["type"] == "object":
             data_type.python_type = "ImplicitDict"
@@ -318,7 +305,7 @@ def make_data_types(api_name: str, schema: Dict) -> Tuple[DataType, List[DataTyp
     return data_type, additional_types
 
 
-def parse(spec: dict) -> List[DataType]:
+def parse(spec: dict) -> list[DataType]:
     if "components" not in spec:
         raise ValueError("Missing `components` in YAML")
     components = spec["components"]
