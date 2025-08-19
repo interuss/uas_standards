@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, List, Optional
 
 from implicitdict import ImplicitDict, StringBasedDateTime
 
@@ -107,9 +106,9 @@ class LatLngPoint(ImplicitDict):
 class Circle(ImplicitDict):
     """A circular area on the surface of the earth."""
 
-    center: Optional[LatLngPoint]
+    center: LatLngPoint | None
 
-    radius: Optional[Radius]
+    radius: Radius | None
 
 
 class OperationalIntentState(str, Enum):
@@ -196,10 +195,10 @@ class InjectFlightResponse(ImplicitDict):
       - `NotSupported`: The USS does not support the attempted interaction.  For instance, if the request specified a high-priority flight and the USS does not support management of high-priority flights.
     """
 
-    notes: Optional[str]
+    notes: str | None
     """Human-readable explanation of the observed result.  This explanation should be available to a human reviewing the test results, and ideally should explain why an undesirable result was obtained.  For instance, if the injection attempt Failed, then these notes may indicate that the attempt failed because the DSS indicated 400 to a valid request (perhaps also including the valid request as proof)."""
 
-    operational_intent_id: Optional[EntityID]
+    operational_intent_id: EntityID | None
     """The id of the operational intent communicated to the DSS. This value is only required when the result of the flight submission is `Planned`."""
 
 
@@ -224,15 +223,15 @@ class DeleteFlightResponse(ImplicitDict):
       - `Failed`: The flight could not be closed successfully by the USS.
     """
 
-    notes: Optional[str]
+    notes: str | None
     """Human-readable explanation of the observed result."""
 
 
 class ClearAreaOutcome(ImplicitDict):
-    success: Optional[bool] = False
+    success: bool | None = False
     """True if, and only if, all flights in the specified area owned by the USS were canceled and removed."""
 
-    message: Optional[str]
+    message: str | None
     """If the USS was unable to clear the entire area, this message can provide information on the problem encountered."""
 
     timestamp: str
@@ -264,29 +263,29 @@ class Capability(str, Enum):
 
 
 class CapabilitiesResponse(ImplicitDict):
-    capabilities: Optional[List[Capability]] = []
+    capabilities: list[Capability] | None = []
     """Set of capabilities supported by this USS."""
 
 
 class Polygon(ImplicitDict):
     """An enclosed area on the earth. The bounding edges of this polygon are defined to be the shortest paths between connected vertices.  This means, for instance, that the edge between two points both defined at a particular latitude is not generally contained at that latitude. The winding order must be interpreted as the order which produces the smaller area. The path between two vertices is defined to be the shortest possible path between those vertices. Edges may not cross. Vertices may not be duplicated.  In particular, the final polygon vertex must not be identical to the first vertex."""
 
-    vertices: List[LatLngPoint]
+    vertices: list[LatLngPoint]
 
 
 class Volume3D(ImplicitDict):
     """A three-dimensional geographic volume consisting of a vertically-extruded shape. Exactly one outline must be specified."""
 
-    outline_circle: Optional[Circle]
+    outline_circle: Circle | None
     """A circular geographic shape on the surface of the earth."""
 
-    outline_polygon: Optional[Polygon]
+    outline_polygon: Polygon | None
     """A polygonal geographic shape on the surface of the earth."""
 
-    altitude_lower: Optional[Altitude]
+    altitude_lower: Altitude | None
     """Minimum bounding altitude of this volume. Must be less than altitude_upper, if specified."""
 
-    altitude_upper: Optional[Altitude]
+    altitude_upper: Altitude | None
     """Maximum bounding altitude of this volume. Must be greater than altitude_lower, if specified."""
 
 
@@ -295,10 +294,10 @@ class Volume4D(ImplicitDict):
 
     volume: Volume3D
 
-    time_start: Optional[Time]
+    time_start: Time | None
     """Beginning time of this volume. Must be before time_end."""
 
-    time_end: Optional[Time]
+    time_end: Time | None
     """End time of this volume. Must be after time_start."""
 
 
@@ -309,10 +308,10 @@ class OperationalIntentTestInjection(ImplicitDict):
 
     priority: Priority
 
-    volumes: List[Volume4D]
+    volumes: list[Volume4D]
     """Nominal volumes, as would be reported by a USS's operational_intents endpoint."""
 
-    off_nominal_volumes: List[Volume4D]
+    off_nominal_volumes: list[Volume4D]
     """Off-Nominal volumes, as would be reported by a USS's operational_intents endpoint."""
 
 
@@ -329,13 +328,13 @@ class FlightAuthorisationData(ImplicitDict):
 
     uas_class: UASClass
 
-    identification_technologies: List[str]
+    identification_technologies: list[str]
     """Technology used to identify the UAS. Required by ANNEX IV of COMMISSION IMPLEMENTING REGULATION (EU) 2021/664, paragraph 6."""
 
-    uas_type_certificate: Optional[str]
+    uas_type_certificate: str | None
     """Provisional field. Not applicable as of September 2021. Required only if `uas_class` is set to `other` by ANNEX IV of COMMISSION IMPLEMENTING REGULATION (EU) 2021/664, paragraph 4."""
 
-    connectivity_methods: List[str]
+    connectivity_methods: list[str]
     """Connectivity methods. Required by ANNEX IV of COMMISSION IMPLEMENTING REGULATION (EU) 2021/664, paragraph 7."""
 
     endurance_minutes: int
@@ -351,7 +350,7 @@ class FlightAuthorisationData(ImplicitDict):
     Required by ANNEX IV of COMMISSION IMPLEMENTING REGULATION (EU) 2021/664, paragraph 10.
     """
 
-    uas_id: Optional[str]
+    uas_id: str | None
     """When applicable, the registration number of the unmanned aircraft.
     This is expressed using the nationality and registration mark of the unmanned aircraft in
     line with ICAO Annex 7.
@@ -360,9 +359,9 @@ class FlightAuthorisationData(ImplicitDict):
 
 
 class InjectFlightRequest(ImplicitDict):
-    operational_intent: Optional[OperationalIntentTestInjection]
+    operational_intent: OperationalIntentTestInjection | None
 
-    flight_authorisation: Optional[FlightAuthorisationData]
+    flight_authorisation: FlightAuthorisationData | None
 
 
 class ClearAreaRequest(ImplicitDict):
@@ -381,7 +380,7 @@ class OperationID(str, Enum):
     ClearArea = "clearArea"
 
 
-OPERATIONS: Dict[OperationID, Operation] = {
+OPERATIONS: dict[OperationID, Operation] = {
     OperationID.GetStatus: Operation(
         id="getStatus",
         path="/v1/status",

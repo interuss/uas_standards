@@ -1,23 +1,22 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional
 
 
 @dataclass
-class Operation(object):
+class Operation:
     id: str
     path: str
     verb: str
-    request_body_type: Optional[str]
-    response_body_type: Dict[int, Optional[str]]
+    request_body_type: str | None
+    response_body_type: dict[int, str | None]
 
     @property
     def name(self) -> str:
         return self.id[0].upper() + self.id[1:]
 
 
-def get_operations(spec: dict) -> List[Operation]:
+def get_operations(spec: dict) -> list[Operation]:
     ref_prefix = "#/components/schemas/"
-    operations: List[Operation] = []
+    operations: list[Operation] = []
     all_verbs = {"get", "put", "post", "delete", "patch"}
     for path, body in spec["paths"].items():
         for k, v in body.items():

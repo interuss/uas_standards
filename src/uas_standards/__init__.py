@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from typing import Dict, Optional, Type
 
 
 @dataclass
-class Operation(object):
+class Operation:
     id: str
     """Operation ID of this operation."""
 
@@ -13,8 +12,8 @@ class Operation(object):
     verb: str
     """HTTP verb used to invoke the operation."""
 
-    request_body_type: Optional[Type]
+    request_body_type: type | None
     """Data type describing the contents of the request body, or None if no request body."""
 
-    response_body_type: Dict[int, Optional[Type]]
+    response_body_type: dict[int, type | None]
     """Data type describing the contents of the response body provided with the corresponding status code."""

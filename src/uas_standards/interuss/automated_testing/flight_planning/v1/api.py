@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, List, Optional
 
 from implicitdict import ImplicitDict, StringBasedDateTime
 
@@ -35,10 +34,10 @@ class StatusResponse(ImplicitDict):
     - `Ready`: the interface is ready to receive test requests.
     """
 
-    api_name: Optional[str]
+    api_name: str | None
     """Indication of the API implemented at this URL.  Must be "Flight Planning Automated Testing Interface"."""
 
-    api_version: Optional[str]
+    api_version: str | None
     """Indication of the API version implemented at this URL.  Must be "v0.5.0" when implementing this version of the API."""
 
 
@@ -155,13 +154,13 @@ class UpsertFlightPlanResponse(ImplicitDict):
     planning_result: PlanningActivityResult
     """The result of the flight plan creation or update attempt by the emulated user. If any option other than `Completed` is specified, the `notes` field should be populated with the reason for the unsuccessful outcome."""
 
-    notes: Optional[str]
+    notes: str | None
     """Human-readable explanation of the observed result.  This explanation may be made available to a human reviewing the test results, and ideally should explain why an undesirable result was obtained.  For instance, if the injection attempt Failed, then these notes may indicate that the attempt failed because the DSS indicated 400 to a valid request (perhaps also including the valid request as proof)."""
 
     flight_plan_status: FlightPlanStatus
     """The status of the user's flight plan following the flight planning activity."""
 
-    includes_advisories: Optional[AdvisoryInclusion]
+    includes_advisories: AdvisoryInclusion | None
     """Nature of advisories included in the response to the user regarding their attempt to perform this flight planning activity."""
 
 
@@ -169,13 +168,13 @@ class DeleteFlightPlanResponse(ImplicitDict):
     planning_result: PlanningActivityResult
     """The result of attempted flight plan cancellation/closure by the USS admin. If any option other than `Completed` is specified, the `notes` field should be populated with the reason for the unsuccessful outcome."""
 
-    notes: Optional[str]
+    notes: str | None
     """Human-readable explanation of the observed result."""
 
     flight_plan_status: FlightPlanStatus
     """The status of the user's flight plan following the flight planning activity."""
 
-    includes_advisories: Optional[AdvisoryInclusion]
+    includes_advisories: AdvisoryInclusion | None
     """Nature of advisories included in the response to the user regarding their attempt to cancel/close their flight plan."""
 
 
@@ -184,13 +183,13 @@ class ClearAreaOutcomeDetails(ImplicitDict):
 
 
 class ClearAreaOutcome(ImplicitDict):
-    success: Optional[bool] = False
+    success: bool | None = False
     """True if, and only if, all flight plans in the specified area managed by the USS were canceled and removed."""
 
-    message: Optional[str]
+    message: str | None
     """If the USS admin was unable to clear the entire area, this message can provide information on the problem encountered."""
 
-    details: Optional[ClearAreaOutcomeDetails]
+    details: ClearAreaOutcomeDetails | None
     """Optional free-form structured data to augment `message`."""
 
 
@@ -272,28 +271,28 @@ class RPAS26FlightDetailsFlightProfile(str, Enum):
 class RPAS26FlightDetails(ImplicitDict):
     """Information about a flight necessary to plan successfully using the RPAS Platform Operating Rules version 2.6."""
 
-    operator_type: Optional[RPAS26FlightDetailsOperatorType]
+    operator_type: RPAS26FlightDetailsOperatorType | None
     """The type of operator."""
 
-    uas_serial_numbers: Optional[List[str]]
+    uas_serial_numbers: list[str] | None
     """The list of UAS/drone serial numbers that will be operated during the operation."""
 
-    uas_registration_numbers: Optional[List[str]]
+    uas_registration_numbers: list[str] | None
     """The list of UAS/drone registration numbers that will be operated during the operation."""
 
-    aircraft_type: Optional[RPAS26FlightDetailsAircraftType]
+    aircraft_type: RPAS26FlightDetailsAircraftType | None
     """Type of vehicle being used as per ASTM F3411-22a."""
 
-    flight_profile: Optional[RPAS26FlightDetailsFlightProfile]
+    flight_profile: RPAS26FlightDetailsFlightProfile | None
     """Type of flight profile."""
 
-    pilot_license_number: Optional[str]
+    pilot_license_number: str | None
     """License number for the pilot."""
 
-    pilot_phone_number: Optional[str]
+    pilot_phone_number: str | None
     """Contact phone number for the pilot."""
 
-    operator_number: Optional[str]
+    operator_number: str | None
     """Operator number."""
 
 
@@ -375,7 +374,7 @@ class UserNotification(ImplicitDict):
     observed_at: Time
     """Time at which the virtual user observed the notification."""
 
-    conflicts: Optional[UserNotificationConflicts] = "Unknown"
+    conflicts: UserNotificationConflicts | None = "Unknown"
     """Conflict status as indicated in the notification.            
      - `Unknown`: Notification doesn't contain information regarding conflicts.
      - `None`: Notification indicates no conflicts.
@@ -387,14 +386,14 @@ class UserNotification(ImplicitDict):
 class QueryUserNotificationsResponse(ImplicitDict):
     """Response object for query request for notifications observed by the virtual user."""
 
-    user_notifications: List[UserNotification]
+    user_notifications: list[UserNotification]
     """List of applicable observed user notifications."""
 
 
 class ASTMF354821OpIntentInformation(ImplicitDict):
     """Information provided about a flight plan that is necessary for ASTM F3548-21."""
 
-    priority: Optional[Priority]
+    priority: Priority | None
 
 
 class FlightAuthorisationData(ImplicitDict):
@@ -413,13 +412,13 @@ class FlightAuthorisationData(ImplicitDict):
 
     uas_class: UASClass
 
-    identification_technologies: List[str]
+    identification_technologies: list[str]
     """Technology used to identify the UAS. Required by ANNEX IV of COMMISSION IMPLEMENTING REGULATION (EU) 2021/664, paragraph 6."""
 
-    uas_type_certificate: Optional[str]
+    uas_type_certificate: str | None
     """Provisional field. Not applicable as of September 2021. Required only if `uas_class` is set to `other` by ANNEX IV of COMMISSION IMPLEMENTING REGULATION (EU) 2021/664, paragraph 4."""
 
-    connectivity_methods: List[str]
+    connectivity_methods: list[str]
     """Connectivity methods. Required by ANNEX IV of COMMISSION IMPLEMENTING REGULATION (EU) 2021/664, paragraph 7."""
 
     endurance_minutes: int
@@ -435,7 +434,7 @@ class FlightAuthorisationData(ImplicitDict):
     Required by ANNEX IV of COMMISSION IMPLEMENTING REGULATION (EU) 2021/664, paragraph 10.
     """
 
-    uas_id: Optional[str]
+    uas_id: str | None
     """When applicable, the registration number of the unmanned aircraft.
     This is expressed using the nationality and registration mark of the unmanned aircraft in
     line with ICAO Annex 7.
@@ -454,30 +453,30 @@ class LatLngPoint(ImplicitDict):
 class Polygon(ImplicitDict):
     """An enclosed area on the earth. The bounding edges of this polygon are defined to be the shortest paths between connected vertices.  This means, for instance, that the edge between two points both defined at a particular latitude is not generally contained at that latitude. The winding order must be interpreted as the order which produces the smaller area. The path between two vertices is defined to be the shortest possible path between those vertices. Edges may not cross. Vertices may not be duplicated.  In particular, the final polygon vertex must not be identical to the first vertex."""
 
-    vertices: List[LatLngPoint]
+    vertices: list[LatLngPoint]
 
 
 class Circle(ImplicitDict):
     """A circular area on the surface of the earth."""
 
-    center: Optional[LatLngPoint]
+    center: LatLngPoint | None
 
-    radius: Optional[Radius]
+    radius: Radius | None
 
 
 class Volume3D(ImplicitDict):
     """A three-dimensional geographic volume consisting of a vertically-extruded shape. Exactly one outline must be specified."""
 
-    outline_circle: Optional[Circle]
+    outline_circle: Circle | None
     """A circular geographic shape on the surface of the earth."""
 
-    outline_polygon: Optional[Polygon]
+    outline_polygon: Polygon | None
     """A polygonal geographic shape on the surface of the earth."""
 
-    altitude_lower: Optional[Altitude]
+    altitude_lower: Altitude | None
     """Minimum bounding altitude of this volume. Must be less than altitude_upper, if specified."""
 
-    altitude_upper: Optional[Altitude]
+    altitude_upper: Altitude | None
     """Maximum bounding altitude of this volume. Must be greater than altitude_lower, if specified."""
 
 
@@ -486,10 +485,10 @@ class Volume4D(ImplicitDict):
 
     volume: Volume3D
 
-    time_start: Optional[Time]
+    time_start: Time | None
     """Beginning time of this volume. Must be before time_end."""
 
-    time_end: Optional[Time]
+    time_end: Time | None
     """End time of this volume. Must be after time_start."""
 
 
@@ -521,7 +520,7 @@ class BasicFlightPlanInformation(ImplicitDict):
         planned in the future and the UAS that will be flying has not yet connected to the system).
     """
 
-    area: Optional[List[Volume4D]] = []
+    area: list[Volume4D] | None = []
     """The complete area in which the user intends to fly, or may fly, as known by the user.  The user intends to fly, or may fly, anywhere in this entire area.
     This means, for instance, that an ASTM F3548-21 operational intent supporting this flight must have volumes that are a superset of this area.  If the operational intent did not cover this entire area, then all of the intended flight would not be covered by the operational intent (for at least part of the flight, the operator intends to fly outside the operational intent).
     """
@@ -540,13 +539,13 @@ class FlightPlan(ImplicitDict):
 
     basic_information: BasicFlightPlanInformation
 
-    astm_f3548_21: Optional[ASTMF354821OpIntentInformation]
+    astm_f3548_21: ASTMF354821OpIntentInformation | None
 
-    uspace_flight_authorisation: Optional[FlightAuthorisationData]
+    uspace_flight_authorisation: FlightAuthorisationData | None
 
-    rpas_operating_rules_2_6: Optional[RPAS26FlightDetails]
+    rpas_operating_rules_2_6: RPAS26FlightDetails | None
 
-    additional_information: Optional[FlightPlanAdditionalInformation]
+    additional_information: FlightPlanAdditionalInformation | None
     """Any information relevant to a particular jurisdiction or use case not described in the standard schema. The keys and values must be agreed upon between the test designers and test participants."""
 
 
@@ -571,7 +570,7 @@ class OperationID(str, Enum):
     QueryUserNotifications = "QueryUserNotifications"
 
 
-OPERATIONS: Dict[OperationID, Operation] = {
+OPERATIONS: dict[OperationID, Operation] = {
     OperationID.GetStatus: Operation(
         id="GetStatus",
         path="/status",

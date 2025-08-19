@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, List, Optional
 
 from implicitdict import ImplicitDict, StringBasedDateTime
 
@@ -36,7 +35,7 @@ EntityVersion = int
 SubscriptionID = UUIDv4Format
 
 
-Key = List[EntityOVN]
+Key = list[EntityOVN]
 
 
 class TimeFormat(str, Enum):
@@ -106,15 +105,15 @@ class LatLngPoint(ImplicitDict):
 class Circle(ImplicitDict):
     """A circular area on the surface of the earth."""
 
-    center: Optional[LatLngPoint]
+    center: LatLngPoint | None
 
-    radius: Optional[Radius]
+    radius: Radius | None
 
 
 class ErrorResponse(ImplicitDict):
     """Human-readable string returned when an error occurs as a result of a USS - DSS transaction."""
 
-    message: Optional[str]
+    message: str | None
     """Human-readable message indicating what error occurred and/or why."""
 
 
@@ -189,18 +188,18 @@ class PositionAccuracyHorizontal(str, Enum):
 class Position(ImplicitDict):
     """Location of the vehicle (UAS) as reported for UTM. Note: 'accuracy' values are required when extrapolated field is true."""
 
-    longitude: Optional[Longitude]
+    longitude: Longitude | None
 
-    latitude: Optional[Latitude]
+    latitude: Latitude | None
 
-    accuracy_h: Optional[PositionAccuracyHorizontal]
+    accuracy_h: PositionAccuracyHorizontal | None
 
-    accuracy_v: Optional[PositionAccuracyVertical]
+    accuracy_v: PositionAccuracyVertical | None
 
-    extrapolated: Optional[bool] = False
+    extrapolated: bool | None = False
     """True if this position was generated primarily by computation rather than primarily from a direct instrument measurement."""
 
-    altitude: Optional[Altitude]
+    altitude: Altitude | None
 
 
 class VelocityUnitsSpeed(str, Enum):
@@ -213,7 +212,7 @@ class Velocity(ImplicitDict):
 
     units_speed: VelocityUnitsSpeed = VelocityUnitsSpeed.MetersPerSecond
 
-    track: Optional[float] = 0
+    track: float | None = 0
     """Direction of flight expressed as a "True North-based" ground track angle. This value is provided in degrees East of North with a minimum resolution of 1 degree. A value of 360 indicates invalid, no value, or unknown."""
 
 
@@ -253,7 +252,7 @@ class ExchangeRecord(ImplicitDict):
     method: str
     """HTTP verb used by requestor (e.g., "PUT," "GET," etc.)"""
 
-    headers: Optional[List[str]] = []
+    headers: list[str] | None = []
     """Set of headers associated with request or response. Requires 'Authorization:' field (at a minimum)"""
 
     recorder_role: ExchangeRecordRecorderRole
@@ -262,26 +261,26 @@ class ExchangeRecord(ImplicitDict):
     request_time: Time
     """The time at which the request was sent/received."""
 
-    request_body: Optional[str] = ""
+    request_body: str | None = ""
     """Base64-encoded body content sent/received as a request."""
 
-    response_time: Optional[Time]
+    response_time: Time | None
     """The time at which the response was sent/received."""
 
-    response_body: Optional[str] = ""
+    response_body: str | None = ""
     """Base64-encoded body content sent/received in response to request."""
 
-    response_code: Optional[int] = 0
+    response_code: int | None = 0
     """HTTP response code sent/received in response to request."""
 
-    problem: Optional[str]
+    problem: str | None
     """'Human-readable description of the problem with the exchange, if any.'"""
 
 
 class ErrorReport(ImplicitDict):
     """A report informing a server of a communication problem."""
 
-    report_id: Optional[str]
+    report_id: str | None
     """ID assigned by the server receiving the report.  Not populated when submitting a report."""
 
     exchange: ExchangeRecord
@@ -294,19 +293,19 @@ class PlanningRecord(ImplicitDict):
     time: Time
     """Time that this planning event occurred"""
 
-    ovns: List[EntityOVN] = []
+    ovns: list[EntityOVN] = []
     """OVNs the planning USS was aware of when it was planning the operational intent"""
 
-    missing_operational_intents: Optional[List[EntityID]] = []
+    missing_operational_intents: list[EntityID] | None = []
     """List of missing operational intents (for planning attempts that were denied by the DSS with code 409)"""
 
-    missing_constraints: Optional[List[EntityID]] = []
+    missing_constraints: list[EntityID] | None = []
     """List of missing constraints (for planning attempts that were denied by the DSS with code 409)"""
 
-    operational_intent_id: Optional[EntityID]
+    operational_intent_id: EntityID | None
     """ID of the operational intent being planned"""
 
-    problem: Optional[str]
+    problem: str | None
     """A free text description of the problem(s) encountered during this planning attempt."""
 
 
@@ -337,7 +336,7 @@ class UserNotificationRecord(ImplicitDict):
     notification_time: Time
     """Time at which the user was notified"""
 
-    notification_details: Optional[str]
+    notification_details: str | None
     """Description of information that was provided to the user, as per the referenced notification_triggering_event requirement"""
 
     notification_triggering_event: UserNotificationRecordNotificationTriggeringEvent
@@ -371,7 +370,7 @@ class UserInputRecord(ImplicitDict):
     input_triggering_event: UserInputRecordInputTriggeringEvent
     """Requirement ID that pertains to the given notification"""
 
-    input_details: Optional[str]
+    input_details: str | None
     """Description of the information that was provided by the user, as per the referenced input_triggering_event requirement"""
 
 
@@ -513,22 +512,22 @@ TextShortType = str
 class Polygon(ImplicitDict):
     """An enclosed area on the earth. The bounding edges of this polygon are defined to be the shortest paths between connected vertices.  This means, for instance, that the edge between two points both defined at a particular latitude is not generally contained at that latitude. The winding order must be interpreted as the order which produces the smaller area. The path between two vertices is defined to be the shortest possible path between those vertices. Edges may not cross. Vertices may not be duplicated.  In particular, the final polygon vertex must not be identical to the first vertex."""
 
-    vertices: List[LatLngPoint]
+    vertices: list[LatLngPoint]
 
 
 class Volume3D(ImplicitDict):
     """A three-dimensional geographic volume consisting of a vertically-extruded shape. Exactly one outline must be specified."""
 
-    outline_circle: Optional[Circle]
+    outline_circle: Circle | None
     """A circular geographic shape on the surface of the earth."""
 
-    outline_polygon: Optional[Polygon]
+    outline_polygon: Polygon | None
     """A polygonal geographic shape on the surface of the earth."""
 
-    altitude_lower: Optional[Altitude]
+    altitude_lower: Altitude | None
     """Minimum bounding altitude of this volume. Must be less than altitude_upper, if specified."""
 
-    altitude_upper: Optional[Altitude]
+    altitude_upper: Altitude | None
     """Maximum bounding altitude of this volume. Must be greater than altitude_lower, if specified."""
 
 
@@ -537,10 +536,10 @@ class Volume4D(ImplicitDict):
 
     volume: Volume3D
 
-    time_start: Optional[Time]
+    time_start: Time | None
     """Beginning time of this volume. Must be before time_end."""
 
-    time_end: Optional[Time]
+    time_end: Time | None
     """End time of this volume. Must be after time_start."""
 
 
@@ -555,7 +554,7 @@ class SubscriptionState(ImplicitDict):
 class QuerySubscriptionParameters(ImplicitDict):
     """Parameters for a request to find subscriptions matching the provided criteria."""
 
-    area_of_interest: Optional[Volume4D]
+    area_of_interest: Volume4D | None
 
 
 SubscriptionUssBaseURL = UssBaseURL
@@ -575,7 +574,7 @@ class OperationalIntentReference(ImplicitDict):
 
     state: OperationalIntentState
 
-    ovn: Optional[EntityOVN]
+    ovn: EntityOVN | None
     """Opaque version number of this operational intent.  Populated only when the OperationalIntentReference is managed by the USS retrieving or providing it.  Not populated when the OperationalIntentReference is not managed by the USS retrieving or providing it (instead, the USS must obtain the OVN from the details retrieved from the managing USS)."""
 
     time_start: Time
@@ -596,7 +595,7 @@ class ImplicitSubscriptionParameters(ImplicitDict):
     uss_base_url: SubscriptionUssBaseURL
     """The base URL of a USS implementation of the parts of the USS-USS API necessary for receiving the notifications that the operational intent must be aware of.  This includes, at least, notifications for relevant changes in operational intents."""
 
-    notify_for_constraints: Optional[bool] = False
+    notify_for_constraints: bool | None = False
     """True if this operational intent's subscription should trigger notifications when constraints change. Otherwise, changes in constraints should not trigger notifications.  The scope utm.constraint_processing is required to set this flag true, and a USS performing the constraint processing role should set this flag true."""
 
 
@@ -609,13 +608,13 @@ class GetOperationalIntentReferenceResponse(ImplicitDict):
 class QueryOperationalIntentReferenceParameters(ImplicitDict):
     """Parameters for a request to find OperationalIntentReferences matching the provided criteria."""
 
-    area_of_interest: Optional[Volume4D]
+    area_of_interest: Volume4D | None
 
 
 class QueryOperationalIntentReferenceResponse(ImplicitDict):
     """Response to DSS query for OperationalIntentReferences in an area of interest."""
 
-    operational_intent_references: List[OperationalIntentReference] = []
+    operational_intent_references: list[OperationalIntentReference] = []
     """OperationalIntentReferences in the area of interest."""
 
 
@@ -631,7 +630,7 @@ class ConstraintReference(ImplicitDict):
 
     version: EntityVersion
 
-    ovn: Optional[EntityOVN]
+    ovn: EntityOVN | None
     """Opaque version number of this constraint.  Populated only when the ConstraintReference is managed by the USS retrieving or providing it.  Not populated when the ConstraintReference is not managed by the USS retrieving or providing it (instead, the USS must obtain the OVN from the details retrieved from the managing USS)."""
 
     time_start: Time
@@ -644,7 +643,7 @@ class ConstraintReference(ImplicitDict):
 class PutConstraintReferenceParameters(ImplicitDict):
     """Parameters for a request to create/update a ConstraintReference in the DSS."""
 
-    extents: List[Volume4D]
+    extents: list[Volume4D]
     """Spacetime extents that bound this constraint.
     The end time may not be in the past.
     All volumes of the constraint must be encompassed in these extents. However, these extents do not need to match the precise volumes of the constraint; a single bounding extent may be provided instead, for instance.
@@ -662,47 +661,47 @@ class GetConstraintReferenceResponse(ImplicitDict):
 class QueryConstraintReferenceParameters(ImplicitDict):
     """Parameters for a request to find ConstraintReferences matching the provided criteria."""
 
-    area_of_interest: Optional[Volume4D]
+    area_of_interest: Volume4D | None
 
 
 class QueryConstraintReferencesResponse(ImplicitDict):
     """Response to DSS query for ConstraintReferences in an area of interest."""
 
-    constraint_references: List[ConstraintReference] = []
+    constraint_references: list[ConstraintReference] = []
     """ConstraintReferences in the area of interest."""
 
 
 class AirspaceConflictResponse(ImplicitDict):
     """Data provided when an airspace conflict was encountered."""
 
-    message: Optional[str]
+    message: str | None
     """Human-readable message indicating what error occurred and/or why."""
 
-    missing_operational_intents: Optional[List[OperationalIntentReference]] = []
+    missing_operational_intents: list[OperationalIntentReference] | None = []
     """List of operational intent references for which current proof of knowledge was not provided.  If this field is present and contains elements, the calling USS should query the details URLs for these operational intents to obtain their details and correct OVNs.  The OVNs can be used to update the key, at which point the USS may retry this call."""
 
-    missing_constraints: Optional[List[ConstraintReference]] = []
+    missing_constraints: list[ConstraintReference] | None = []
     """List of constraint references for which current proof of knowledge was not provided.  If this field is present and contains elements, the calling USS should query the details URLs for these constraints to obtain their details and correct OVNs.  The OVNs can be used to update the key, at which point the USS may retry this call."""
 
 
 class OperationalIntentDetails(ImplicitDict):
     """Details of a UTM operational intent. Note that this data is not stored in the DSS; only with the clients."""
 
-    volumes: Optional[List[Volume4D]] = []
+    volumes: list[Volume4D] | None = []
     """Volumes that wholly contain the operational intent while being as small as practical.
     Start and end times, as well as lower and upper altitudes, are required for each volume. The end time may not be in the past.
     Required with at least one item when the operational intent is Accepted, Activated, or Nonconforming.
     May not contain any items when the operational intent is Contingent.
     """
 
-    off_nominal_volumes: Optional[List[Volume4D]] = []
+    off_nominal_volumes: list[Volume4D] | None = []
     """Volumes that contain the anticipated area of non-conformance while the aircraft is in the Nonconforming or Contingent states.
     Start and end times, as well as lower and upper altitudes, are required for each volume. The end time may not be in the past.
     Required with at least one item when the operational intent is Nonconforming or Contingent.
     May not contain any items when the operational intent is Accepted or Activated.
     """
 
-    priority: Optional[Priority]
+    priority: Priority | None
 
 
 class OperationalIntent(ImplicitDict):
@@ -719,10 +718,10 @@ class PutOperationalIntentDetailsParameters(ImplicitDict):
     operational_intent_id: EntityID
     """ID of operational intent that has changed."""
 
-    operational_intent: Optional[OperationalIntent]
+    operational_intent: OperationalIntent | None
     """Full information about the operational intent that has changed.  If this field is omitted, the operational intent was deleted.  The `ovn` field in the nested `reference` must be populated."""
 
-    subscriptions: List[SubscriptionState]
+    subscriptions: list[SubscriptionState]
     """Subscription(s) prompting this notification."""
 
 
@@ -737,9 +736,9 @@ class VehicleTelemetry(ImplicitDict):
 
     time_measured: Time
 
-    position: Optional[Position]
+    position: Position | None
 
-    velocity: Optional[Velocity]
+    velocity: Velocity | None
 
 
 class UssAvailabilityStatus(ImplicitDict):
@@ -768,7 +767,7 @@ class PositionRecord(ImplicitDict):
 class OperationalIntentPositions(ImplicitDict):
     """A record of position data gathered through the course of an operational intent"""
 
-    positions: Optional[List[PositionRecord]] = []
+    positions: list[PositionRecord] | None = []
 
     operational_intent_id: EntityID
     """ID of the operational intent associated with `positions`"""
@@ -781,39 +780,39 @@ class Authority(ImplicitDict):
     phone.
     """
 
-    name: Optional[TextShortType]
+    name: TextShortType | None
     """The official name of a public or private authority"""
 
-    service: Optional[TextShortType]
+    service: TextShortType | None
     """The name of a specific department or service within the organisation"""
 
-    contact_name: Optional[TextShortType]
+    contact_name: TextShortType | None
     """The name or role of a specific person that needs to be contacted within the organisation"""
 
-    site_url: Optional[TextShortType]
+    site_url: TextShortType | None
     """The URL of the public internet site through which the organisation may be contacted
     Note: in the data coding format, this might be further constrained in order to ensure a valid URL format.
     """
 
-    email: Optional[TextShortType]
+    email: TextShortType | None
     """The e-mail address by which the organisation may be contacted.
     Note: in the data coding format, this might be further constrained in order to ensure a valid e-mail format.
     """
 
-    phone: Optional[TextShortType]
+    phone: TextShortType | None
     """A phone number at which the organisation may be contacted"""
 
-    purpose: Optional[CodeAuthorityRole]
+    purpose: CodeAuthorityRole | None
     """The role of the Authority in relation with the zone."""
 
-    interval_before: Optional[str]
+    interval_before: str | None
     """The minimal time interval required between notification or authorization request and starting to operate in the zone, in the format PnnDTnnHnnM (ISO 8601)."""
 
 
 class SubscriberToNotify(ImplicitDict):
     """Subscriber to notify of a change in the airspace.  This is provided by the DSS to a client changing the airspace, and it is the responsibility of that client to send a notification to the specified USS according to the change made to the airspace."""
 
-    subscriptions: List[SubscriptionState]
+    subscriptions: list[SubscriptionState]
     """Subscription(s) prompting this notification."""
 
     uss_base_url: SubscriptionUssBaseURL
@@ -829,31 +828,31 @@ class Subscription(ImplicitDict):
 
     notification_index: SubscriptionNotificationIndex
 
-    time_start: Optional[Time]
+    time_start: Time | None
     """If set, this subscription will not receive notifications involving airspace changes entirely before this time."""
 
-    time_end: Optional[Time]
+    time_end: Time | None
     """If set, this subscription will not receive notifications involving airspace changes entirely after this time."""
 
     uss_base_url: SubscriptionUssBaseURL
 
-    notify_for_operational_intents: Optional[bool] = False
+    notify_for_operational_intents: bool | None = False
     """If true, trigger notifications when operational intents are created, updated, or deleted.  Otherwise, changes in operational intents should not trigger notifications.  The scope utm.strategic_coordination is required to set this flag true."""
 
-    notify_for_constraints: Optional[bool] = False
+    notify_for_constraints: bool | None = False
     """If true, trigger notifications when constraints are created, updated, or deleted.  Otherwise, changes in constraints should not trigger notifications.  The scope utm.constraint_processing is required to set this flag true."""
 
-    implicit_subscription: Optional[bool] = False
+    implicit_subscription: bool | None = False
     """True if this subscription was implicitly created by the DSS via the creation of an operational intent, and should therefore be deleted by the DSS when that operational intent is deleted."""
 
-    dependent_operational_intents: Optional[List[EntityID]] = []
+    dependent_operational_intents: list[EntityID] | None = []
     """List of IDs for operational intents that are dependent on this subscription."""
 
 
 class QuerySubscriptionsResponse(ImplicitDict):
     """Response to DSS query for subscriptions in a particular geographic area."""
 
-    subscriptions: List[Subscription] = []
+    subscriptions: list[Subscription] = []
     """Subscriptions that overlap the specified geographic area."""
 
 
@@ -874,10 +873,10 @@ class PutSubscriptionParameters(ImplicitDict):
 
     uss_base_url: SubscriptionUssBaseURL
 
-    notify_for_operational_intents: Optional[bool] = False
+    notify_for_operational_intents: bool | None = False
     """If true, trigger notifications when operational intents are created, updated, or deleted.  Otherwise, changes in operational intents should not trigger notifications.  The scope utm.strategic_coordination is required to set this flag true."""
 
-    notify_for_constraints: Optional[bool] = False
+    notify_for_constraints: bool | None = False
     """If true, trigger notifications when constraints are created, updated, or deleted.  Otherwise, changes in constraints should not trigger notifications.  The scope utm.constraint_processing is required to set this flag true."""
 
 
@@ -886,10 +885,10 @@ class PutSubscriptionResponse(ImplicitDict):
 
     subscription: Subscription
 
-    operational_intent_references: Optional[List[OperationalIntentReference]] = []
+    operational_intent_references: list[OperationalIntentReference] | None = []
     """Operational intents in or near the subscription area at the time of creation/update, if `notify_for_operational_intents` is true."""
 
-    constraint_references: Optional[List[ConstraintReference]] = []
+    constraint_references: list[ConstraintReference] | None = []
     """Constraints in or near the subscription area at the time of creation/update, if `notify_for_constraints` is true."""
 
 
@@ -902,25 +901,25 @@ class DeleteSubscriptionResponse(ImplicitDict):
 class PutOperationalIntentReferenceParameters(ImplicitDict):
     """Parameters for a request to create an OperationalIntentReference in the DSS. A subscription to changes overlapping this volume may be implicitly created, but this can be overridden by providing the (optional) 'subscription_id' to use. Note: The implicit subscription is managed by the DSS, not the USS."""
 
-    extents: List[Volume4D]
+    extents: list[Volume4D]
     """Spacetime extents that bound this operational intent.
     Start and end times, as well as lower and upper altitudes, are required for each volume. The end time may not be in the past. All volumes, both nominal and off-nominal, must be encompassed in these extents. However, these extents do not need to match the precise volumes of the operational intent; a single bounding extent may be provided instead, for instance.
     """
 
-    key: Optional[Key]
+    key: Key | None
     """Proof that the USS creating or mutating this operational intent was aware of the current state of the airspace, with the expectation that this operational intent is therefore deconflicted from all relevant features in the airspace.  This field is not required when declaring an operational intent Nonconforming or Contingent, or when there are no relevant Entities in the airspace, but is otherwise required. OVNs for constraints are required if and only if the USS managing this operational intent is performing the constraint processing role, which is indicated by whether the subscription associated with this operational intent triggers notifications for constraints.  The key does not need to contain the OVN for the operational intent being updated."""
 
     state: OperationalIntentState
 
     uss_base_url: OperationalIntentUssBaseURL
 
-    subscription_id: Optional[EntityID]
+    subscription_id: EntityID | None
     """The ID of an existing subscription that the USS will use to keep the operator informed about updates to relevant airspace information. If this field is not provided when the operational intent is in the Activated, Nonconforming, or Contingent state, then the `new_subscription` field must be provided in order to provide notification capability for the operational intent.  The subscription specified by this ID must cover at least the area over which this operational intent is conducted, and it must provide notifications for operational intents."""
 
-    new_subscription: Optional[ImplicitSubscriptionParameters]
+    new_subscription: ImplicitSubscriptionParameters | None
     """If an existing subscription is not specified in `subscription_id`, and the operational intent is in the Activated, Nonconforming, or Contingent state, then this field must be populated.  When this field is populated, an implicit subscription will be created and associated with this operational intent, and will generally be deleted automatically upon the deletion of this operational intent."""
 
-    requested_ovn_suffix: Optional[UUIDv7Format]
+    requested_ovn_suffix: UUIDv7Format | None
     """This optional field not part of the original F3548 standard API allows a USS to request a specific OVN when creating or updating an operational intent. When creating an operational intent, this enables a USS to immediately publish the operational intent details with the expected OVN. When updating an operational intent, this enables a USS to immediately make available this new version of the operational intent details if specifically requested by the remote USS. The USS must still wait for the DSS receipt to actually publish the new operational intent details. This allows USSs to obtain correct operational intent details even if the DSS takes a long time to respond and/or the USS processing  it.
     The requested suffix must be a UUIDv7 string containing a timestamp of the current time. If the suffix is invalid, and notably if the time is too far in the past or the future, the request will be rejected. If the suffix is valid, the DSS will set the OVN of the operational intent to be `{entityid}_{requested_ovn_suffix}`. If no suffix is set, the DSS will proceed as specified by the standard.
     """
@@ -929,7 +928,7 @@ class PutOperationalIntentReferenceParameters(ImplicitDict):
 class ChangeOperationalIntentReferenceResponse(ImplicitDict):
     """Response to a request to create, update, or delete an OperationalIntentReference in the DSS."""
 
-    subscribers: List[SubscriberToNotify] = []
+    subscribers: list[SubscriberToNotify] = []
     """DSS subscribers that this client now has the obligation to notify of the operational intent changes just made.  This client must call POST for each provided URL according to the USS-USS `/uss/v1/operational_intents` path API.  The client's own subscriptions will also be included in this list."""
 
     operational_intent_reference: OperationalIntentReference
@@ -938,7 +937,7 @@ class ChangeOperationalIntentReferenceResponse(ImplicitDict):
 class ChangeConstraintReferenceResponse(ImplicitDict):
     """Response to a request to create, update, or delete a ConstraintReference. in the DSS."""
 
-    subscribers: List[SubscriberToNotify] = []
+    subscribers: list[SubscriberToNotify] = []
     """DSS subscribers that this client now has the obligation to notify of the constraint changes just made.  This client must call POST for each provided URL according to the USS-USS `/uss/v1/constraints` path API.  The client's own subscriptions will also be included in this list."""
 
     constraint_reference: ConstraintReference
@@ -950,34 +949,34 @@ class GetOperationalIntentTelemetryResponse(ImplicitDict):
     operational_intent_id: EntityID
     """ID of the operational intent which the vehicle reporting telemetry is flying."""
 
-    telemetry: Optional[VehicleTelemetry]
+    telemetry: VehicleTelemetry | None
 
-    next_telemetry_opportunity: Optional[Time]
+    next_telemetry_opportunity: Time | None
     """The next telemetry similar to this telemetry is not expected to be available until at or after this time, so the polling USS should generally not poll the endpoint providing this response data again until at or after that time.  If this field is omitted, then there is no current expectation of new telemetry becoming available."""
 
 
 class USSLogSet(ImplicitDict):
     """The set of log data fulfilling this standard's Logging requirements."""
 
-    messages: Optional[List[ExchangeRecord]] = []
+    messages: list[ExchangeRecord] | None = []
     """Outgoing messages sent to other USSs and the DSS, and incoming messages received from other USSs, including instances where an expected response to a request is not received."""
 
-    operator_notifications: Optional[List[UserNotificationRecord]] = []
+    operator_notifications: list[UserNotificationRecord] | None = []
     """Instances of operator notifications as specifically required within this standard."""
 
-    operator_inputs: Optional[List[UserInputRecord]] = []
+    operator_inputs: list[UserInputRecord] | None = []
     """Instances of operator input as specifically required within this standard."""
 
-    operator_associations: Optional[List[OperatorAssociation]] = []
+    operator_associations: list[OperatorAssociation] | None = []
     """For a USS that manages operational intents, associations of an operator with operational intents that transitioned to the Accepted state."""
 
-    planning_attempts: Optional[List[PlanningRecord]] = []
+    planning_attempts: list[PlanningRecord] | None = []
     """For a USS that manages operational intents, instances where an operational intent could not be planned or replanned due to conflicts with other operational intents or constraints."""
 
-    operational_intent_positions: Optional[List[OperationalIntentPositions]] = []
+    operational_intent_positions: list[OperationalIntentPositions] | None = []
     """For a USS performing conformance monitoring, all position data used for conformance monitoring that is ingested from the UA."""
 
-    constraint_provider_associations: Optional[List[ConstraintProviderAssociation]] = []
+    constraint_provider_associations: list[ConstraintProviderAssociation] | None = []
     """For a USS that performs constraint management, associations of an authorized constraint provider with all constraints that transition to the valid state."""
 
 
@@ -994,9 +993,9 @@ class GeoZone(ImplicitDict):
     Note - There will be no Zone belonging to two States. Not necessary to code the information that two zones are "in neighboring States" or "related".
     """
 
-    zone_authority: List[Authority]
+    zone_authority: list[Authority]
 
-    name: Optional[TextShortType]
+    name: TextShortType | None
     """A free text name by which the zone may be known by the public or by the UAS community."""
 
     type: CodeZoneType
@@ -1005,48 +1004,48 @@ class GeoZone(ImplicitDict):
     restriction: CodeRestrictionType
     """An indication if flying in the zone is conditional, forbidden or unrestricted."""
 
-    restriction_conditions: Optional[List[ConditionExpressionType]]
+    restriction_conditions: list[ConditionExpressionType] | None
     """An indication of the conditions under which the zone can be used"""
 
-    region: Optional[int]
+    region: int | None
     """Where applicable, identifies a region inside a State where the UAS Zone is located.
     Note 1) identified with a digit between 0-65535 (16 bit), corresponding to a list of regions pre-defined for each State.
     Note 2) this attribute is intended to facilitate extracting sub-sets of data, for specific regions
     """
 
-    reason: Optional[List[CodeZoneReasonType]]
+    reason: list[CodeZoneReasonType] | None
     """A coded indication for the reason that led to the establishment of the zone."""
 
-    other_reason_info: Optional[str]
+    other_reason_info: str | None
     """A free text description of the reason that led to the establishment of the zone, when not covered by a pre-defined coded value."""
 
-    regulation_exemption: Optional[CodeYesNoType]
+    regulation_exemption: CodeYesNoType | None
     """This is an extension point. It allows adding additional attributes of national interest through this element."""
 
-    u_space_class: Optional[CodeUSpaceClassType]
+    u_space_class: CodeUSpaceClassType | None
     """A code that identifies the category or class of the zone applying a "USpace concept".
     Note: Two (draft) classifications exist, one from Eurocontrol and one from CORUS. Therefore, two instances of this attribute are expected, one from each sub-list. This might be later replaced with separate attributes and separate lists of values.
     """
 
-    message: Optional[TextShortType]
+    message: TextShortType | None
     """A message to be displayed to the user of the zone, typically on the RPS for the Remote Pilot, to make him/her aware about specific information associated with the zone (typically when it is not only a restriction to fly in the zone, thus not only an alert or an automatic limitation, for example : “image capture prohibited in this zone”, “frequent strong winds in this zone”, “no landing or take-off in this zone”). This message is also used to indicate exemptions from regulation in a zone (see below). Several information can be grouped in a message, separated by a “/”."""
 
-    additional_properties: Optional[GeoZoneAdditionalProperties]
+    additional_properties: GeoZoneAdditionalProperties | None
     """Indicates that exemptions from the national or European regulations are allowed in the UAS Zone, that will be detailed via the "message" property."""
 
 
 class ConstraintDetails(ImplicitDict):
     """Details of a UTM constraint. Note that this data is not stored in the DSS; only with the clients."""
 
-    volumes: List[Volume4D]
+    volumes: list[Volume4D]
     """Volumes that wholly contain the constraint while being as small as practical.
     The end time may not be in the past.
     """
 
-    type: Optional[str]
+    type: str | None
     """Type of airspace feature this constraint represents."""
 
-    geozone: Optional[GeoZone]
+    geozone: GeoZone | None
     """If this constraint is an ED-269 compliant geo zone, the details about that geo zone."""
 
 
@@ -1064,10 +1063,10 @@ class PutConstraintDetailsParameters(ImplicitDict):
     constraint_id: EntityID
     """ID of constraint that has changed."""
 
-    constraint: Optional[Constraint]
+    constraint: Constraint | None
     """Full information about the constraint that has changed.  If this field is omitted, the constraint was deleted.  The `ovn` field in the nested `reference` must be populated."""
 
-    subscriptions: List[SubscriptionState]
+    subscriptions: list[SubscriptionState]
     """Subscription(s) prompting this notification."""
 
 
@@ -1105,7 +1104,7 @@ class OperationID(str, Enum):
     GetLogSet = "getLogSet"
 
 
-OPERATIONS: Dict[OperationID, Operation] = {
+OPERATIONS: dict[OperationID, Operation] = {
     OperationID.QueryOperationalIntentReferences: Operation(
         id="queryOperationalIntentReferences",
         path="/dss/v1/operational_intent_references/query",

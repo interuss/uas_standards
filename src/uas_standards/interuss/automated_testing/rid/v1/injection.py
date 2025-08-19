@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, List, Optional
 
 from implicitdict import ImplicitDict, StringBasedDateTime
 
@@ -24,7 +23,7 @@ The following characters are not allowed: \\0 \\t \\r \\n # % / : ? @ [ \\ ]
 class RIDAuthData(ImplicitDict):
     """Additional authentication data."""
 
-    format: Optional[int] = 0
+    format: int | None = 0
     """Format of additional authentication data.
 
     0: None
@@ -37,7 +36,7 @@ class RIDAuthData(ImplicitDict):
     10-15: Available for Private Use
     """
 
-    data: Optional[str] = ""
+    data: str | None = ""
     """Authentication data in form specified by `format`."""
 
 
@@ -60,16 +59,16 @@ Expressed as a hexadecimal string of the underlying data bytes.  A recipient sho
 class UASID(ImplicitDict):
     """Identification of the UAS performing this flight.  At least one field of this object must be specified."""
 
-    serial_number: Optional[str] = ""
+    serial_number: str | None = ""
     """This is expressed in the CTA-2063-A Serial Number format."""
 
-    registration_id: Optional[str] = ""
+    registration_id: str | None = ""
     """If a CAA provides a method of registering UAS, this number is provided by the CAA or its authorized representative.  Format is <ICAO Nationality MarkA>.<CAA Assigned ID>, ASCII encoded, only uppercase letters (A-Z), dot (.), and digits (0-9) are allowed. Example is valid for the US."""
 
-    utm_id: Optional[str] = ""
+    utm_id: str | None = ""
     """A UTM-provided universally unique ID traceable to a non-obfuscated ID that acts as a "session id" to protect exposure of operationally sensitive information."""
 
-    specific_session_id: Optional[SpecificSessionID]
+    specific_session_id: SpecificSessionID | None
 
 
 class TimeFormat(str, Enum):
@@ -89,14 +88,14 @@ class UserNotification(ImplicitDict):
     observed_at: Time
     """Time at which the virtual user observed the notification."""
 
-    message: Optional[str]
+    message: str | None
     """Message presented to the user, description of notification, or other means of helping identify the nature of the notification, for the purpose of increased readability of test reports."""
 
 
 class QueryUserNotificationsResponse(ImplicitDict):
     """Response object for query request for notifications observed by the virtual user."""
 
-    user_notifications: List[UserNotification]
+    user_notifications: list[UserNotification]
     """List of applicable observed user notifications."""
 
 
@@ -230,9 +229,9 @@ class OperatorAltitudeAltitudeType(str, Enum):
 class OperatorAltitude(ImplicitDict):
     """Altitude associated with the Remote Pilot"""
 
-    altitude: Optional[Altitude]
+    altitude: Altitude | None
 
-    altitude_type: Optional[OperatorAltitudeAltitudeType]
+    altitude_type: OperatorAltitudeAltitudeType | None
     """Source of data for the altitude field."""
 
 
@@ -350,24 +349,24 @@ class RIDAircraftPosition(ImplicitDict):
     - lat - lng - alt
     """
 
-    lat: Optional[Latitude]
+    lat: Latitude | None
 
-    lng: Optional[Longitude]
+    lng: Longitude | None
 
-    alt: Optional[Altitude]
+    alt: Altitude | None
 
-    height: Optional[RIDHeight]
+    height: RIDHeight | None
 
-    accuracy_h: Optional[HorizontalAccuracy]
+    accuracy_h: HorizontalAccuracy | None
     """Horizontal error that is likely to be present in this reported position.  Required when `extrapolated` field is true and always in the entry for the current state."""
 
-    accuracy_v: Optional[VerticalAccuracy]
+    accuracy_v: VerticalAccuracy | None
     """Vertical error that is likely to be present in this reported position.  Required when `extrapolated` field is true and always in the entry for the current state."""
 
-    extrapolated: Optional[bool]
+    extrapolated: bool | None
     """True if this position was generated primarily by computation rather than primarily from a direct instrument measurement.  Assumed false if not specified."""
 
-    pressure_altitude: Optional[float]
+    pressure_altitude: float | None
     """The uncorrected altitude (based on reference standard 29.92 inHg, 1013.25 mb) provides a reference for algorithms that utilize "altitude deltas" between aircraft.  This value is provided in meters and must have a minimum resolution of 1 meter."""
 
 
@@ -377,27 +376,27 @@ class RIDFlightDetails(ImplicitDict):
     id: str
     """ID for this flight, matching argument in request."""
 
-    operator_id: Optional[OperatorId]
+    operator_id: OperatorId | None
 
-    operator_location: Optional[LatLngPoint]
+    operator_location: LatLngPoint | None
     """Location of party controlling the aircraft."""
 
-    operation_description: Optional[str]
+    operation_description: str | None
     """Free-text field that enables the operator to describe the purpose of a flight, if so desired."""
 
-    auth_data: Optional[RIDAuthData]
+    auth_data: RIDAuthData | None
 
-    serial_number: Optional[str]
+    serial_number: str | None
     """Can be specified when no registration ID exists and required by law in a region. This is expressed in the ANSI/CTA-2063-A Physical Serial Number format."""
 
-    registration_number: Optional[str]
+    registration_number: str | None
     """If a CAA provides a method of registering UAS, this number is provided by the CAA or its authorized representative.  Required when required by law in a region."""
 
-    uas_id: Optional[UASID]
+    uas_id: UASID | None
 
-    operator_altitude: Optional[OperatorAltitude]
+    operator_altitude: OperatorAltitude | None
 
-    eu_classification: Optional[UAClassificationEU]
+    eu_classification: UAClassificationEU | None
     """When this field is specified, the Classification Type is "European Union".  If no other classification field is specified, the Classification Type is "Undeclared"."""
 
 
@@ -414,42 +413,42 @@ class RIDAircraftState(ImplicitDict):
     - timestamp - timestamp_accuracy - accuracy_h - accuracy_v - speed - vertical_speed - track - speed_accuracy - position
     """
 
-    timestamp: Optional[StringBasedDateTime]
+    timestamp: StringBasedDateTime | None
     """Time at which this state was valid.  This may be the time coming from the source, such as a GPS, or the time when the system computes the values using an algorithm such as an Extended Kalman Filter (EKF).  Timestamp must be expressed with a minimum resolution of 1/10th of a second.  RFC 3339 format, per OpenAPI specification."""
 
-    timestamp_accuracy: Optional[TimestampAccuracy]
+    timestamp_accuracy: TimestampAccuracy | None
 
-    operational_status: Optional[RIDOperationalStatus]
+    operational_status: RIDOperationalStatus | None
 
-    position: Optional[RIDAircraftPosition]
+    position: RIDAircraftPosition | None
 
-    track: Optional[RIDTrack]
+    track: RIDTrack | None
 
-    speed: Optional[RIDSpeed]
+    speed: RIDSpeed | None
 
-    speed_accuracy: Optional[SpeedAccuracy]
+    speed_accuracy: SpeedAccuracy | None
     """Accuracy of horizontal ground speed."""
 
-    vertical_speed: Optional[VerticalSpeed]
+    vertical_speed: VerticalSpeed | None
 
-    height: Optional[RIDHeight]
+    height: RIDHeight | None
 
-    group_radius: Optional[float]
+    group_radius: float | None
     """Farthest horizontal distance from reported group location at which an aircraft in the group may be located (meters).  This value contains the "Operating Area Radius" data from the common data dictionary when group operation area is specified by point-radius."""
 
-    group_ceiling: Optional[float]
+    group_ceiling: float | None
     """Maximum altitude (meters WGS84-HAE) of Group Operation.  This value contains the "Operating Area Ceiling" data from the common data dictionary when group operation area is specified by point-radius."""
 
-    group_floor: Optional[float]
+    group_floor: float | None
     """Minimum altitude (meters WGS84-HAE) of Group Operation.  If not specified, ground level shall be assumed.  This value contains the "Operating Area Floor" data from the common data dictionary when group operation area is specified by point-radius."""
 
-    group_count: Optional[int]
+    group_count: int | None
     """When operating a group (or formation or swarm), number of aircraft in group.  This value contains the "Operating Area Count" data from the common data dictionary when group operation area is specified by point-radius."""
 
-    group_time_start: Optional[StringBasedDateTime]
+    group_time_start: StringBasedDateTime | None
     """Time at which a group operation starts.  This value contains the "Operation Area Start" data from the common data dictionary when group operation area is specified by point-radius."""
 
-    group_time_end: Optional[StringBasedDateTime]
+    group_time_end: StringBasedDateTime | None
     """Time at which a group operation starts.  This value contains the "Operation Area End" data from the common data dictionary when group operation area is specified by point-radius."""
 
 
@@ -469,25 +468,25 @@ class TestFlight(ImplicitDict):
     injection_id: str
     """ID of the injected test flight.  Remains the same regardless of the flight ID/UTM ID reported in the system."""
 
-    aircraft_type: Optional[UAType]
+    aircraft_type: UAType | None
     """Aircraft type of the injected test flight."""
 
-    telemetry: List[RIDAircraftState]
+    telemetry: list[RIDAircraftState]
     """The set of telemetry data that should be injected into the system for this flight. Each element follows the RIDAircraftState schema from the ASTM remote ID standard."""
 
-    details_responses: List[TestFlightDetails]
+    details_responses: list[TestFlightDetails]
     """The details of the flight as a function of time."""
 
 
 class CreateTestParameters(ImplicitDict):
     """A complete set of data to be injected into a Service Provider system under test."""
 
-    requested_flights: List[TestFlight]
+    requested_flights: list[TestFlight]
     """One or more logical flights, each containing test data to inject into the system. Elements should be sorted in ascending order of `timestamp`."""
 
 
 class ChangeTestResponse(ImplicitDict):
-    injected_flights: List[TestFlight]
+    injected_flights: list[TestFlight]
     """The complete set of test data actually injected into the Service Provider system under test."""
 
     version: str
@@ -495,7 +494,7 @@ class ChangeTestResponse(ImplicitDict):
 
 
 class DeleteTestResponse(ImplicitDict):
-    injected_flights: List[TestFlight]
+    injected_flights: list[TestFlight]
     """The complete set of test data deleted."""
 
 
@@ -505,7 +504,7 @@ class OperationID(str, Enum):
     QueryUserNotifications = "QueryUserNotifications"
 
 
-OPERATIONS: Dict[OperationID, Operation] = {
+OPERATIONS: dict[OperationID, Operation] = {
     OperationID.CreateTest: Operation(
         id="createTest",
         path="/tests/{test_id}",
