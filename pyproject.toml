@@ -46,6 +46,7 @@ dev = [
   "pytest-cov",
   "black",
   "ruff>=0.12.8",
+  "basedpyright>=1.31.3",
 ]
 
 openapi_conversion = [
@@ -65,3 +66,12 @@ lint.select = [
 ]
 
 extend-exclude = ["interfaces/"]
+
+[tool.basedpyright]
+typeCheckingMode = "standard"
+
+exclude = [
+  "**/__pycache__",
+  "**/.*",
+  "interfaces/*",
+]

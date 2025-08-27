@@ -41,7 +41,7 @@ class SerialNumber(str):
     ) -> SerialNumber:
         """Generates an invalid serial number similar to this serial number."""
         if r is None:
-            r = random
+            r = random.Random()
         my_length = self.length_code
         lengths_except_mine = [
             c for c in SerialNumber.length_code_points if c != my_length
@@ -72,7 +72,7 @@ class SerialNumber(str):
     def generate_valid(r: random.Random | None = None) -> SerialNumber:
         """Generates a valid and random UAV serial number per ANSI/CTA-2063-A."""
         if r is None:
-            r = random
+            r = random.Random()
         manufacturer_code = "".join(r.choices(SerialNumber.code_points, k=4))
         k = r.randrange(0, len(SerialNumber.length_code_points)) + 1
         random_serial_number = "".join(r.choices(SerialNumber.code_points, k=k))

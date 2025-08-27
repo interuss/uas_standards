@@ -1,4 +1,4 @@
-from datetime import time
+import datetime
 from enum import Enum
 from typing import Any
 
@@ -99,10 +99,10 @@ class ED269TimeType(str):
     This class supports both formats as inputs and uses the long form as the output format.
     """
 
-    time: time
+    time: datetime.time
     """`time` representation of the str value with timezone"""
 
-    def __new__(cls, value: str | time):
+    def __new__(cls, value: str | datetime.time):
         if isinstance(value, str):
             t = arrow.get(value, ["HH:mm:ss.SZ", "HH:mmZ"]).timetz()
         else:

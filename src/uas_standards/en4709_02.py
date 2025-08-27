@@ -70,7 +70,7 @@ class OperatorRegistrationNumber(str):
     ) -> OperatorRegistrationNumber:
         """A method to generate an invalid Operator Registration number by replacing the control string"""
         if r is None:
-            r = random
+            r = random.Random()
         while True:
             new_random_string = "".join(
                 r.choice(string.ascii_lowercase)
@@ -146,7 +146,7 @@ class OperatorRegistrationNumber(str):
     ) -> OperatorRegistrationNumber:
         """Generate a random operator registration number with the specified prefix"""
         if r is None:
-            r = random
+            r = random.Random()
         final_random_string = "".join(
             r.choice(string.ascii_lowercase)
             for _ in range(OperatorRegistrationNumber.final_random_string_length)
