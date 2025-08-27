@@ -10,7 +10,7 @@ fi
 
 cd "${BASEDIR}" || exit
 
-docker image build -t openapi-python-converter .
+docker image build --build-context root=../../ -t openapi-python-converter .
 
 echo "F3411-19"
 docker container run -it \

@@ -4,4 +4,4 @@ apis:
 
 .PHONY: test
 test:
-	PYTHONPATH="$(PYTHONPATH):./src" pytest tests/
+	PYTHONPATH="$(PYTHONPATH):./src" uv run pytest tests/

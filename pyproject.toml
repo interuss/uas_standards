@@ -48,6 +48,10 @@ dev = [
   "ruff>=0.12.8",
 ]
 
+openapi_conversion = [
+  "pyyaml"
+]
+
 [project.urls]
 "Homepage" = "https://github.com/interuss/uas_standards"
 "Bug Tracker" = "https://github.com/interuss/uas_standards/issues"
