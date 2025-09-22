@@ -84,7 +84,7 @@ DateTimeType = StringBasedDateTime
 
 TimeInterval = str  # TODO: Create appropriate type
 
-TimeType = str # TODO: Create appropriate type
+TimeType = str  # TODO: Create appropriate type
 
 
 class CodeYesNoType(str, Enum):
