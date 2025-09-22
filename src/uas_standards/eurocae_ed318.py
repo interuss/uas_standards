@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 from enum import Enum
-from typing import List, Optional, Union, Literal, Dict, Any
+from typing import Any, Literal
+
 from implicitdict import ImplicitDict, StringBasedDateTime
 
 
@@ -58,14 +60,14 @@ class CodeZoneReasonType(str, Enum):
 class TextShortType(ImplicitDict):
     # This complies with the JSON schema provided in the appendix E of the standard
     # Though, from the description, lang should be optional and text required.
-    text: Optional[str]
+    text: str | None
     lang: str
 
 
 class TextLongType(ImplicitDict):
     # This complies with the JSON schema provided in the appendix E of the standard
     # Though, from the description, lang should be optional and text required.
-    text: Optional[str]
+    text: str | None
     lang: str
 
 
@@ -104,14 +106,14 @@ class VerticalLayer(ImplicitDict):
 
 
 class Layered(ImplicitDict):
-    layer: Optional[VerticalLayer]
-    bbox: Optional[List[float]]
+    layer: VerticalLayer | None
+    bbox: list[float] | None
 
 
 class Point(Layered):
     type: Literal["Point"]
-    coordinates: List[float]
-    extent: Optional[ExtentCircle]
+    coordinates: list[float]
+    extent: ExtentCircle | None
 
 
 class ExtentCircle(ImplicitDict):
@@ -121,44 +123,44 @@ class ExtentCircle(ImplicitDict):
 
 class LineString(Layered):
     type: Literal["LineString"]
-    coordinates: List[List[float]]
+    coordinates: list[list[float]]
 
 
 class Polygon(Layered):
     type: Literal["Polygon"]
-    coordinates: List[List[List[float]]]
+    coordinates: list[list[list[float]]]
 
 
 class MultiPoint(Layered):
     type: Literal["MultiPoint"]
-    coordinates: List[List[float]]
+    coordinates: list[list[float]]
 
 
 class MultiLineString(Layered):
     type: Literal["MultiLineString"]
-    coordinates: List[List[List[float]]]
+    coordinates: list[list[list[float]]]
 
 
 class MultiPolygon(Layered):
     type: Literal["MultiPolygon"]
-    coordinates: List[List[List[List[float]]]]
+    coordinates: list[list[list[list[float]]]]
 
 
 class GeometryCollection(ImplicitDict):
     type: Literal["GeometryCollection"]
-    geometries: List[Any]
+    geometries: list[Any]
 
 
-Geometry = Union[
-    Point,
-    LineString,
-    Polygon,
-    MultiPoint,
-    MultiLineString,
-    MultiPolygon,
-    GeometryCollection,
-    Dict[str, Any],  # fallback for GeometryCollection or future types
-]
+Geometry = (
+    Point
+    | LineString
+    | Polygon
+    | MultiPoint
+    | MultiLineString
+    | MultiPolygon
+    | GeometryCollection
+    | dict[str, Any]
+)  # fallback for GeometryCollection or future types
 
 
 class CodeVerticalReferenceType(str, Enum):
@@ -171,81 +173,81 @@ class CodeVerticalReferenceType(str, Enum):
 
 
 class DatasetMetadata(ImplicitDict):
-    provider: Optional[List[TextShortType]]
-    issued: Optional[DateTimeType]
-    validFrom: Optional[DateTimeType]
-    validTo: Optional[DateTimeType]
-    description: Optional[List[TextShortType]]
-    otherGeoid: Optional[URNType]
-    technicalLimitations: Optional[List[TextShortType]]
+    provider: list[TextShortType] | None
+    issued: DateTimeType | None
+    validFrom: DateTimeType | None
+    validTo: DateTimeType | None
+    description: list[TextShortType] | None
+    otherGeoid: URNType | None
+    technicalLimitations: list[TextShortType] | None
 
 
 class UASZone(ImplicitDict):
     identifier: CodeZoneIdentifierType
     country: CodeCountryISOType
-    name: Optional[List[TextShortType]]
+    name: list[TextShortType] | None
     type: CodeZoneType
     variant: CodeZoneVariantType
-    restrictionConditions: Optional[ConditionExpressionType]
-    region: Optional[int]
-    reason: Optional[List[CodeZoneReasonType]]
-    otherReasonInfo: Optional[List[TextShortType]]
-    regulationExemption: Optional[CodeYesNoType]
-    message: Optional[List[TextLongType]]
-    extendedProperties: Optional[Dict[str, Any]]
-    limitedApplicability: Optional[List[TimePeriod]]
-    zoneAuthority: List[Authority]
-    dataSource: Optional[Metadata]
+    restrictionConditions: ConditionExpressionType | None
+    region: int | None
+    reason: list[CodeZoneReasonType] | None
+    otherReasonInfo: list[TextShortType] | None
+    regulationExemption: CodeYesNoType | None
+    message: list[TextLongType] | None
+    extendedProperties: dict[str, Any] | None
+    limitedApplicability: list[TimePeriod] | None
+    zoneAuthority: list[Authority]
+    dataSource: Metadata | None
 
 
 class TimePeriod(ImplicitDict):
-    startDateTime: Optional[DateTimeType]
-    endDateTime: Optional[DateTimeType]
-    schedule: Optional[List[DailyPeriod]]
+    startDateTime: DateTimeType | None
+    endDateTime: DateTimeType | None
+    schedule: list[DailyPeriod] | None
 
 
 class DailyPeriod(ImplicitDict):
-    day: List[CodeWeekDayType]
-    startTime: Optional[DateTimeType]
-    startEvent: Optional[CodeDaylightEventType]
-    endTime: Optional[DateTimeType]
-    endEvent: Optional[CodeDaylightEventType]
+    day: list[CodeWeekDayType]
+    startTime: DateTimeType | None
+    startEvent: CodeDaylightEventType | None
+    endTime: DateTimeType | None
+    endEvent: CodeDaylightEventType | None
 
 
 class Authority(ImplicitDict):
     purpose: CodeAuthorityRole
-    intervalBefore: Optional[TimeInterval]
-    name: Optional[List[TextShortType]]
-    service: Optional[List[TextShortType]]
-    contactName: Optional[List[TextShortType]]
-    siteURL: Optional[TextShortType]
-    email: Optional[TextShortType]
-    phone: Optional[TextShortType]
+    intervalBefore: TimeInterval | None
+    name: list[TextShortType] | None
+    service: list[TextShortType] | None
+    contactName: list[TextShortType] | None
+    siteURL: TextShortType | None
+    email: TextShortType | None
+    phone: TextShortType | None
 
 
 class Metadata(ImplicitDict):
-    creationDate: Optional[DateTimeType]
-    updateDateTime: Optional[DateTimeType]
-    originator: Optional[str]
+    creationDate: DateTimeType | None
+    updateDateTime: DateTimeType | None
+    originator: str | None
 
 
 class Feature(ImplicitDict):
     type: Literal["Feature"]
-    id: Optional[Union[int, str]]
-    properties: Optional[UASZone]
-    geometry: Optional[Geometry]
-    bbox: Optional[List[float]]
+    id: int | str | None
+    properties: UASZone | None
+    geometry: Geometry | None
+    bbox: list[float] | None
 
 
 class ED318Schema(ImplicitDict):
     """Top-level ED-318 FeatureCollection payload."""
 
     type: Literal["FeatureCollection"]
-    name: Optional[str]
+    name: str | None
     metadata: DatasetMetadata
-    title: Optional[str]
-    bbox: Optional[List[float]]
-    features: List[Feature]
+    title: str | None
+    bbox: list[float] | None
+    features: list[Feature]
 
     @staticmethod
     def from_dict(obj: dict) -> ED318Schema:
