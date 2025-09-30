@@ -208,9 +208,9 @@ class TimePeriod(ImplicitDict):
 
 class DailyPeriod(ImplicitDict):
     day: list[CodeWeekDayType]
-    startTime: DateTimeType | None
+    startTime: TimeType | None
     startEvent: CodeDaylightEventType | None
-    endTime: DateTimeType | None
+    endTime: TimeType | None
     endEvent: CodeDaylightEventType | None
 
 
@@ -226,7 +226,7 @@ class Authority(ImplicitDict):
 
 
 class Metadata(ImplicitDict):
-    creationDate: DateTimeType | None
+    creationDateTime: DateTimeType | None
     updateDateTime: DateTimeType | None
     originator: str | None
 
