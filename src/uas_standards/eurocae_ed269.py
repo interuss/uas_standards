@@ -134,7 +134,7 @@ class UASZoneVersion(ImplicitDict):
     name: str | None  # max length: 200
     type: str
     restriction: Restriction
-    restrictionConditions: list[str] | None
+    restrictionConditions: str | None
     region: int | None
     reason: list[Reason] | None  # max length: 9
     otherReasonInfo: str | None  # max length: 30
