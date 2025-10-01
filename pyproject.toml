@@ -36,7 +36,7 @@ classifiers = [
 ]
 
 dependencies = [
-  "implicitdict"
+  "implicitdict>=4.0.1",
 ]
 
 
