@@ -111,6 +111,7 @@ def _add_object_from_path_and_schema(
     varpath = path.split("/")
     varpath = varpath[1:]
     varname = varpath[-1]
+    filename = os.path.abspath(filename)
     if varname in additional_components:
         # A component by this name has already been added to the flattened schema
         if additional_components[varname].included_by != filename:
