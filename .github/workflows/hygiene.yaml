@@ -11,7 +11,7 @@ on:
 jobs:
   hygiene:
     runs-on: ubuntu-latest
-    name: Ruff
+    name: Lint
     steps:
     - uses: actions/checkout@v3
     - name: setup-python
