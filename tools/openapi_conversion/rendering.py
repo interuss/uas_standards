@@ -105,7 +105,10 @@ def _object_field(field: ObjectField) -> list[str]:
         if field.literal_default:
             default_suffix = f" = {field.default}"
         elif isinstance(field.default, str):
-            default_suffix = f' = "{field.default}"'
+            if field.python_type in ("StringBasedDateTime", "StringBasedTimeDelta"):
+                default_suffix = f' = {field.python_type}("{field.default}")'
+            else:
+                default_suffix = f' = "{field.default}"'
         else:
             default_suffix = f" = {str(field.default)}"
     else:

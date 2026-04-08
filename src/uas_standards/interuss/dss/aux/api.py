@@ -42,7 +42,7 @@ class Heartbeat(ImplicitDict):
     index: int | None = 0
     """Index of this heartbeat within the set of all heartbeats for this pool participant."""
 
-    next_heartbeat_expected_before: StringBasedDateTime | None = ""
+    next_heartbeat_expected_before: StringBasedDateTime | None = StringBasedDateTime("")
     """The time by which a new heartbeat should be registered for this DSS instance if the DSS instance operator's system is behaving correctly."""
 
 
