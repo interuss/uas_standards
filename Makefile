@@ -8,6 +8,6 @@ test:
 
 .PHONY: lint
 lint:
-	uv run --index https://pypi.org/simple ruff format --check
-	uv run --index https://pypi.org/simple ruff check
-	uv run --index https://pypi.org/simple --all-groups basedpyright
+	uv run ruff format --check
+	uv run ruff check
+	uv run --all-groups basedpyright
