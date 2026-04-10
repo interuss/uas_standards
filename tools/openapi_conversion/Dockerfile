@@ -15,6 +15,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Ensure UV don't check dependencies or lock file, since we installed everything before
 ENV UV_FROZEN=1
 
+# Ensure the cache folder is present and writable by anyone
+# (Some commands run with limited privileges)
+RUN mkdir -p /.cache/uv/ && chmod 777 /.cache/uv/
+# Also fix the root folder where Python is downloaded
+RUN find /root/ -type d -exec chmod a+rx {} +
 
 ADD . /app
 WORKDIR /app

@@ -14,12 +14,9 @@ USER_GROUP="$(id -u):$(id -g)"
 
 docker image build --build-context root=. -t openapi-python-converter ./tools/openapi_conversion
 
-mkdir -p .cache
-
 DOCKER_CMD="docker container run --rm \
   -u ${USER_GROUP} \
   -v $(pwd):/resources \
-  -v $(pwd)/.cache:/.cache \
   openapi-python-converter"
 
 # Usage: generate "Label" "Interface YAML" "Output Python Path"
