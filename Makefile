@@ -11,3 +11,4 @@ lint:
 	uv run ruff format --check
 	uv run ruff check
 	uv run --all-groups basedpyright
+	./tools/verify_sync.sh
