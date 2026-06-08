@@ -42,7 +42,7 @@ class Heartbeat(ImplicitDict):
     index: int | None = 0
     """Index of this heartbeat within the set of all heartbeats for this pool participant."""
 
-    next_heartbeat_expected_before: StringBasedDateTime | None = StringBasedDateTime("")
+    next_heartbeat_expected_before: StringBasedDateTime | None
     """The time by which a new heartbeat should be registered for this DSS instance if the DSS instance operator's system is behaving correctly."""
 
 
@@ -167,6 +167,8 @@ OPERATIONS: dict[OperationID, Operation] = {
         request_body_type=None,
         response_body_type={
             200: SCDLockModeResponse,
+            401: ErrorResponse,
+            403: ErrorResponse,
             501: ErrorResponse,
         },
     ),

@@ -11,6 +11,7 @@ fi
 cd "${BASEDIR}" || exit
 
 # URL to raw content for this interface.  Should target pinned content: either a tag or commit.
-URL="https://raw.githubusercontent.com/interuss/dss/refs/tags/interuss/dss/v0.21.1/interfaces/aux_/aux_.yaml"
+# URL="https://raw.githubusercontent.com/interuss/dss/refs/tags/interuss/dss/v0.21.1/interfaces/aux_/aux_.yaml"
+URL="https://raw.githubusercontent.com/interuss/dss/05165589f47f3f70e3fbef39f8f2173c34a97719/interfaces/aux_/aux_.yaml"
 
 wget -N $URL

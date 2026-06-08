@@ -82,7 +82,6 @@ components:
           type: string
           format: date-time
           example: '1985-04-12T23:45:00Z'
-          default: ''
       required:
       - timestamp
       - source
@@ -346,6 +345,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SCDLockModeResponse'
+        '401':
+          description: >-
+            Bearer access token was not provided in Authorization header, token
+            could not be decoded, or token was invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: >-
+            The access token was decoded successfully but did not include a
+            scope appropriate to this endpoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '501':
           description: >-
             The server has not implemented this operation.
