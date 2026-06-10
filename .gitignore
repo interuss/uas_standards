@@ -125,3 +125,7 @@ dmypy.json
 
 # setuptools_scm
 _version.py
+
+# Recovery private keys
+private_key.pem
+
