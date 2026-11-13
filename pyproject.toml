@@ -44,7 +44,6 @@ dependencies = [
 dev = [
   "pytest",
   "pytest-cov",
-  "black",
   "ruff>=0.12.8",
   "basedpyright>=1.31.3",
 ]
