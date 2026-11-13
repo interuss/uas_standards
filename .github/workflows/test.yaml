@@ -10,27 +10,29 @@ on:
     branches:
     - main
 
+permissions:
+  contents: read
+
 jobs:
   install-test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        python-version: ["3.10", "3.11", "3.12"]
-        exclude: # https://github.com/actions/setup-python/issues/875
-          - os: macos-latest
-            python-version: "3.10"
+        os: [ubuntu-26.04, macos-latest]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
       max-parallel: 3
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      with:
+        persist-credentials: false
     - name: setup-python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
       with:
         python-version: ${{ matrix.python-version }}
         architecture: "x64"
     - name: Install uv
-      uses: astral-sh/setup-uv@v6
+      uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
     - name: test
       run: uv run pytest --cov

@@ -29,7 +29,7 @@ authors = [
 description = "Data types and tools for working with standards related to uncrewed aircraft systems (UAS)"
 readme = "README.md"
 license = "Apache-2.0"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -58,7 +58,7 @@ openapi_conversion = [
 "Bug Tracker" = "https://github.com/interuss/uas_standards/issues"
 
 [tool.ruff]
-target-version = "py310"
+target-version = "py311"
 
 # Default + isort + pyupgrade
 lint.select = [
